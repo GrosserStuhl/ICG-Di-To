@@ -24,6 +24,7 @@ public class Cube extends Node {
 	float d2 = 0.5f;
 
 	// Auxillary class to represent a single vertex.
+	// Tom booooooobbobob
 	private class Vertex {
 		Vector position;
 		Color color;
