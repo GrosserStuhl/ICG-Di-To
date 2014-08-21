@@ -1,13 +1,13 @@
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
+import ogl.app.App;
 import ogl.app.Input;
+import ogl.app.OpenGLApp;
 import ogl.cube.RotatingCube;
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
@@ -16,15 +16,20 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
 
-public class Cube extends Node {
+public class Cube extends Node implements App {
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
 	float h2 = 0.5f;
 	float d2 = 0.5f;
 
+	
+	 static public void main(String[] args) {
+		    new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube())
+		      .start();
+		  }
+	
 	// Auxillary class to represent a single vertex.
-	// Tom booooooobbobob
 	private class Vertex {
 		Vector position;
 		Color color;
@@ -52,11 +57,11 @@ public class Cube extends Node {
 
 	//
 	// 6 ------- 7
-	// / | / |
+	// /      | / 	 |
 	// 3 ------- 2 |
-	// | | | |
-	// | 5 -----|- 4
-	// | / | /
+	// | |     | |
+	// | 5 ----- |- 4
+	// | /       | /
 	// 0 ------- 1
 	//
 
@@ -131,6 +136,7 @@ public class Cube extends Node {
 		setTransformation(vecmath
 				.rotationMatrix(vecmath.vector(1, 1, 1), angle));
 
+		
 		c.getModelMatrixUniform().set(getTransformation());
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
@@ -142,5 +148,13 @@ public class Cube extends Node {
 				colorData);
 		glEnableVertexAttribArray(RotatingCube.getColorAttribIdx());
 	}
+
+	@Override
+	public void display(int width, int height) {
+		display(new RotatingCube());
+		
+	}
+
+	
 
 }
