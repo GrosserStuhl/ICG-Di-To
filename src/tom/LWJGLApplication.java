@@ -22,6 +22,7 @@ public class LWJGLApplication {
 	public static void gameLoop(){
 		
 		Camera cam = new Camera(70,(float) Display.getWidth()/ (float)Display.getHeight(),0.3f,1000);
+		float x = 0;
 		
 		while(!Display.isCloseRequested()){
 			
@@ -32,22 +33,27 @@ public class LWJGLApplication {
 			
 			glPushMatrix();
 			{
-			
-			glBegin(GL_QUADS);
-			{
-				glVertex3f(0,0,0);
-				glVertex3f(0,1,0);
-				glVertex3f(1,1,0);
-				glVertex3f(1,0,0);
-				
-				
+					glColor3f(1.0f,0.5f,0f);
+					glTranslatef(0,0,-10);
+					glRotatef(x,1,0,0);
+					glBegin(GL_QUADS);
+					{
+						glVertex3f(0,0,0);
+						glVertex3f(0,1,0);
+						glVertex3f(1,1,0);
+						glVertex3f(1,0,0);
+						
+						
+					}
+					glEnd();
 			}
-			glEnd();
-			}
+			glPopMatrix();
 			
-			
+			x+=1f;
 			
 			Display.update();
+			Display.sync(60);
+			
 		}
 		
 		
