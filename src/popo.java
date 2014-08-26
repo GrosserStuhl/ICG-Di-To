@@ -1,5 +1,5 @@
 import static org.lwjgl.opengl.GL11.*;
-
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
@@ -22,10 +22,15 @@ public class popo {
 		}
 
 		// initialization code
+		// glEnable(GL_DEPTH_TEST);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, 640, 480, 0, 1, -1);
+		glOrtho(0, 640, 480, 0, 100, -100);
+		// gluPerspective(45,
+		// (float) Display.getWidth() / (float) Display.getHeight(), 0.3f,
+		// 1000);
 		glMatrixMode(GL_MODELVIEW);
+		glTranslatef(50.0f, 0, 0);
 
 		while (!Display.isCloseRequested()) {
 
@@ -54,17 +59,39 @@ public class popo {
 										// ist
 
 			// render Code
-			glBegin(GL_LINES);
-			glVertex2i(100, 100);
-			glVertex2i(200, 200);
+			// glBegin(GL_LINES);
+			// glVertex2i(100, 100);
+			// glVertex2i(200, 200);
+			// glEnd();
+			//
+			// glBegin(GL_QUADS);
+			// glVertex2i(x, y);
+			// glVertex2i(x + 50, y);
+			// glVertex2i(x + 50, y + 50);
+			// glVertex2i(x, y + 50);
+			// glEnd();
+
+			// glPushMatrix();
+//			glRotatef(0.1f, 0.0f, 1.0f, 0.0f);
+
+			glColor3f(0.0f, 0.0f, 1.0f);
+			glBegin(GL_QUADS);
+			glVertex3i(x, y, 30);
+			glColor3f(0.0f, 1.0f, 1.0f);
+			glVertex3i(x + 50, y, 30);
+			glVertex3i(x + 50, y + 50, 30);
+			glColor3f(1.0f, 1.0f, 0.0f);
+			glVertex3i(x, y + 50, 30);
+
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glVertex3i(x + 50, y, 0);
+			glVertex3i(x + 100, y, 0);
+			glVertex3i(x + 100, y + 50, 0);
+			glVertex3i(x + 50, y + 50, 0);
+
 			glEnd();
 
-			glBegin(GL_QUADS);
-			glVertex2i(x, y);
-			glVertex2i(x + 50, y);
-			glVertex2i(x + 50, y + 50);
-			glVertex2i(x, y + 50);
-			glEnd();
+			// glPopMatrix();
 
 			if (clicked) {
 				// x = Mouse.getX();
