@@ -42,7 +42,7 @@ public class Test3D {
 	
 	public void run(){
 		
-		//glEnable bringt, dass eine bestimmte Sache aktiv wird. In diesem Fall der Depth Test.
+		        //glEnable bringt, dass eine bestimmte Sache aktiv wird. In diesem Fall der Depth Test.
 				//Der Depth Test bringt, mach das die Depth aktiv wird.
 				//Den MUSS man aktivieren wenn man das in 3D machen will. Mehr dazu unten im Code.
 				glEnable(GL_DEPTH_TEST);
