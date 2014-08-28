@@ -109,6 +109,10 @@ public class Camera {
 		x += amt * Math.cos(Math.toRadians(ry));
 
 	}
+	
+	public void moveOnY(float amt) {
+		y += amt;
+	}
 
 	public void rotateY(float amt) {
 		ry += amt;

@@ -17,10 +17,12 @@ public class Test3D {
 	float x, y;
 	
 	//MACH HIER MAL WAS DAMIT ICH DAS MERGETOOL TESTEN KANN
+	
 
 	public Test3D() {
 		this.x = 100;
 		this.y = 200;
+		System.out.println("mister kopf");
 	}
 
 	public static void main(String args[]) {
