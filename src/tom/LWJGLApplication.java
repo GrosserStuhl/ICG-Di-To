@@ -41,7 +41,7 @@ public class LWJGLApplication {
 					glColor3f(1.0f,0.5f,0f);
 					// moves back 10 on z-axis
 					glTranslatef(0,0,-10);
-					glRotatef(x,1,0,0);
+					glRotatef(x,1,1,0);
 					glBegin(GL_QUADS);
 					{
 						glVertex3f(0,0,0);
