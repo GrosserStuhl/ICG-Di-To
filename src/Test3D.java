@@ -22,7 +22,10 @@ public class Test3D {
 	public Test3D() {
 		this.x = 100;
 		this.y = 200;
+		
+		int mein_penis_in_cm = (int) x;
 		System.out.println("mister kopf");
+		
 	}
 
 	public static void main(String args[]) {
