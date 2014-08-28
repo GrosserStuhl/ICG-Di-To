@@ -44,10 +44,42 @@ public class LWJGLApplication {
 					glRotatef(x,1,1,0);
 					glBegin(GL_QUADS);
 					{
-						glVertex3f(0,0,0);
-						glVertex3f(0,1,0);
-						glVertex3f(1,1,0);
-						glVertex3f(1,0,0);
+						// FrontFace (drawn from x to y)
+						glVertex3f(-1,-1,1);
+						glVertex3f(-1,1,1);
+						glVertex3f(1,1,1);
+						glVertex3f(1,-1,1);
+						
+						// BackFace (same thing, only negative z)
+						glVertex3f(-1,-1,-1);
+						glVertex3f(-1,1,-1);
+						glVertex3f(1,1,-1);
+						glVertex3f(1,-1,-1);
+						
+						// BottomFace (drawn from y to z)
+						glVertex3f(-1,-1,-1);
+						glVertex3f(-1,-1,1);
+						glVertex3f(-1,1,1);
+						glVertex3f(1,1,-1);
+						
+						// TopFace (drawn from y to z)
+						glVertex3f(1,-1,-1);
+						glVertex3f(1,-1,1);
+						glVertex3f(1,1,1);
+						glVertex3f(1,1,-1);
+						
+						//LeftFace (drawn from x to z)
+						glVertex3f(-1,-1,-1);
+						glVertex3f(1,-1,-1);
+						glVertex3f(1,-1,1);
+						glVertex3f(-1,-1,1);
+						
+						//RightFace
+						glVertex3f(-1,1,-1);
+						glVertex3f(1,1,-1);
+						glVertex3f(1,1,1);
+						glVertex3f(-1,1,1);
+						
 						
 					}
 					glEnd();
