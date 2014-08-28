@@ -6,6 +6,8 @@ import static org.lwjgl.util.glu.GLU.*;
 
 public class Camera {
 
+	
+	
 	private float x;
 	private float y;
 	private float z;
@@ -18,6 +20,7 @@ public class Camera {
 	private float near;
 	private float far;
 	
+	//near = nearclip plane
 	public Camera(float fov, float aspect, float near, float far){
 		
 		x = 0;

@@ -26,14 +26,20 @@ public class LWJGLApplication {
 		
 		while(!Display.isCloseRequested()){
 			
+			//Clears the Color Buffer
 			glClear(GL_COLOR_BUFFER_BIT);
+			//resets the ModelViewMatrix
 			glLoadIdentity();
 			cam.useView();
 			
-			
+			// put it in a matrix
+			// this will make sure that the translation and rotation
+			// will only affect anything between both commands:
+			// glPushMatrix(){rotation,...} glPopMatrix()
 			glPushMatrix();
 			{
 					glColor3f(1.0f,0.5f,0f);
+					// moves back 10 on z-axis
 					glTranslatef(0,0,-10);
 					glRotatef(x,1,0,0);
 					glBegin(GL_QUADS);
@@ -42,7 +48,6 @@ public class LWJGLApplication {
 						glVertex3f(0,1,0);
 						glVertex3f(1,1,0);
 						glVertex3f(1,0,0);
-						
 						
 					}
 					glEnd();
