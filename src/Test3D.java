@@ -24,7 +24,7 @@ public class Test3D {
 		this.y = 200;
 		
 		int mein_penis_in_cm = (int) x;
-		System.out.println("mister kopf");
+		System.out.println("mister");
 		
 	}
 
