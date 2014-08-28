@@ -20,6 +20,8 @@ public class Camera {
 	private float near;
 	private float far;
 	
+	float speed = 0.1f;
+	
 	//near = nearclip plane
 	public Camera(float fov, float aspect, float near, float far){
 		
@@ -77,6 +79,21 @@ public class Camera {
 	
 	public void setZ(float z) {
 		this.z = z;
+	}
+	
+	/**
+	 * Should move the camera in a direction
+	 * 
+	 */
+	
+	public void moveForward(){
+		
+		z+= speed;
+	}
+	
+	public void moveBackward(){
+		
+		z-= speed;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -26,6 +27,11 @@ public class LWJGLApplication {
 		
 		while(!Display.isCloseRequested()){
 			
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))
+				cam.moveForward();
+			if(Keyboard.isKeyDown(Keyboard.KEY_S))
+				cam.moveBackward();
+			
 			//Clears the Color Buffer
 			glClear(GL_COLOR_BUFFER_BIT);
 			//resets the ModelViewMatrix
@@ -45,36 +51,42 @@ public class LWJGLApplication {
 					glBegin(GL_QUADS);
 					{
 						// FrontFace (drawn from x to y)
+						glColor3f(1f,0f,0f);
 						glVertex3f(-1,-1,1);
 						glVertex3f(-1,1,1);
 						glVertex3f(1,1,1);
 						glVertex3f(1,-1,1);
 						
 						// BackFace (same thing, only negative z)
+						glColor3f(0f,1f,0f);
 						glVertex3f(-1,-1,-1);
 						glVertex3f(-1,1,-1);
 						glVertex3f(1,1,-1);
 						glVertex3f(1,-1,-1);
 						
 						// BottomFace (drawn from y to z)
+						glColor3f(0f,0f,1f);
 						glVertex3f(-1,-1,-1);
 						glVertex3f(-1,-1,1);
 						glVertex3f(-1,1,1);
-						glVertex3f(1,1,-1);
+						glVertex3f(-1,1,-1);
 						
 						// TopFace (drawn from y to z)
+						glColor3f(1f,1f,0f);
 						glVertex3f(1,-1,-1);
 						glVertex3f(1,-1,1);
 						glVertex3f(1,1,1);
 						glVertex3f(1,1,-1);
 						
 						//LeftFace (drawn from x to z)
+						glColor3f(0f,1f,1f);
 						glVertex3f(-1,-1,-1);
 						glVertex3f(1,-1,-1);
 						glVertex3f(1,-1,1);
 						glVertex3f(-1,-1,1);
 						
 						//RightFace
+						glColor3f(1f,0f,1f);
 						glVertex3f(-1,1,-1);
 						glVertex3f(1,1,-1);
 						glVertex3f(1,1,1);
