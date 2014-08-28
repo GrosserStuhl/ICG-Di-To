@@ -20,7 +20,6 @@ public class Camera {
 	private float near;
 	private float far;
 	
-	float speed = 0.1f;
 	
 	//near = nearclip plane
 	public Camera(float fov, float aspect, float near, float far){
@@ -46,6 +45,12 @@ public class Camera {
 		glLoadIdentity();
 		gluPerspective(fov,aspect,near,far);
 		glMatrixMode(GL_MODELVIEW);
+		
+		// will enable GL Depth Calculation,
+		// without it GL doesnt know which shape to draw 
+		// in front of which other
+		// this uses Depth Buffers, we have to clear every frame
+		glEnable(GL_DEPTH_TEST);
 		
 	}
 	
@@ -85,15 +90,17 @@ public class Camera {
 	 * Should move the camera in a direction
 	 * 
 	 */
-	
-	public void moveForward(){
+	public void move(float amt, float dir){
 		
-		z+= speed;
+		z+= amt * Math.sin(Math.toRadians(ry + 90 *dir));
+		x += amt * Math.cos(Math.toRadians(ry + 90 * dir));
 	}
 	
-	public void moveBackward(){
+	
+	public void rotateY(float amt){
 		
-		z-= speed;
+		ry +=amt;
+		
 	}
 	
 }

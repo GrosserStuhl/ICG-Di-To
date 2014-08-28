@@ -25,15 +25,35 @@ public class LWJGLApplication {
 		Camera cam = new Camera(70,(float) Display.getWidth()/ (float)Display.getHeight(),0.3f,1000);
 		float x = 0;
 		
+		boolean temp = false;
+		
 		while(!Display.isCloseRequested()){
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_W))
-				cam.moveForward();
-			if(Keyboard.isKeyDown(Keyboard.KEY_S))
-				cam.moveBackward();
+			boolean forward = Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP);
+			boolean backward = Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN);
+			boolean left = Keyboard.isKeyDown(Keyboard.KEY_A);
+			boolean right =  Keyboard.isKeyDown(Keyboard.KEY_D);
 			
-			//Clears the Color Buffer
-			glClear(GL_COLOR_BUFFER_BIT);
+			
+			
+			if(forward)
+				cam.move(0.01f,1);
+			if(backward)
+				cam.move(-0.01f,1);
+			if(left)
+				cam.move(0.01f,0);//cam.rotateY(-0.1f);
+			if(right)
+				cam.move(-0.01f,0);//cam.rotateY(0.1f);
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+				cam.rotateY(-0.1f);
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				cam.rotateY(0.1f);
+			
+			
+			//Clears the Color Buffer and the Depth Buffer
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//resets the ModelViewMatrix
 			glLoadIdentity();
 			cam.useView();
@@ -45,9 +65,17 @@ public class LWJGLApplication {
 			glPushMatrix();
 			{
 					glColor3f(1.0f,0.5f,0f);
-					// moves back 10 on z-axis
 					glTranslatef(0,0,-10);
-					glRotatef(x,1,1,0);
+					//glRotatef(x,1,1,0);
+					
+					// enables diagonal movement  and rotates obejct
+					if((forward && left) || (forward && right) || (backward && left) || (backward && right) ){
+						temp = true;
+					}
+					
+					if(temp)
+						glRotatef(45,0,1,0);
+					
 					glBegin(GL_QUADS);
 					{
 						// FrontFace (drawn from x to y)
@@ -101,7 +129,7 @@ public class LWJGLApplication {
 			x+=1f;
 			
 			Display.update();
-			Display.sync(60);
+			
 			
 		}
 		
