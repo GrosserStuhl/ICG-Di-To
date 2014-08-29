@@ -3,11 +3,18 @@ package Dima;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 public class Test {
 
@@ -23,6 +30,17 @@ public class Test {
 	}
 
 	public static void gameLoop() {
+		Texture wood = null;
+		try {
+			wood = TextureLoader.getTexture("jpg", new FileInputStream(
+					new File("res/wood.jpg")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Camera cam = new Camera(70, (float) Display.getWidth()
 				/ (float) Display.getHeight(), 0.3f, 1000);
 		float translation = 0;
@@ -64,47 +82,74 @@ public class Test {
 				glColor3f(1.0f, 0.5f, 0f);
 				glTranslatef(0, 0, -10);
 				glRotatef(translation, 1, 1, 0);
+
+				wood.bind();
+
 				glBegin(GL_QUADS);
 				{
-					glColor3f(1f, 0f, 0f);
+					// glColor3f(1f, 0f, 0f);
+					glTexCoord2f(0, 0);
 					glVertex3f(-1, -1, 1);
+					glTexCoord2f(0, 1);
 					glVertex3f(1, -1, 1);
+					glTexCoord2f(1, 1);
 					glVertex3f(1, 1, 1);
+					glTexCoord2f(1, 0);
 					glVertex3f(-1, 1, 1);
 
 					// BackFace
-					glColor3f(0f, 1f, 0f);
+					// glColor3f(0f, 1f, 0f);
+					glTexCoord2f(0, 0);
 					glVertex3f(-1, -1, -1);
+					glTexCoord2f(0, 1);
 					glVertex3f(-1, 1, -1);
+					glTexCoord2f(1, 1);
 					glVertex3f(1, 1, -1);
+					glTexCoord2f(1, 0);
 					glVertex3f(1, -1, -1);
 
 					// BottomFace
-					glColor3f(0f, 0f, 1f);
+					// glColor3f(0f, 0f, 1f);
+					glTexCoord2f(0, 0);
 					glVertex3f(-1, -1, -1);
+					glTexCoord2f(0, 1);
 					glVertex3f(-1, -1, 1);
+					glTexCoord2f(1, 1);
 					glVertex3f(-1, 1, 1);
+					glTexCoord2f(1, 0);
 					glVertex3f(-1, 1, -1);
 
 					// TopFace
-					glColor3f(1f, 1f, 0f);
+					// glColor3f(1f, 1f, 0f);
+					glTexCoord2f(0, 0);
 					glVertex3f(1, -1, -1);
+					glTexCoord2f(0, 1);
 					glVertex3f(1, -1, 1);
+					glTexCoord2f(1, 1);
 					glVertex3f(1, 1, 1);
+					glTexCoord2f(1, 0);
 					glVertex3f(1, 1, -1);
 
 					// LeftFace
-					glColor3f(0f, 1f, 1f);
+					// glColor3f(0f, 1f, 1f);
+					glTexCoord2f(0, 0);
 					glVertex3f(-1, -1, -1);
+					glTexCoord2f(0, 1);
 					glVertex3f(1, -1, -1);
+					glTexCoord2f(1, 1);
 					glVertex3f(1, -1, 1);
+					glTexCoord2f(1, 0);
 					glVertex3f(-1, -1, 1);
 
 					// Right Face
-					glColor3f(1f, 0f, 1f);
+					// glColor3f(1f, 0f, 1f);
+					glTexCoord2f(0, 0);
 					glVertex3f(-1, 1, -1);
+					glTexCoord2f(0, 1);
 					glVertex3f(1, 1, -1);
+					glTexCoord2f(1, 1);
 					glVertex3f(1, 1, 1);
+					glTexCoord2f(1, 0);
 					glVertex3f(-1, 1, 1);
 				}
 				glEnd();

@@ -3,6 +3,11 @@ package Dima;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class Camera {
 	private float x, y, z;
 	private float rx, ry, rz; // Rotation
@@ -36,6 +41,31 @@ public class Camera {
 		glMatrixMode(GL_MODELVIEW);
 
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT1);
+
+		float orgParamsAmb[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+		FloatBuffer paramsAmb = BufferUtils
+				.createFloatBuffer(orgParamsAmb.length);
+		paramsAmb.put(orgParamsAmb);
+		paramsAmb.flip();
+		glLight(GL_LIGHT1, GL_AMBIENT, paramsAmb);
+		float orgParamsDif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		FloatBuffer paramsDif = BufferUtils
+				.createFloatBuffer(orgParamsDif.length);
+		paramsDif.put(orgParamsDif);
+		paramsDif.flip();
+		glLight(GL_LIGHT1, GL_DIFFUSE, paramsDif);
+		float orgParamsPos[] = { 0.0f, 0.0f, 2.0f, 1.0f };
+		FloatBuffer paramsPos = BufferUtils
+				.createFloatBuffer(orgParamsPos.length);
+		paramsPos.put(orgParamsPos);
+		paramsPos.flip();
+		glLight(GL_LIGHT1, GL_POSITION, paramsPos);
+		
+		glEnable(GL_COLOR_MATERIAL);
+		glColorMaterial(GL_FRONT, GL_DIFFUSE);
 	}
 
 	public void useView() {
@@ -109,7 +139,7 @@ public class Camera {
 		x += amt * Math.cos(Math.toRadians(ry));
 
 	}
-	
+
 	public void moveOnY(float amt) {
 		y += amt;
 	}
