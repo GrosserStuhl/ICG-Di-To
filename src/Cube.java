@@ -1,5 +1,6 @@
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
@@ -7,6 +8,7 @@ import java.nio.FloatBuffer;
 
 import ogl.app.App;
 import ogl.app.Input;
+import ogl.app.MatrixUniform;
 import ogl.app.OpenGLApp;
 import ogl.cube.RotatingCube;
 import ogl.vecmath.Color;
@@ -14,6 +16,7 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 
 public class Cube extends Node implements App {
@@ -66,25 +69,27 @@ public class Cube extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
-
+	private Vector[] p = { 
+			vec(-w2, -h2, -d2), 
+			vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), 
+			vec(-w2, h2, -d2), 
+			vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), 
+			vec(-w2, h2, d2), 
+			vec(w2, h2, d2) };
+	
+	
+	
 	// The colors of the cube vertices.
-	// private Color[] d = {
-	// col(0, 0, 0),
-	// col(1, 0, 0),
-	// col(1, 1, 0),
-	// col(0, 1, 0),
-	// col(1, 0, 1),
-	// col(0, 0, 1),
-	// col(0, 1, 1),
-	// col(1, 1, 1)
-	// };
-
-	// The colors of the cube vertices.
-	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
+	private Color[] c = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0),
 			col(0, 1, 0) };
 
 	private Vertex[] vertices = {
@@ -108,6 +113,9 @@ public class Cube extends Node implements App {
 	private float angle = 0;
 
 	public void init() {
+		
+		
+		
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
 		// passed to the OpenGL API efficently.
@@ -136,7 +144,10 @@ public class Cube extends Node implements App {
 		setTransformation(vecmath
 				.rotationMatrix(vecmath.vector(1, 1, 1), angle));
 
+		System.out.println("Transformation: "+getTransformation());
+		System.out.println("ModalMatrixUniform: "+c.getModelMatrixUniform());
 		
+
 		c.getModelMatrixUniform().set(getTransformation());
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
@@ -147,6 +158,7 @@ public class Cube extends Node implements App {
 		glVertexAttribPointer(RotatingCube.getColorAttribIdx(), 3, false, 0,
 				colorData);
 		glEnableVertexAttribArray(RotatingCube.getColorAttribIdx());
+		
 	}
 
 	@Override
