@@ -61,7 +61,8 @@ public class Cube extends Node implements App{
 			vec(-w2, h2, -d2), 
 			vec(w2, -h2, d2),
 			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2), 
+			vec(-w2, h2, d2),
+			vec(w2, h2, d2)}; 
 
 	private Vector[] s = { vec(-w, -h, -d), vec(w, -h, -d), vec(w, h, -d),
 			vec(-w, h, -d), vec(w, -h, d), vec(-w, -h, d), vec(-w, h, d),
@@ -84,6 +85,7 @@ public class Cube extends Node implements App{
 	private FloatBuffer positionData2;
 	private FloatBuffer colorData;
 	private Vertex[] vertices;
+	private Vertex[] vertices2;
 
 	// Initialize the rotation angle of the cube.
 	private float angle = 0;
