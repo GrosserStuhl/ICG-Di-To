@@ -21,6 +21,10 @@ public class Cube extends Node implements App{
 	float h2 = 0.5f;
 	float d2 = 0.5f;
 
+	float w = 0.5f;
+	float h = 0.5f;
+	float d = 0.5f;
+
 	private Shader shader;
 	
 
@@ -166,6 +170,8 @@ public class Cube extends Node implements App{
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
 
+		shader.getModelMatrixUniform().set(
+				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData2);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
