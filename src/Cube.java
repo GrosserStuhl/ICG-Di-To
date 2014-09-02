@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 
 import ogl.app.App;
 import ogl.app.Input;
-import ogl.app.MatrixUniform;
 import ogl.app.OpenGLApp;
 import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
@@ -14,7 +13,6 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11.*;
 
 public class Cube extends Node implements App {
 
@@ -155,6 +153,17 @@ public class Cube extends Node implements App {
 
 	@Override
 	public void display(int width, int height) {
+
+		// Adjust the the viewport to the actual window size. This makes the
+		// rendered image fill the entire window.
+		glViewport(0, 0, width, height);
+
+		// Clear all buffers.
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Assemble the transformation matrix that will be applied to all
+		// vertices in the vertex shader.
+		float aspect = (float) width / (float) height;
 
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60000f, aspect,
