@@ -1,10 +1,6 @@
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.nio.FloatBuffer;
 
@@ -18,7 +14,7 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11.*;
 
 public class Cube extends Node implements App {
 
@@ -26,6 +22,10 @@ public class Cube extends Node implements App {
 	float w2 = 0.5f;
 	float h2 = 0.5f;
 	float d2 = 0.5f;
+
+	float w = 1.5f;
+	float h = 1.5f;
+	float d = 1.5f;
 
 	private Shader shader;
 
@@ -70,27 +70,17 @@ public class Cube extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { 
-			vec(-w2, -h2, -d2), 
-			vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), 
-			vec(-w2, h2, -d2), 
-			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2), 
-			vec(w2, h2, d2) };
-	
-	
-	
+	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+
+	private Vector[] s = { vec(-w, -h, -d), vec(w, -h, -d), vec(w, h, -d),
+			vec(-w, h, -d), vec(w, -h, d), vec(-w, -h, d), vec(-w, h, d),
+			vec(w, h, d) };
+
 	// The colors of the cube vertices.
-	private Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
+	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
 
 	private Vertex[] vertices = {
@@ -107,7 +97,22 @@ public class Cube extends Node implements App {
 			// bottom
 			v(p[5], c[5]), v(p[4], c[4]), v(p[1], c[1]), v(p[0], c[0]) };
 
+	private Vertex[] vertices2 = {
+			// front
+			v(s[0], c[0]), v(s[1], c[1]), v(s[2], c[2]), v(s[3], c[3]),
+			// back
+			v(s[4], c[4]), v(s[5], c[5]), v(s[6], c[6]), v(s[7], c[7]),
+			// right
+			v(s[1], c[1]), v(s[4], c[4]), v(s[7], c[7]), v(s[2], c[2]),
+			// tos
+			v(s[3], c[3]), v(s[2], c[2]), v(s[7], c[7]), v(s[6], c[6]),
+			// left
+			v(s[5], c[5]), v(s[0], c[0]), v(s[3], c[3]), v(s[6], c[6]),
+			// bottom
+			v(s[5], c[5]), v(s[4], c[4]), v(s[1], c[1]), v(s[0], c[0]) };
+
 	private FloatBuffer positionData;
+	private FloatBuffer positionData2;
 	private FloatBuffer colorData;
 
 	// Initialize the rotation angle of the cube.
@@ -131,6 +136,14 @@ public class Cube extends Node implements App {
 		}
 		positionData.rewind();
 		colorData.rewind();
+
+		positionData2 = BufferUtils.createFloatBuffer(vertices.length
+				* vecmath.vectorSize());
+
+		for (Vertex v : vertices2) {
+			positionData2.put(v.position.asArray());
+		}
+		positionData2.rewind();
 	}
 
 	public void simulate(float elapsed, Input input) {
@@ -143,20 +156,9 @@ public class Cube extends Node implements App {
 	@Override
 	public void display(int width, int height) {
 
-		// Adjust the the viewport to the actual window size. This makes the
-		// rendered image fill the entire window.
-		glViewport(0, 0, width, height);
-
-		// Clear all buffers.
-		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-		// Assemble the transformation matrix that will be applied to all
-		// vertices in the vertex shader.
-		float aspect = (float) width / (float) height;
-
 		// The perspective projection. Camera space to NDC.
-		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
-				100f);
+		Matrix projectionMatrix = vecmath.perspectiveMatrix(60000f, aspect,
+				0.1f, 100f);
 
 		// The inverse camera transformation. World space to camera space.
 		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 3f),
@@ -184,7 +186,16 @@ public class Cube extends Node implements App {
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
-		glDrawArrays(GL11.GL_QUADS, 0, vertices.length);
+		glDrawArrays(GL_QUADS, 0, vertices.length);
+
+		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+				positionData2);
+		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+				colorData);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+
+		glDrawArrays(GL_QUADS, 0, vertices2.length);
 	}
 
 	public void setShader(Shader shader) {
