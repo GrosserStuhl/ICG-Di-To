@@ -20,7 +20,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-public class Cube extends Node implements App {
+public class Cube extends Node implements App{
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -28,26 +28,12 @@ public class Cube extends Node implements App {
 	float d2 = 0.5f;
 
 	private Shader shader;
+	
 
 	static public void main(String[] args) {
 		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube()).start();
 	}
 
-	// Auxillary class to represent a single vertex.
-	private class Vertex {
-		Vector position;
-		Color color;
-
-		Vertex(Vector p, Color c) {
-			position = p;
-			color = c;
-		}
-	}
-
-	// Make construction of vertices easy on the eyes.
-	private Vertex v(Vector p, Color c) {
-		return new Vertex(p, c);
-	}
 
 	// Make construction of vectors easy on the eyes.
 	private Vector vec(float x, float y, float z) {
@@ -93,22 +79,11 @@ public class Cube extends Node implements App {
 			col(0, 1, 0),
 			col(0, 1, 0) };
 
-	private Vertex[] vertices = {
-			// front
-			v(p[0], c[0]), v(p[1], c[1]), v(p[2], c[2]), v(p[3], c[3]),
-			// back
-			v(p[4], c[4]), v(p[5], c[5]), v(p[6], c[6]), v(p[7], c[7]),
-			// right
-			v(p[1], c[1]), v(p[4], c[4]), v(p[7], c[7]), v(p[2], c[2]),
-			// top
-			v(p[3], c[3]), v(p[2], c[2]), v(p[7], c[7]), v(p[6], c[6]),
-			// left
-			v(p[5], c[5]), v(p[0], c[0]), v(p[3], c[3]), v(p[6], c[6]),
-			// bottom
-			v(p[5], c[5]), v(p[4], c[4]), v(p[1], c[1]), v(p[0], c[0]) };
+	
 
 	private FloatBuffer positionData;
 	private FloatBuffer colorData;
+	private Vertex[] vertices;
 
 	// Initialize the rotation angle of the cube.
 	private float angle = 0;
@@ -116,6 +91,7 @@ public class Cube extends Node implements App {
 	public void init() {
 
 		shader = new Shader();
+		vertices = Vertex.cubeVertices(p, c);
 
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
@@ -155,7 +131,7 @@ public class Cube extends Node implements App {
 		float aspect = (float) width / (float) height;
 
 		// The perspective projection. Camera space to NDC.
-		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
+		Matrix projectionMatrix = vecmath.perspectiveMatrix(6000000f, aspect, 0.1f,
 				100f);
 
 		// The inverse camera transformation. World space to camera space.
