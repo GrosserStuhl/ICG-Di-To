@@ -63,9 +63,17 @@ public class Camera {
 		paramsPos.put(orgParamsPos);
 		paramsPos.flip();
 		glLight(GL_LIGHT1, GL_POSITION, paramsPos);
-		
+
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_DIFFUSE);
+
+		// glFrontFace(GL_CW);
+		// glCullFace(GL_BACK);
+		// glEnable(GL_CULL_FACE);
+
+//		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+//		glEnable(GL_BLEND);
+//		glDisable(GL_DEPTH_TEST);
 	}
 
 	public void useView() {

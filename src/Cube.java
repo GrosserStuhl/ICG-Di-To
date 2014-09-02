@@ -1,7 +1,9 @@
-
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
@@ -10,14 +12,13 @@ import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.MatrixUniform;
 import ogl.app.OpenGLApp;
-import ogl.cube.RotatingCube;
 import ogl.vecmath.Color;
+import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-
 
 public class Cube extends Node implements App {
 
@@ -26,12 +27,12 @@ public class Cube extends Node implements App {
 	float h2 = 0.5f;
 	float d2 = 0.5f;
 
-	
-	 static public void main(String[] args) {
-		    new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube())
-		      .start();
-		  }
-	
+	private Shader shader;
+
+	static public void main(String[] args) {
+		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube()).start();
+	}
+
 	// Auxillary class to represent a single vertex.
 	private class Vertex {
 		Vector position;
@@ -60,11 +61,11 @@ public class Cube extends Node implements App {
 
 	//
 	// 6 ------- 7
-	// /      | / 	 |
+	// / | / |
 	// 3 ------- 2 |
-	// | |     | |
+	// | | | |
 	// | 5 ----- |- 4
-	// | /       | /
+	// | / | /
 	// 0 ------- 1
 	//
 
@@ -113,9 +114,9 @@ public class Cube extends Node implements App {
 	private float angle = 0;
 
 	public void init() {
-		
-		
-		
+
+		shader = new Shader();
+
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
 		// passed to the OpenGL API efficently.
@@ -139,34 +140,55 @@ public class Cube extends Node implements App {
 			angle += 90 * elapsed;
 	}
 
-	public void display(RotatingCube c) {
+	@Override
+	public void display(int width, int height) {
+
+		// Adjust the the viewport to the actual window size. This makes the
+		// rendered image fill the entire window.
+		glViewport(0, 0, width, height);
+
+		// Clear all buffers.
+		glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+		// Assemble the transformation matrix that will be applied to all
+		// vertices in the vertex shader.
+		float aspect = (float) width / (float) height;
+
+		// The perspective projection. Camera space to NDC.
+		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
+				100f);
+
+		// The inverse camera transformation. World space to camera space.
+		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 3f),
+				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
+
 		// The modeling transformation. Object space to world space.
-		setTransformation(vecmath
-				.rotationMatrix(vecmath.vector(1, 1, 1), angle));
+		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
+				angle);
 
-		System.out.println("Transformation: "+getTransformation());
-		System.out.println("ModalMatrixUniform: "+c.getModelMatrixUniform());
-		
-
-		c.getModelMatrixUniform().set(getTransformation());
+		// Activate the shader program and set the transformation matricies to
+		// the
+		// uniform variables.
+		shader.activate();
+		shader.getViewMatrixUniform().set(viewMatrix);
+		shader.getProjectionMatrixUniform().set(projectionMatrix);
+		shader.getModelMatrixUniform().set(modelMatrix);
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
-		glVertexAttribPointer(RotatingCube.getVertexAttribIdx(), 3, false, 0,
+		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
-		glEnableVertexAttribArray(RotatingCube.getVertexAttribIdx());
-		glVertexAttribPointer(RotatingCube.getColorAttribIdx(), 3, false, 0,
+		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
 				colorData);
-		glEnableVertexAttribArray(RotatingCube.getColorAttribIdx());
-		
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+
+		// Draw the triangles that form the cube from the vertex data arrays.
+		glDrawArrays(GL11.GL_QUADS, 0, vertices.length);
 	}
 
-	@Override
-	public void display(int width, int height) {
-		display(new RotatingCube());
-		
+	public void setShader(Shader shader) {
+		this.shader = shader;
 	}
-
-	
 
 }
