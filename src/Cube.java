@@ -64,8 +64,13 @@ public class Cube extends Node implements App{
 			vec(-w2, h2, d2),
 			vec(w2, h2, d2)}; 
 
-	private Vector[] s = { vec(-w, -h, -d), vec(w, -h, -d), vec(w, h, -d),
-			vec(-w, h, -d), vec(w, -h, d), vec(-w, -h, d), vec(-w, h, d),
+	private Vector[] s = { vec(-w, -h, -d), 
+			vec(w, -h, -d), 
+			vec(w, h, -d),
+			vec(-w, h, -d),
+			vec(w, -h, d), 
+			vec(-w, -h, d), 
+			vec(-w, h, d),
 			vec(w, h, d) };
 
 	// The colors of the cube vertices.
@@ -142,11 +147,11 @@ public class Cube extends Node implements App{
 		float aspect = (float) width / (float) height;
 
 		// The perspective projection. Camera space to NDC.
-		Matrix projectionMatrix = vecmath.perspectiveMatrix(6000000f, aspect, 0.1f,
+		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
 
 		// The inverse camera transformation. World space to camera space.
-		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 3f),
+		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
 				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
 
 		// The modeling transformation. Object space to world space.
