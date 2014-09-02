@@ -94,6 +94,7 @@ public class Cube extends Node implements App{
 
 		shader = new Shader();
 		vertices = Vertex.cubeVertices(p, c);
+		vertices2 = Vertex.cubeVertices(s, c);
 
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
