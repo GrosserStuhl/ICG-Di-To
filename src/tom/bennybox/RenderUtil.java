@@ -34,4 +34,8 @@ public class RenderUtil {
 		
 	}
 	
+	public static String getOpenGLVersion(){
+		return glGetString(GL_VERSION);
+	}
+	
 }
