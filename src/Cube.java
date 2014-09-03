@@ -104,25 +104,17 @@ public class Cube extends Node implements App{
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
 		// passed to the OpenGL API efficently.
-		positionData = BufferUtils.createFloatBuffer(vertices.length
-				* vecmath.vectorSize());
-		colorData = BufferUtils.createFloatBuffer(vertices.length
-				* vecmath.colorSize());
+		positionData = positionBuffer(vertices.length);
+		colorData = colorBuffer(vertices.length);
 
-		for (Vertex v : vertices) {
-			positionData.put(v.position.asArray());
-			colorData.put(v.color.asArray());
-		}
-		positionData.rewind();
-		colorData.rewind();
+		finalizeBuffers(positionData, colorData);
+		
+		
 
-		positionData2 = BufferUtils.createFloatBuffer(vertices.length
-				* vecmath.vectorSize());
+		positionData2 = positionBuffer(vertices2.length);
 
-		for (Vertex v : vertices2) {
-			positionData2.put(v.position.asArray());
-		}
-		positionData2.rewind();
+		finalizeBuffers(positionData2, colorData);
+		
 	}
 
 	public void simulate(float elapsed, Input input) {
@@ -192,6 +184,25 @@ public class Cube extends Node implements App{
 
 	public void setShader(Shader shader) {
 		this.shader = shader;
+	}
+	
+	public FloatBuffer positionBuffer(int verticesLength){
+		return BufferUtils.createFloatBuffer(verticesLength
+				* vecmath.vectorSize());
+	}
+	
+	public FloatBuffer colorBuffer(int verticesLength){
+		return BufferUtils.createFloatBuffer(verticesLength
+				* vecmath.colorSize());
+	}
+	
+	public void finalizeBuffers(FloatBuffer positionData, FloatBuffer colorData){
+		for (Vertex v : vertices) {
+			positionData.put(v.position.asArray());
+			colorData.put(v.color.asArray());
+		}
+		positionData.rewind();
+		colorData.rewind();
 	}
 
 }
