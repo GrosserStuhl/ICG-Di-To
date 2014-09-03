@@ -14,7 +14,7 @@ import ogl.vecmath.Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
-public class Cube extends Node implements App{
+public class Cube extends Node implements App {
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -26,12 +26,10 @@ public class Cube extends Node implements App{
 	float d = 0.5f;
 
 	private Shader shader;
-	
 
 	static public void main(String[] args) {
 		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube()).start();
 	}
-
 
 	// Make construction of vectors easy on the eyes.
 	private Vector vec(float x, float y, float z) {
@@ -54,37 +52,18 @@ public class Cube extends Node implements App{
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { 
-			vec(-w2, -h2, -d2), 
-			vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), 
-			vec(-w2, h2, -d2), 
-			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2),
-			vec(w2, h2, d2)}; 
+	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
 
-	private Vector[] s = { vec(-w, -h, -d), 
-			vec(w, -h, -d), 
-			vec(w, h, -d),
-			vec(-w, h, -d),
-			vec(w, -h, d), 
-			vec(-w, -h, d), 
-			vec(-w, h, d),
+	private Vector[] s = { vec(-w, -h, -d), vec(w, -h, -d), vec(w, h, -d),
+			vec(-w, h, -d), vec(w, -h, d), vec(-w, -h, d), vec(-w, h, d),
 			vec(w, h, d) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
+	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
-
-	
 
 	private FloatBuffer positionData;
 	private FloatBuffer positionData2;
@@ -127,14 +106,8 @@ public class Cube extends Node implements App{
 	@Override
 	public void display(int width, int height) {
 
-		// Adjust the the viewport to the actual window size. This makes the
-		// rendered image fill the entire window.
-		glViewport(0, 0, width, height);
-
-		// Clear all buffers.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Assemble the transformation matrix that will be applied to all
+		// Assemble the transformation matrix that will be applied to
+		// all
 		// vertices in the vertex shader.
 		float aspect = (float) width / (float) height;
 
@@ -142,7 +115,8 @@ public class Cube extends Node implements App{
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
 
-		// The inverse camera transformation. World space to camera space.
+		// The inverse camera transformation. World space to camera
+		// space.
 		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
 				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
 
