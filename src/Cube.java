@@ -14,7 +14,7 @@ import ogl.vecmath.Vector;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
-public class Cube extends Node implements App{
+public class Cube extends Node implements App {
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -26,12 +26,10 @@ public class Cube extends Node implements App{
 	float d = 0.5f;
 
 	private Shader shader;
-	
 
 	static public void main(String[] args) {
 		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube()).start();
 	}
-
 
 	// Make construction of vectors easy on the eyes.
 	private Vector vec(float x, float y, float z) {
@@ -54,80 +52,62 @@ public class Cube extends Node implements App{
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { 
-			vec(-w2, -h2, -d2), 
-			vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), 
-			vec(-w2, h2, -d2), 
-			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2),
-			vec(w2, h2, d2)}; 
+	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
 
-	private Vector[] s = { 
-			//hinten links-unten
-			vec(-w2, -h2, -d2), 
-			//hinten rechts-unten
-			vec(w2, -h2, -d2),
-			//hinten rechts-oben
-			vec(w2, h2, -d2), 
-			//hinten links-oben
-			vec(-w2, h2, -d2), 
-			
-			//vorne rechts-unten
-			vec(w2, -h2, d2),
-			//vorne links-unten
-			vec(-w2, -h2, d2),
-			//vorne links-oben
-			vec(-w2, h2, d2),
-			//vorne rechts-oben
-			vec(w2, h2, d2) };
-	
-	// The colors of the cube vertices.
-	private Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
-			col(0, 1, 0) };
-	
-	private Vector[] t = {
-			//hinten links-unten
+	private Vector[] s = {
+			// hinten links-unten
 			vec(-w2, -h2, -d2),
-			//hinten rechts-unten
+			// hinten rechts-unten
 			vec(w2, -h2, -d2),
-			//vorne rechts-unten
-			vec(w2, -h2, d2),
-			//vorne links-unten
-			vec(-w2, -h2, d2),
-			
-			//nach oben
-			vec(0,d2,0)
-			
-	};
-	
-	// The colors of the cube vertices.
-		private Color[] colorT = { 
-				col(1, 0, 0), 
-				col(1, 0, 0), 
-				col(1, 0, 0),
-				col(1, 0, 0), 
-				col(0, 1, 0) };
+			// hinten rechts-oben
+			vec(w2, h2, -d2),
+			// hinten links-oben
+			vec(-w2, h2, -d2),
 
-	
+			// vorne rechts-unten
+			vec(w2, -h2, d2),
+			// vorne links-unten
+			vec(-w2, -h2, d2),
+			// vorne links-oben
+			vec(-w2, h2, d2),
+			// vorne rechts-oben
+			vec(w2, h2, d2) };
+
+	// The colors of the cube vertices.
+	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
+			col(0, 1, 0) };
+
+	private Vector[] t = {
+			// hinten links-unten
+			vec(-w2, -h2, -d2),
+			// hinten rechts-unten
+			vec(w2, -h2, -d2),
+			// vorne rechts-unten
+			vec(w2, -h2, d2),
+			// vorne links-unten
+			vec(-w2, -h2, d2),
+
+			// nach oben
+			vec(0, d2, 0)
+
+	};
+
+	// The colors of the cube vertices.
+	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0) };
 
 	private FloatBuffer positionData;
 	private FloatBuffer positionData2;
-	
+
 	private FloatBuffer positionDataT;
 	private FloatBuffer colorData;
 	private FloatBuffer colorDataT;
 	private Vertex[] vertices;
 	private Vertex[] vertices2;
-	
+
 	private Vertex[] verticesT;
 
 	// Initialize the rotation angle of the cube.
@@ -138,7 +118,7 @@ public class Cube extends Node implements App{
 		shader = new Shader();
 		vertices = Vertex.cubeVertices(p, c);
 		vertices2 = Vertex.cubeVertices(s, c);
-		
+
 		verticesT = Vertex.triangleVertices(t, colorT);
 
 		// Prepare the vertex data arrays.
@@ -147,16 +127,14 @@ public class Cube extends Node implements App{
 		positionData = positionBuffer(vertices.length);
 		colorData = colorBuffer(vertices.length);
 		finalizeBuffers(positionData, colorData, vertices);
-		
-		
 
 		positionData2 = positionBuffer(vertices2.length);
 		finalizeBuffers(positionData2, colorData, vertices2);
-		
+
 		positionDataT = positionBuffer(verticesT.length);
 		colorDataT = colorBuffer(verticesT.length);
 		finalizeBuffers(positionDataT, colorDataT, verticesT);
-		
+
 	}
 
 	public void simulate(float elapsed, Input input) {
@@ -221,24 +199,25 @@ public class Cube extends Node implements App{
 				colorDataT);
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
-		glDrawArrays(GL_QUADS, 0, verticesT.length);
+		glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
 	}
 
 	public void setShader(Shader shader) {
 		this.shader = shader;
 	}
-	
-	public FloatBuffer positionBuffer(int verticesLength){
+
+	public FloatBuffer positionBuffer(int verticesLength) {
 		return BufferUtils.createFloatBuffer(verticesLength
 				* vecmath.vectorSize());
 	}
-	
-	public FloatBuffer colorBuffer(int verticesLength){
+
+	public FloatBuffer colorBuffer(int verticesLength) {
 		return BufferUtils.createFloatBuffer(verticesLength
 				* vecmath.colorSize());
 	}
-	
-	public void finalizeBuffers(FloatBuffer positionData, FloatBuffer colorData, Vertex[] vertices){
+
+	public void finalizeBuffers(FloatBuffer positionData,
+			FloatBuffer colorData, Vertex[] vertices) {
 		for (Vertex v : vertices) {
 			positionData.put(v.position.asArray());
 			colorData.put(v.color.asArray());
