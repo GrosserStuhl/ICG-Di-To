@@ -241,6 +241,19 @@ public class Cube extends Node implements App {
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
+		
+
+		
+		shader.getModelMatrixUniform().set(
+				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+				positionDataM);
+		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+				colorDataM);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+ 
+		glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();
