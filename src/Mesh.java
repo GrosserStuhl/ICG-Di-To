@@ -10,6 +10,7 @@ public class Mesh {
 
 	public Vector[] positionData;
 	public Color[] colorData;
+	public int[] faces;
 	
 	
 	public Mesh(Vector[] vec, Color[] col) {
@@ -18,9 +19,10 @@ public class Mesh {
 		
 	}
 	
-	public Mesh(Vector[] vec) {
-		this.positionData = vec;
-		this.colorData = createWhiteColor(vec.length);
+	public Mesh(Vector[] vData, int[] faces) {
+		this.positionData = vData;
+		this.colorData = createWhiteColor(vData.length);
+		this.faces = faces;
 		
 	}
 	

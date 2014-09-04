@@ -161,8 +161,8 @@ public class Cube extends Node implements App {
 		colorDataT = colorBuffer(verticesT.length);
 		finalizeBuffers(positionDataT, colorDataT, verticesT);
 		
-		Mesh blenderCube = ResourceLoader.loadMesh("blenderCube.obj");
-		meshVertices = Vertex.cubeVertices(blenderCube.getPositionData(), blenderCube.getColorData());
+		Mesh blenderCube = ResourceLoader.loadMesh("cube.obj");
+		meshVertices = Vertex.modelVertices(blenderCube.getPositionData(), blenderCube.getColorData());
 		positionDataM = positionBuffer(meshVertices.length);
 		colorDataM = colorBuffer(meshVertices.length);
 		finalizeBuffers(positionDataM,colorDataM,meshVertices);

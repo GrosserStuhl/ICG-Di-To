@@ -1,3 +1,5 @@
+import java.nio.FloatBuffer;
+
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
@@ -46,9 +48,52 @@ public class Vertex {
 			// right
 			v(p[1], c[1]), v(p[2], c[2]), v(p[4], c[4]),
 			// bottom
-			v(p[3], c[3]), v(p[2], c[2]), v(p[1], c[1]), v(p[0], c[0]) };
+			v(p[3], c[3]), v(p[2], c[2]), v(p[1], c[1]), 
+			
+			/* geht iwie auch ohne
+			v(p[0], c[0])*/ };
+		
+		
 		
 		return vertices;
 		}
+	
+	
+	
+	public static Vertex[] modelVertices(Vector[] p, Color[] c) {
+		// * 3 weil es drei float koordinaten x, y, z, gibt
+		Vertex[] vertices = new Vertex[p.length * 3];
+		
+		System.out.println("LÄNGE : "+vertices.length);
+		System.out.println("Colorlength: "+c.length);
+
+// pData richtig
+//		for (int i = 0; i < p.length; i++) {
+//			System.out.println(p[i]);
+//		}
+		
+		for (int i = 0; i < vertices.length; i++) {
+			for (int j = 0; j < p.length; j++) {
+				vertices[i] = v(p[j],c[j]);
+			}
+		}
+//		for (int i = 0; i < vertices.length; i++) {
+//			System.out.println(toString(vertices[i].position,vertices[i].color));
+//		}
+		
+		
+		return vertices;
+		}
+	
+	public static String toString(Vector position, Color color){
+		
+		return "Vertex p:"+position+" Color:"+color;
+	}
+	
+//	public static String toString(){
+//		
+//		return "Vertex p:"+position+" Color:"+color;
+//	}
+	
 	
 }
