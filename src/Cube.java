@@ -129,6 +129,12 @@ public class Cube extends Node implements App{
 	private Vertex[] vertices2;
 	
 	private Vertex[] verticesT;
+	
+	
+	// Mesh DATA
+	private Vertex[] meshVertices;
+	private FloatBuffer positionDataM;
+	private FloatBuffer colorDataM;
 
 	// Initialize the rotation angle of the cube.
 	private float angle = 0;
@@ -148,14 +154,19 @@ public class Cube extends Node implements App{
 		colorData = colorBuffer(vertices.length);
 		finalizeBuffers(positionData, colorData, vertices);
 		
-		
-
 		positionData2 = positionBuffer(vertices2.length);
 		finalizeBuffers(positionData2, colorData, vertices2);
 		
 		positionDataT = positionBuffer(verticesT.length);
 		colorDataT = colorBuffer(verticesT.length);
 		finalizeBuffers(positionDataT, colorDataT, verticesT);
+		
+		Mesh blenderCube = ResourceLoader.loadMesh("blenderCube.obj");
+		meshVertices = Vertex.cubeVertices(blenderCube.getPositionData(), blenderCube.getColorData());
+		positionDataM = positionBuffer(meshVertices.length);
+		colorDataM = colorBuffer(meshVertices.length);
+		finalizeBuffers(positionDataM,colorDataM,meshVertices);
+		
 		
 	}
 
@@ -213,7 +224,7 @@ public class Cube extends Node implements App{
 		glDrawArrays(GL_QUADS, 0, vertices.length);
 
 		shader.getModelMatrixUniform().set(
-				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+				modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionDataT);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
@@ -221,7 +232,19 @@ public class Cube extends Node implements App{
 				colorDataT);
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
-		glDrawArrays(GL_QUADS, 0, verticesT.length);
+		glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
+		
+		
+		shader.getModelMatrixUniform().set(
+				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+				positionDataM);
+		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+				colorDataM);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+
+		glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
 	}
 
 	public void setShader(Shader shader) {
@@ -246,5 +269,6 @@ public class Cube extends Node implements App{
 		positionData.rewind();
 		colorData.rewind();
 	}
+	
 
 }
