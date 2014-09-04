@@ -19,9 +19,9 @@ public class Vertex {
 	
 	public static Vertex[] cubeVertices(Vector[] p, Color[] c) {
 		Vertex[] vertices = {
-			// front
+			// back (urspr. Front)
 			v(p[0], c[0]), v(p[1], c[1]), v(p[2], c[2]), v(p[3], c[3]),
-			// back
+			// front (urspr. back)
 			v(p[4], c[4]), v(p[5], c[5]), v(p[6], c[6]), v(p[7], c[7]),
 			// right
 			v(p[1], c[1]), v(p[4], c[4]), v(p[7], c[7]), v(p[2], c[2]),
@@ -31,6 +31,22 @@ public class Vertex {
 			v(p[5], c[5]), v(p[0], c[0]), v(p[3], c[3]), v(p[6], c[6]),
 			// bottom
 			v(p[5], c[5]), v(p[4], c[4]), v(p[1], c[1]), v(p[0], c[0]) };
+		
+		return vertices;
+		}
+	
+	public static Vertex[] triangleVertices(Vector[] p, Color[] c) {
+		Vertex[] vertices = {
+			// back (urspr. Front)
+			v(p[0], c[0]), v(p[1], c[1]), v(p[4], c[4]),
+			// front (urspr. back)
+			v(p[2], c[2]), v(p[4], c[4]), v(p[3], c[3]),
+			// left
+			v(p[4], c[4]), v(p[0], c[0]), v(p[3], c[3]),
+			// right
+			v(p[1], c[1]), v(p[2], c[2]), v(p[4], c[4]),
+			// bottom
+			v(p[3], c[3]), v(p[2], c[2]), v(p[1], c[1]), v(p[0], c[0]) };
 		
 		return vertices;
 		}

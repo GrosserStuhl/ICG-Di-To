@@ -55,7 +55,7 @@ public class Cube extends Node implements App{
 
 	// The positions of the cube vertices.
 	private Vector[] p = { 
-			vec(-2, -h2, -d2), 
+			vec(-w2, -h2, -d2), 
 			vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), 
 			vec(-w2, h2, -d2), 
@@ -65,15 +65,24 @@ public class Cube extends Node implements App{
 			vec(w2, h2, d2)}; 
 
 	private Vector[] s = { 
+			//hinten links-unten
 			vec(-w2, -h2, -d2), 
+			//hinten rechts-unten
 			vec(w2, -h2, -d2),
+			//hinten rechts-oben
 			vec(w2, h2, -d2), 
+			//hinten links-oben
 			vec(-w2, h2, -d2), 
+			
+			//vorne rechts-unten
 			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
+			//vorne links-unten
+			vec(-w2, -h2, d2),
+			//vorne links-oben
 			vec(-w2, h2, d2),
-			vec(2, h2, d2) };
-
+			//vorne rechts-oben
+			vec(w2, h2, d2) };
+	
 	// The colors of the cube vertices.
 	private Color[] c = { 
 			col(1, 0, 0), 
@@ -84,14 +93,42 @@ public class Cube extends Node implements App{
 			col(0, 1, 0), 
 			col(0, 1, 0),
 			col(0, 1, 0) };
+	
+	private Vector[] t = {
+			//hinten links-unten
+			vec(-w2, -h2, -d2),
+			//hinten rechts-unten
+			vec(w2, -h2, -d2),
+			//vorne rechts-unten
+			vec(w2, -h2, d2),
+			//vorne links-unten
+			vec(-w2, -h2, d2),
+			
+			//nach oben
+			vec(0,d2,0)
+			
+	};
+	
+	// The colors of the cube vertices.
+		private Color[] colorT = { 
+				col(1, 0, 0), 
+				col(1, 0, 0), 
+				col(1, 0, 0),
+				col(1, 0, 0), 
+				col(0, 1, 0) };
 
 	
 
 	private FloatBuffer positionData;
 	private FloatBuffer positionData2;
+	
+	private FloatBuffer positionDataT;
 	private FloatBuffer colorData;
+	private FloatBuffer colorDataT;
 	private Vertex[] vertices;
 	private Vertex[] vertices2;
+	
+	private Vertex[] verticesT;
 
 	// Initialize the rotation angle of the cube.
 	private float angle = 0;
@@ -101,6 +138,8 @@ public class Cube extends Node implements App{
 		shader = new Shader();
 		vertices = Vertex.cubeVertices(p, c);
 		vertices2 = Vertex.cubeVertices(s, c);
+		
+		verticesT = Vertex.triangleVertices(t, colorT);
 
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
@@ -113,6 +152,10 @@ public class Cube extends Node implements App{
 
 		positionData2 = positionBuffer(vertices2.length);
 		finalizeBuffers(positionData2, colorData, vertices2);
+		
+		positionDataT = positionBuffer(verticesT.length);
+		colorDataT = colorBuffer(verticesT.length);
+		finalizeBuffers(positionDataT, colorDataT, verticesT);
 		
 	}
 
@@ -172,13 +215,13 @@ public class Cube extends Node implements App{
 		shader.getModelMatrixUniform().set(
 				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-				positionData2);
+				positionDataT);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
 		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-				colorData);
+				colorDataT);
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
-		glDrawArrays(GL_QUADS, 0, vertices2.length);
+		glDrawArrays(GL_QUADS, 0, verticesT.length);
 	}
 
 	public void setShader(Shader shader) {
