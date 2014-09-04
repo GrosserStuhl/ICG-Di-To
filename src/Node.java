@@ -28,6 +28,10 @@ public class Node {
 		childNodes.remove(node);
 	}
 	
+	public void update() {
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Node: " + name;

@@ -13,8 +13,9 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
-public class Cube extends Node implements App{
+public class Cube extends Node implements App {
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -26,7 +27,6 @@ public class Cube extends Node implements App{
 	float d = 0.5f;
 
 	private Shader shader;
-	
 
 	static public void main(String[] args) {
 		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Cube()).start();
@@ -210,6 +210,14 @@ public class Cube extends Node implements App{
 		shader.getViewMatrixUniform().set(viewMatrix);
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		shader.getModelMatrixUniform().set(modelMatrix);
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			System.out.println("KEy W pressed");
+			Vector zoom = vertices[0].position.add(vec(0,0,8));
+			shader.getViewMatrixUniform().set(
+					viewMatrix.mult(vecmath.translationMatrix(zoom)));
+		}
+
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
@@ -233,18 +241,12 @@ public class Cube extends Node implements App{
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
-		
-		
-		shader.getModelMatrixUniform().set(
-				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
-		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-				positionDataM);
-		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-				colorDataM);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
-		glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			Display.destroy();
+			System.exit(0);
+		}
+
 	}
 
 	public void setShader(Shader shader) {
