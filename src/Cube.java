@@ -212,7 +212,6 @@ public class Cube extends Node implements App {
 		shader.getModelMatrixUniform().set(modelMatrix);
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			System.out.println("KEy W pressed");
 			Vector zoom = vertices[0].position.add(vec(0,0,8));
 			shader.getViewMatrixUniform().set(
 					viewMatrix.mult(vecmath.translationMatrix(zoom)));
