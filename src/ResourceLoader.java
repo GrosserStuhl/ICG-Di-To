@@ -26,7 +26,7 @@ public class ResourceLoader {
 			
 			while((line = meshReader.readLine()) != null){
 				if (line.startsWith("v ")){
-//					String[] tokens = line.split(" ");
+
 					vData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
 				} /*else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/")){
@@ -36,17 +36,21 @@ public class ResourceLoader {
 					fData.add(Integer.parseInt(line.split("\\s+")[2]) -1);
 					fData.add(Integer.parseInt(line.split("\\s+")[3]) -1);
 					
-				}*/ /*else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d\\//\\d\\//\\d")){
+				}*/ else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/") ){
+					// normal faces als triangle der Form:
+					// f 2 3 4
+					// f 2 3 4
 					
-//					System.out.println(line.split("\\s+")[1].split("\\/")[1]);
-//					
-//					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) -1);
-//					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) -1);
-//					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[2]) -1);
 					
-				}*/ else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d\\//\\d") ){
+					System.out.println(Integer.parseInt(line.split("\\s+")[1]) -1);
 					
-					System.out.println("inhalt: "+line.split("\\s+")[3].split("\\//")[1]);
+					fData.add(Integer.parseInt(line.split("\\s+")[1]) -1);
+					fData.add(Integer.parseInt(line.split("\\s+")[2]) -1);
+					fData.add(Integer.parseInt(line.split("\\s+")[3]) -1);
+					
+				} else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d\\//\\d") ){
+					
+//					System.out.println("inhalt: "+line.split("\\s+")[3].split("\\//")[1]);
 					
 					// holt die FaceDaten aus dem .obj-File mit dem Format z.B.  
 					// f  1//2  7//2  5//2
@@ -66,13 +70,9 @@ public class ResourceLoader {
 		
 			}
 			meshReader.close();
-			//TO-DO: letzte Möglichkeit faces anzugeben, jetzt 3/4 implementiert.
+			//TO-DO: alle faces-Möglichkeiten angeben, jetzt 1/4 implementiert.
 			
 			
-			
-//			Vector[] meshVertexData = createMeshVertexData(vData);
-//			Color[] colorRandom = createRandomColor(vData.length);
-//			System.out.println(meshVertexData[0].toString());
 			
 			return m = new Mesh(createMeshVertexData(vData),createMeshFaceData(fData));
 			

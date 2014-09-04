@@ -89,6 +89,21 @@ public class Vertex {
 		
 		return "Vertex p:"+position+" Color:"+color;
 	}
+
+	public static Vertex[] testVertices(Vector[] p,Color[] c, int[] faces) {
+	
+		Vertex[] vertices = new Vertex[faces.length];
+		
+		for (int i = 0; i < vertices.length; i++) {
+			vertices[i] = v(p[faces[i]],c[faces[i]]);
+		}
+		
+		
+		return vertices;
+	}
+	
+	
+	
 	
 //	public static String toString(){
 //		
