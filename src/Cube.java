@@ -55,7 +55,7 @@ public class Cube extends Node implements App{
 
 	// The positions of the cube vertices.
 	private Vector[] p = { 
-			vec(-w2, -h2, -d2), 
+			vec(-2, -h2, -d2), 
 			vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), 
 			vec(-w2, h2, -d2), 
@@ -64,14 +64,15 @@ public class Cube extends Node implements App{
 			vec(-w2, h2, d2),
 			vec(w2, h2, d2)}; 
 
-	private Vector[] s = { vec(-w, -h, -d), 
-			vec(w, -h, -d), 
-			vec(w, h, -d),
-			vec(-w, h, -d),
-			vec(w, -h, d), 
-			vec(-w, -h, d), 
-			vec(-w, h, d),
-			vec(w, h, d) };
+	private Vector[] s = { 
+			vec(-w2, -h2, -d2), 
+			vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), 
+			vec(-w2, h2, -d2), 
+			vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), 
+			vec(-w2, h2, d2),
+			vec(2, h2, d2) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { 
@@ -106,14 +107,12 @@ public class Cube extends Node implements App{
 		// passed to the OpenGL API efficently.
 		positionData = positionBuffer(vertices.length);
 		colorData = colorBuffer(vertices.length);
-
-		finalizeBuffers(positionData, colorData);
+		finalizeBuffers(positionData, colorData, vertices);
 		
 		
 
 		positionData2 = positionBuffer(vertices2.length);
-
-		finalizeBuffers(positionData2, colorData);
+		finalizeBuffers(positionData2, colorData, vertices2);
 		
 	}
 
@@ -196,7 +195,7 @@ public class Cube extends Node implements App{
 				* vecmath.colorSize());
 	}
 	
-	public void finalizeBuffers(FloatBuffer positionData, FloatBuffer colorData){
+	public void finalizeBuffers(FloatBuffer positionData, FloatBuffer colorData, Vertex[] vertices){
 		for (Vertex v : vertices) {
 			positionData.put(v.position.asArray());
 			colorData.put(v.color.asArray());
