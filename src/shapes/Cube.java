@@ -34,9 +34,9 @@ public class Cube extends ShapeNode implements App {
 	private FloatBuffer colorDataT;
 
 	// Mesh DATA
-	private Vertex[] meshVertices;
-	private FloatBuffer positionDataM;
-	private FloatBuffer colorDataM;
+//	private Vertex[] meshVertices;
+//	private FloatBuffer positionDataM;
+//	private FloatBuffer colorDataM;
 
 	// Initialize the rotation angle of the cube.
 	private float angle = 0;
@@ -57,12 +57,12 @@ public class Cube extends ShapeNode implements App {
 		// colorDataT = colorBuffer(verticesT.length);
 		// finalizeBuffers(positionDataT, colorDataT, verticesT);
 
-		Mesh blenderCube = ResourceLoader.loadMesh("monkeyMod.obj");
-		meshVertices = Vertex.testVertices(blenderCube.getPositionData(),
-				blenderCube.getColorData(), blenderCube.getFaceData());
-		positionDataM = positionBuffer(meshVertices.length);
-		colorDataM = colorBuffer(meshVertices.length);
-		finalizeBuffers(positionDataM, colorDataM, meshVertices);
+//		Mesh blenderCube = ResourceLoader.loadMesh("monkeyMod.obj");
+//		meshVertices = Vertex.testVertices(blenderCube.getPositionData(),
+//				blenderCube.getColorData(), blenderCube.getFaceData());
+//		positionDataM = positionBuffer(meshVertices.length);
+//		colorDataM = colorBuffer(meshVertices.length);
+//		finalizeBuffers(positionDataM, colorDataM, meshVertices);
 
 	}
 
