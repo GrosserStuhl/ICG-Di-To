@@ -1,4 +1,5 @@
-﻿import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+﻿package general;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;

@@ -1,3 +1,4 @@
+package general;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glAttachShader;
