@@ -1,4 +1,5 @@
 package general;
+
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glAttachShader;
@@ -9,13 +10,14 @@ import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
+import ogl.app.Input;
 import ogl.app.MatrixUniform;
 import ogl.app.Util;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class Shader {
+public class Shader extends Node {
 
 	// The vertex program source code.
 	private String[] vsSource = {
@@ -118,6 +120,24 @@ public class Shader {
 		// the
 		// uniform variables.
 		glUseProgram(program);
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void simulate(float elapsed, Input input) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void display(int width, int height) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
