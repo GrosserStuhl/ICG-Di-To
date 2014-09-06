@@ -2,6 +2,7 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,34 +17,37 @@ public class ResourceLoader {
 		
 		Mesh m = null;
 		
+		Material mat = null;
+		
 		BufferedReader meshReader = null;
 		
 		ArrayList<Vector> vData = new ArrayList<Vector>();
 		ArrayList<Integer> fData = new ArrayList<Integer>();
+		ArrayList<Vector> nData = new ArrayList<Vector>();
+		
+		String line;
 		
 		try{
 			meshReader = new BufferedReader(new FileReader("./res/models/"+ fileName));
-			String line;
+			
 			
 			while((line = meshReader.readLine()) != null){
 				if (line.startsWith("v ")){
-
+					// extracts vertex info
 					vData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
-				} /*else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/")){
+				} else if(line.startsWith("vn ")){
+					// extracts Vectornormal info
 					
+					nData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
-					fData.add(Integer.parseInt(line.split("\\s+")[1]) -1);
-					fData.add(Integer.parseInt(line.split("\\s+")[2]) -1);
-					fData.add(Integer.parseInt(line.split("\\s+")[3]) -1);
-					
-				}*/ else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/") ){
-					// normal faces als triangle der Form:
+				} else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/") ){
+					// face triangulated, without any other than pure vertex info 
+					//Bsp. Format:
 					// f 2 3 4
 					// f 2 3 4
 					
 					
-//					System.out.println(Integer.parseInt(line.split("\\s+")[1]) -1);
 					
 					fData.add(Integer.parseInt(line.split("\\s+")[1]) -1);
 					fData.add(Integer.parseInt(line.split("\\s+")[2]) -1);
@@ -99,7 +103,40 @@ public class ResourceLoader {
 			
 			Vector[] positionData = createMeshVertexData(vData);
 			int[] faces = createMeshFaceData(fData);
+			
+			
+			// prüft ob das Modell(.obj) file auch zusätzlich ein Material File (.mtl) mit dem gleichen Namen hat
+			// und versucht dann dessen Infos herauszulesen.
+			if(new File("./res/models/"+ fileName.replace(".obj", ".mtl")).exists())
+			try{
+				meshReader = new BufferedReader(new FileReader("./res/models/"+ fileName.replace(".obj", ".mtl")));
+				
+				float Ns = 0; float Ka = 0; float Kd = 0; float Ks = 0;
+				
+				while((line = meshReader.readLine()) != null){
+					if (line.startsWith("Ns ")){
+						Ns = Float.parseFloat(line.split("\\s+")[1]);
+					} else if (line.startsWith("Ka ")){
+						Ka = Float.parseFloat(line.split("\\s+")[1]);
+					} else if (line.startsWith("Kd ")){
+						Kd = Float.parseFloat(line.split("\\s+")[1]);
+					} else if (line.startsWith("Ks ")){
+						Ks = Float.parseFloat(line.split("\\s+")[1]);
+					}
+				}
+				meshReader.close();
+				
+				if(Ns != 0 && Ka != 0 && Kd != 0 && Ks != 0)
+					mat = new Material(Ns,Ka,Kd,Ks);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			
 			Color[] whiteColor = createWhiteColor(vData.size());
+			
+			
 			Vertex[] vertices = Vertex.meshVertices(positionData,whiteColor, faces);
 			
 			
