@@ -1,7 +1,11 @@
 package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glPolygonMode;
+import static org.lwjgl.opengl.GL11.GL_LINE;
+import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -50,6 +54,8 @@ public class OBJModel extends ShapeNode implements App{
 	@Override
 	public void display(int width, int height) {
 		// The modeling transformation. Object space to world space.
+//				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		
 				Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 						angle);
 				
