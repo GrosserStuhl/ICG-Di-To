@@ -34,12 +34,9 @@ public class Cube extends ShapeNode implements App {
 	private FloatBuffer colorDataT;
 
 	// Mesh DATA
-//	private Vertex[] meshVertices;
-//	private FloatBuffer positionDataM;
-//	private FloatBuffer colorDataM;
-
-	// Initialize the rotation angle of the cube.
-	private float angle = 0;
+	// private Vertex[] meshVertices;
+	// private FloatBuffer positionDataM;
+	// private FloatBuffer colorDataM;
 
 	public void init() {
 
@@ -50,27 +47,20 @@ public class Cube extends ShapeNode implements App {
 		colorData = colorBuffer(vertices.length);
 		finalizeBuffers(positionData, colorData, vertices);
 
-		// positionData2 = positionBuffer(vertices2.length);
-		// finalizeBuffers(positionData2, colorData, vertices2);
-		//
-		// positionDataT = positionBuffer(verticesT.length);
-		// colorDataT = colorBuffer(verticesT.length);
-		// finalizeBuffers(positionDataT, colorDataT, verticesT);
-
-//		Mesh blenderCube = ResourceLoader.loadMesh("monkeyMod.obj");
-//		meshVertices = Vertex.testVertices(blenderCube.getPositionData(),
-//				blenderCube.getColorData(), blenderCube.getFaceData());
-//		positionDataM = positionBuffer(meshVertices.length);
-//		colorDataM = colorBuffer(meshVertices.length);
-//		finalizeBuffers(positionDataM, colorDataM, meshVertices);
-
+		// Mesh blenderCube = ResourceLoader.loadMesh("monkeyMod.obj");
+		// meshVertices = Vertex.testVertices(blenderCube.getPositionData(),
+		// blenderCube.getColorData(), blenderCube.getFaceData());
+		// positionDataM = positionBuffer(meshVertices.length);
+		// colorDataM = colorBuffer(meshVertices.length);
+		// finalizeBuffers(positionDataM, colorDataM, meshVertices);
 	}
 
+	@Override
 	public void simulate(float elapsed, Input input) {
 		// Pressing key 'r' toggles the cube animation.
 		if (input.isKeyToggled(Keyboard.KEY_R))
 			// Increase the angle with a speed of 90 degrees per second.
-			angle += 90 * elapsed;
+			angle += 150 * elapsed;
 	}
 
 	@Override
@@ -97,27 +87,27 @@ public class Cube extends ShapeNode implements App {
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
 
-//		getShader().getModelMatrixUniform().set(
-//				modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
-//		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-//				positionDataT);
-//		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-//		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-//				colorDataT);
-//		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		// getShader().getModelMatrixUniform().set(
+		// modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
+		// glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+		// positionDataT);
+		// glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		// glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+		// colorDataT);
+		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		// glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
 
-//		getShader().getModelMatrixUniform().set(
-//				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
-//		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-//				positionDataM);
-//		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-//		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-//				colorDataM);
-//		glEnableVertexAttribArray(Shader.getColorAttribIdx());
-//
-//		glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
+		// getShader().getModelMatrixUniform().set(
+		// modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+		// glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+		// positionDataM);
+		// glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		// glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+		// colorDataM);
+		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		//
+		// glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();

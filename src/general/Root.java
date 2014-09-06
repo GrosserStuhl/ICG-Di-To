@@ -12,6 +12,7 @@ import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 import shapes.Cube;
+import shapes.Pyramid;
 
 public class Root extends Node implements App {
 
@@ -80,22 +81,24 @@ public class Root extends Node implements App {
 			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
 
+	// Pyramid
+
 	private Vector[] t = {
 			// hinten links-unten
-			vec(-w2, -h2, -d2),
+			vec(-w2+3, -h2, -d2),
 			// hinten rechts-unten
-			vec(w2, -h2, -d2),
+			vec(w2+3, -h2, -d2),
 			// vorne rechts-unten
-			vec(w2, -h2, d2),
+			vec(w2+3, -h2, d2),
 			// vorne links-unten
-			vec(-w2, -h2, d2),
+			vec(-w2+3, -h2, d2),
 
 			// nach oben
-			vec(0, d2, 0)
+			vec(0+3, d2, 0)
 
 	};
 
-	// The colors of the cube vertices.
+	// The colors of the Pyramid vertices.
 	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
 			col(1, 0, 0), col(0, 1, 0) };
 
@@ -114,7 +117,11 @@ public class Root extends Node implements App {
 		verticesT = Vertex.triangleVertices(t, colorT);
 
 		Cube cube = new Cube(vertices, shader);
-		this.addNode(cube);
+		addNode(cube);
+		Pyramid pyr = new Pyramid(verticesT, shader);
+		addNode(pyr);
+		Camera cam = new Camera(shader);
+		addNode(cam);
 
 		for (Node child : getChildNodes()) {
 			child.init();
@@ -149,15 +156,15 @@ public class Root extends Node implements App {
 
 		// The inverse camera transformation. World space to camera
 		// space.
-		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
-				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
+//		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
+//				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
 
 		// Activate the shader program and set the transformation
 		// matricies to
 		// the
 		// uniform variables.
 		shader.activate();
-		shader.getViewMatrixUniform().set(viewMatrix);
+//		shader.getViewMatrixUniform().set(viewMatrix);
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 
 		for (Node child : getChildNodes()) {
