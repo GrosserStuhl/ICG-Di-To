@@ -33,13 +33,13 @@ public class Camera extends Node {
 			centerAdd = vecmath.vector(0, 0, 0.0000002f);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			z -= 0.002f;
+			z -= 0.2f;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			x -= 0.002f;
+			x -= 0.2f;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-			pitch += 0.02f;
+			pitch += 0.2f;
 		}
 
 		eye = eye.add(eyeAdd);

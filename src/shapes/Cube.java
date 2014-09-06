@@ -1,10 +1,10 @@
 package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
-import general.Mesh;
-import general.ResourceLoader;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
@@ -13,12 +13,8 @@ import java.nio.FloatBuffer;
 
 import ogl.app.App;
 import ogl.app.Input;
-import ogl.app.OpenGLApp;
-import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
-import ogl.vecmath.Vector;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -28,10 +24,10 @@ public class Cube extends ShapeNode implements App {
 		super(vertices, shader);
 	}
 
-	private FloatBuffer positionData2;
-
-	private FloatBuffer positionDataT;
-	private FloatBuffer colorDataT;
+//	private FloatBuffer positionData2;
+//
+//	private FloatBuffer positionDataT;
+//	private FloatBuffer colorDataT;
 
 	// Mesh DATA
 	// private Vertex[] meshVertices;

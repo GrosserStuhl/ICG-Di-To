@@ -120,6 +120,11 @@ public class Root extends Node implements App {
 		addNode(cube);
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		addNode(pyr);
+		
+		Mesh m = ResourceLoader.loadMesh("monkeyMod.obj");
+		OBJModel monkeyMod = new OBJModel(m.getVertices(),shader);
+		addNode(monkeyMod);
+		
 		Camera cam = new Camera(shader);
 		addNode(cam);
 

@@ -13,6 +13,8 @@ public class Mesh {
 	public Color[] colorData;
 	public int[] faceData;
 	
+	public Vertex[] vertices;
+	
 	
 	public Mesh(Vector[] vec, Color[] col) {
 		this.positionData = vec;
@@ -24,6 +26,8 @@ public class Mesh {
 		this.positionData = vData;
 		this.colorData = createWhiteColor(vData.length);
 		this.faceData = faces;
+		
+		this.vertices = Vertex.meshVertices(positionData, colorData, faces);
 		
 	}
 	
@@ -65,6 +69,14 @@ public class Mesh {
 
 	public void setFaceData(int[] faces) {
 		this.faceData = faces;
+	}
+	
+	public Vertex[] getVertices() {
+		return vertices;
+	}
+	
+	public void setVertices(Vertex[] vertices) {
+		this.vertices = vertices;
 	}
 	
 	

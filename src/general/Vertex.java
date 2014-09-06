@@ -91,7 +91,7 @@ public class Vertex {
 		return "Vertex p:"+position+" Color:"+color;
 	}
 
-	public static Vertex[] testVertices(Vector[] p,Color[] c, int[] faces) {
+	public static Vertex[] meshVertices(Vector[] p,Color[] c, int[] faces) {
 	
 		Vertex[] vertices = new Vertex[faces.length];
 		
