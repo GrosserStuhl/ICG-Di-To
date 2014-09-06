@@ -95,6 +95,8 @@ public class Vertex {
 	
 		Vertex[] vertices = new Vertex[faces.length];
 		
+		System.out.println(p.length);
+		
 		for (int i = 0; i < vertices.length; i++) {
 			vertices[i] = v(p[faces[i]],c[faces[i]]);
 		}

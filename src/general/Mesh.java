@@ -10,7 +10,7 @@ import ogl.vecmath.Vector;
 public class Mesh {
 
 	public Vector[] positionData;
-	public Color[] colorData;
+	public Color[] color;
 	public int[] faceData;
 	
 	public Vertex[] vertices;
@@ -18,28 +18,19 @@ public class Mesh {
 	
 	public Mesh(Vector[] vec, Color[] col) {
 		this.positionData = vec;
-		this.colorData = col;
+		this.color = col;
 		
 	}
 	
-	public Mesh(Vector[] vData, int[] faces) {
+	public Mesh(Vector[] vData, Color[]color, int[] faces, Vertex[] vertices) {
 		this.positionData = vData;
-		this.colorData = createWhiteColor(vData.length);
+		this.color = color;
 		this.faceData = faces;
-		
-		this.vertices = Vertex.meshVertices(positionData, colorData, faces);
+		this.vertices = vertices;
 		
 	}
 	
-	public Color[] createWhiteColor(int length){
-		Color[] c = new Color[length];
-		
-		for (int i = 0; i < c.length; i++) {
-			c[i] = vecmath.color(220, 220, 220);
-		}
-		
-		return c;
-	}
+	
 	
 	
 	
@@ -55,12 +46,12 @@ public class Mesh {
 
 
 	public Color[] getColorData() {
-		return colorData;
+		return color;
 	}
 
 
-	public void setColorData(Color[] colorData) {
-		this.colorData = colorData;
+	public void setColorData(Color[] color) {
+		this.color = color;
 	}
 
 	public int[] getFaceData() {

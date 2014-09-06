@@ -121,7 +121,7 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		addNode(pyr);
 		
-		Mesh m = ResourceLoader.loadMesh("monkeyMod.obj");
+		Mesh m = ResourceLoader.loadMesh("smallBatman.obj");
 		OBJModel monkeyMod = new OBJModel(m.getVertices(),shader);
 		addNode(monkeyMod);
 		
