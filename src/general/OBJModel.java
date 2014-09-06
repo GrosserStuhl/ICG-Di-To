@@ -41,7 +41,7 @@ public class OBJModel extends ShapeNode implements App{
 	@Override
 	public void simulate(float elapsed, Input input) {
 		// Pressing key 'r' toggles the cube animation.
-				if (input.isKeyToggled(Keyboard.KEY_R))
+				if (input.isKeyToggled(Keyboard.KEY_M))
 					// Increase the angle with a speed of 90 degrees per second.
 					angle += 150 * elapsed;
 		
