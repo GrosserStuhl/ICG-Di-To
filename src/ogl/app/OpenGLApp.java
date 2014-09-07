@@ -4,11 +4,6 @@
  *******************************************************************************/
 package ogl.app;
 
-import static ogl.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL11.*;
-import general.Shader;
-import ogl.vecmath.Matrix;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;

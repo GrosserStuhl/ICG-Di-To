@@ -1,13 +1,12 @@
 package general;
 
-import java.util.Vector;
-
+import java.util.ArrayList;
 import ogl.app.App;
 import ogl.vecmath.Matrix;
 
 public abstract class Node implements App {
 
-	private Vector<Node> childNodes = new Vector<Node>();
+	private ArrayList<Node> childNodes = new ArrayList<Node>();
 	private String name;
 	private Matrix transformation;
 
@@ -19,7 +18,7 @@ public abstract class Node implements App {
 		return transformation;
 	}
 
-	public Vector<Node> getChildNodes() {
+	public ArrayList<Node> getChildNodes() {
 		return childNodes;
 	}
 
@@ -29,10 +28,6 @@ public abstract class Node implements App {
 
 	public void removeNode(Node node) {
 		childNodes.remove(node);
-	}
-
-	public void update() {
-
 	}
 
 	@Override

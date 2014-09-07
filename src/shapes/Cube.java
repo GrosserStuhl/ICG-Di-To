@@ -9,14 +9,12 @@ import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 
-import java.nio.FloatBuffer;
-
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 public class Cube extends ShapeNode implements App {
 
@@ -24,10 +22,10 @@ public class Cube extends ShapeNode implements App {
 		super(vertices, shader);
 	}
 
-//	private FloatBuffer positionData2;
-//
-//	private FloatBuffer positionDataT;
-//	private FloatBuffer colorDataT;
+	// private FloatBuffer positionData2;
+	//
+	// private FloatBuffer positionDataT;
+	// private FloatBuffer colorDataT;
 
 	// Mesh DATA
 	// private Vertex[] meshVertices;
@@ -65,6 +63,7 @@ public class Cube extends ShapeNode implements App {
 		// The modeling transformation. Object space to world space.
 		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 				angle);
+		this.setTransformation(modelMatrix);
 
 		// Activate the shader program and set the transformation matricies to
 		// the
@@ -85,31 +84,14 @@ public class Cube extends ShapeNode implements App {
 
 		// getShader().getModelMatrixUniform().set(
 		// modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
-		// glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-		// positionDataT);
-		// glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		// glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-		// colorDataT);
-		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
+	}
 
-		// glDrawArrays(GL_TRIANGLES, 0, verticesT.length);
-
-		// getShader().getModelMatrixUniform().set(
-		// modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
-		// glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
-		// positionDataM);
-		// glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		// glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-		// colorDataM);
-		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
-		//
-		// glDrawArrays(GL_TRIANGLES, 0, meshVertices.length);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-			Display.destroy();
-			System.exit(0);
-		}
-
+	public Vector getLookAtVector() {
+		// Vordere linke Ecke
+		Vector edge = vertices[3].getPosition();
+		//Position für Kamera 
+		edge.add(vecmath.vector(0.5f, 0, 10f));
+		return edge;
 	}
 
 }
