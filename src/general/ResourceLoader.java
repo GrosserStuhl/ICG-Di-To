@@ -3,15 +3,37 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.newdawn.slick.opengl.TextureLoader;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
 public class ResourceLoader {
 
+	public static Texture loadTexture(String fileName){
+		
+		String[] splitArray = fileName.split("\\.");
+		String ext = splitArray[splitArray.length-1];
+		
+		try{
+			int id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/"+fileName))).getTextureID();
+			
+			return new Texture(id);
+		}catch(Exception e){
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return null;
+		
+		
+	}
+	
 	
 	public static Mesh loadMesh(String fileName){
 		
@@ -24,6 +46,7 @@ public class ResourceLoader {
 		ArrayList<Vector> vData = new ArrayList<Vector>();
 		ArrayList<Integer> fData = new ArrayList<Integer>();
 		ArrayList<Vector> nData = new ArrayList<Vector>();
+		ArrayList<Vector> tData = new ArrayList<Vector>();
 		
 		String line;
 		
@@ -95,6 +118,21 @@ public class ResourceLoader {
 //					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) -1);
 					
 					
+				} else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/\\d+\\/\\d+") ){
+					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Textur und Vektornormaleninfos. Das Format z.B.  
+					// f  1/3/2  1/7/2  9/5/2
+					// f  1/2/5  7/2/6  5/2/3 ...
+					
+					//    Bsp. 7/2/6 : hier wäre die erste Zahl(7) die vertex koordinate, die zweite Zahl (2) die Texturkoordinate, die dritte Zahl (6) die Vektornormale
+
+					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) -1);
+//					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) -1);
+					
+					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) -1);
+//					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) -1);
+					
+					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) -1);
+//					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) -1);
 				}
 		
 			}
