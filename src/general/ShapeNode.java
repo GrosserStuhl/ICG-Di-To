@@ -76,5 +76,4 @@ public abstract class ShapeNode extends Node {
 		positionData.rewind();
 		colorData.rewind();
 	}
-
 }

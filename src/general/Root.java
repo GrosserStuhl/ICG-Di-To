@@ -28,8 +28,6 @@ public class Root extends Node implements App {
 	float d2 = 0.5f;
 
 	private Vertex[] vertices;
-	private Vertex[] vertices2;
-
 	private Vertex[] verticesT;
 
 	// Make construction of vectors easy on the eyes.
@@ -56,25 +54,6 @@ public class Root extends Node implements App {
 	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
 			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
-
-	private Vector[] s = {
-			// hinten links-unten
-			vec(-w2, -h2, -d2),
-			// hinten rechts-unten
-			vec(w2, -h2, -d2),
-			// hinten rechts-oben
-			vec(w2, h2, -d2),
-			// hinten links-oben
-			vec(-w2, h2, -d2),
-
-			// vorne rechts-unten
-			vec(w2, -h2, d2),
-			// vorne links-unten
-			vec(-w2, -h2, d2),
-			// vorne links-oben
-			vec(-w2, h2, d2),
-			// vorne rechts-oben
-			vec(w2, h2, d2) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
@@ -112,7 +91,6 @@ public class Root extends Node implements App {
 		shader = new Shader();
 
 		vertices = Vertex.cubeVertices(p, c);
-		vertices2 = Vertex.cubeVertices(s, c);
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
@@ -125,7 +103,7 @@ public class Root extends Node implements App {
 		OBJModel monkeyMod = new OBJModel(m.getVertices(),shader);
 		addNode(monkeyMod);
 		
-		Camera cam = new Camera(shader);
+		Camera cam = new Camera(getChildNodes(), shader);
 		addNode(cam);
 
 		for (Node child : getChildNodes()) {
