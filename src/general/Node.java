@@ -35,4 +35,8 @@ public abstract class Node implements App {
 		return "Node: " + name;
 	}
 
+	public void setSelected() {
+		
+	}
+
 }

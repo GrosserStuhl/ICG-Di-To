@@ -64,16 +64,16 @@ public class Root extends Node implements App {
 
 	private Vector[] t = {
 			// hinten links-unten
-			vec(-w2+3, -h2, -d2),
+			vec(-w2 + 3, -h2, -d2),
 			// hinten rechts-unten
-			vec(w2+3, -h2, -d2),
+			vec(w2 + 3, -h2, -d2),
 			// vorne rechts-unten
-			vec(w2+3, -h2, d2),
+			vec(w2 + 3, -h2, d2),
 			// vorne links-unten
-			vec(-w2+3, -h2, d2),
+			vec(-w2 + 3, -h2, d2),
 
 			// nach oben
-			vec(0+3, d2, 0)
+			vec(0 + 3, d2, 0)
 
 	};
 
@@ -90,21 +90,28 @@ public class Root extends Node implements App {
 
 		shader = new Shader();
 
+		RowNode row_one = new RowNode();
+		RowNode row_two = new RowNode();
+		RowNode row_three = new RowNode();
+		addNode(row_one);
+		addNode(row_two);
+		addNode(row_three);
+
+		Camera cam = new Camera(getChildNodes(), shader);
+		addNode(cam);
+
 		vertices = Vertex.cubeVertices(p, c);
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
 		Cube cube = new Cube(vertices, shader);
-		addNode(cube);
+		row_one.addNode(cube);
 		Pyramid pyr = new Pyramid(verticesT, shader);
-		addNode(pyr);
-		
+		row_one.addNode(pyr);
+
 		Mesh m = ResourceLoader.loadMesh("smallBatman.obj");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(),shader);
-		addNode(monkeyMod);
-		
-		Camera cam = new Camera(getChildNodes(), shader);
-		addNode(cam);
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
+		row_one.addNode(monkeyMod);
 
 		for (Node child : getChildNodes()) {
 			child.init();
@@ -139,15 +146,15 @@ public class Root extends Node implements App {
 
 		// The inverse camera transformation. World space to camera
 		// space.
-//		Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
-//				vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
+		// Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
+		// vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
 
 		// Activate the shader program and set the transformation
 		// matricies to
 		// the
 		// uniform variables.
 		shader.activate();
-//		shader.getViewMatrixUniform().set(viewMatrix);
+		// shader.getViewMatrixUniform().set(viewMatrix);
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 
 		for (Node child : getChildNodes()) {

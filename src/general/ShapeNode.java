@@ -32,7 +32,7 @@ public abstract class ShapeNode extends Node {
 		colorData = colorBuffer(vertices.length);
 		finalizeBuffers(positionData, colorData, vertices);
 	}
-	
+
 	@Override
 	public void simulate(float elapsed, Input input) {
 		// Pressing key 'r' toggles the cube animation.
@@ -57,6 +57,10 @@ public abstract class ShapeNode extends Node {
 		return colorData;
 	}
 
+	public Vertex[] getVertices() {
+		return vertices;
+	}
+
 	protected FloatBuffer positionBuffer(int verticesLength) {
 		return BufferUtils.createFloatBuffer(verticesLength
 				* vecmath.vectorSize());
@@ -75,5 +79,10 @@ public abstract class ShapeNode extends Node {
 		}
 		positionData.rewind();
 		colorData.rewind();
+	}
+
+	@Override
+	public void setSelected() {
+		System.out.println("I, " + getClass() + ", got selected");
 	}
 }

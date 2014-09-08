@@ -25,6 +25,10 @@ public class Camera extends Node {
 	private Matrix viewMatrix;
 	private ArrayList<Node> rootChildren;
 	private Input input;
+	private int rowIndex = 0;
+	private int selectionIndex = 0;
+	private final int ROW_DISTANCE = 10;
+	private final int OBJ_DISTANCE = 5;
 
 	public Camera(ArrayList<Node> rootChildren, Shader shader) {
 		this.shader = shader;
@@ -38,7 +42,6 @@ public class Camera extends Node {
 			Display.destroy();
 			System.exit(0);
 		}
-		System.out.println(z);
 		if (input.isKeyToggled(Keyboard.KEY_M)) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				moveOnZ(0.02f);
@@ -62,35 +65,47 @@ public class Camera extends Node {
 			updateCamera();
 		} else {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				// eye = eye.add(vecmath.vector(0, 0, 0.02f));
-				// center = center.add(vecmath.vector(0, 0, 0.02f));
-				// Vector test = vecmath.vector(center.normalize().x() / 10,
-				// center
-				// .normalize().y() / 10, center.normalize().z() / 10);
-				// eye = eye.add(test);
-				// center = center.add(test);
-				center = center.mult(0.002f);
-				eye = eye.add(center);
+				if (rowIndex < rootChildren.size())
+					rowIndex++;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(0, 0, (rowIndex * ROW_DISTANCE)
+						- ROW_DISTANCE);
+				center = vecmath.vector(0, 0, rowIndex * ROW_DISTANCE);
+				setSelection();
+
+				System.out.println(eye);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				eye = eye.sub(vecmath.vector(0, 0, 0.02f));
-				center = center.sub(vecmath.vector(0, 0, 0.02f));
+				if (rowIndex > 0)
+					rowIndex--;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(0, 0, (rowIndex * -ROW_DISTANCE)
+						- ROW_DISTANCE);
+				center = vecmath.vector(0, 0, rowIndex * -ROW_DISTANCE);
+				setSelection();
+
+				System.out.println(eye);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				// eye = eye.add(vecmath.vector(0.002f, 0, 0));
 				// center = center.add(vecmath.vector(0.002f, 0, 0));
 				// eye = vecmath.vector(-2, 0, -10);
 				// center = vecmath.vector(-2, 0, 0);
-				viewMatrix = rootChildren.get(0).getTransformation();
-				shader.getViewMatrixUniform().set(
-						viewMatrix.mult(vecmath.translationMatrix(vecmath
-								.vector(0, 0, -10))));
+//				viewMatrix = rootChildren.get(0).getTransformation();
+//				System.out.println(viewMatrix);
+//				shader.getViewMatrixUniform().set(
+//						viewMatrix.mult(vecmath.translationMatrix(vecmath
+//								.vector(0, 0, -10))));
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				// eye = eye.add(vecmath.vector(0.002f, 0, 0));
-				// center = center.add(vecmath.vector(0.002f, 0, 0));
-				eye = vecmath.vector(2, 0, -10);
-				center = vecmath.vector(2, 0, 0);
+				if (selectionIndex > 0)
+					selectionIndex--;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, eye.z());
+				center = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, center.z());
+				setSelection();
+
+				System.out.println(eye);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				center = center.add(vecmath.vector(-0.02f, 0, 0));
@@ -126,6 +141,8 @@ public class Camera extends Node {
 		viewMatrix = vecmath.lookatMatrix(eye, center,
 				vecmath.vector(0f, 1f, 0f));
 		shader.getViewMatrixUniform().set(viewMatrix);
+
+		setSelection();
 	}
 
 	@Override
@@ -136,6 +153,11 @@ public class Camera extends Node {
 	@Override
 	public void display(int width, int height) {
 		update();
+	}
+
+	private void setSelection() {
+		rootChildren.get(rowIndex).getChildNodes().get(selectionIndex)
+				.setSelected();
 	}
 
 	private Matrix lookAtMatrix(Vector eye, Vector target, Vector up) {
