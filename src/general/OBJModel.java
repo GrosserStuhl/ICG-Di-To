@@ -64,9 +64,9 @@ public class OBJModel extends ShapeNode implements App{
 				 getShader().getModelMatrixUniform().set(modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
 				 glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				 positionData);
-//				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-//				 glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
-//				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
+				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+				 glVertexAttribPointer(Shader.getColorAttribIdx(), 2, false, 0, colorData);
+				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		

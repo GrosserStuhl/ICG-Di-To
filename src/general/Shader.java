@@ -19,25 +19,6 @@ import org.lwjgl.opengl.GL20;
 
 public class Shader extends Node {
 
-	// The vertex program source code.
-	private String[] vsSource = {
-			"uniform mat4 modelMatrix;",
-			"uniform mat4 viewMatrix;",
-			"uniform mat4 projectionMatrix;",
-
-			"attribute vec3 vertex;",
-			"attribute vec3 color;",
-			"varying vec3 fcolor;",
-
-			"void main() {",
-			"  fcolor = color;",
-			"  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);",
-			"}" };
-
-	// The fragment program source code.
-	private String[] fsSource = { "varying vec3 fcolor;", "void main() {",
-			"  gl_FragColor = vec4(fcolor, 1.0);", "}" };
-
 	// The shader program.
 	private int program;
 
@@ -60,13 +41,15 @@ public class Shader extends Node {
 
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
-		glShaderSource(vs, vsSource);
+		// load vertexShader
+		glShaderSource(vs, ResourceLoader.loadShader("originalVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
-		glShaderSource(fs, fsSource);
+		//load fragmentShader
+		glShaderSource(fs,  ResourceLoader.loadShader("originalFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
