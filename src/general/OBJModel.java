@@ -2,15 +2,9 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glPolygonMode;
-import static org.lwjgl.opengl.GL11.GL_LINE;
-import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import general.Shader;
-import general.ShapeNode;
-import general.Vertex;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -21,18 +15,21 @@ import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 public class OBJModel extends ShapeNode implements App{
 
+	private Texture t;
+	private ByteBuffer texData;	
+	
+	
 	public OBJModel(Vertex[] vertices, Shader shader, Texture t) {
 		super(vertices, shader);
 		
 		this.t = t;
 	}
 	
-	private Texture t;
-//	private FloatBuffer positionData;
+
+	
 
 	@Override
 	public void init() {
@@ -71,6 +68,15 @@ public class OBJModel extends ShapeNode implements App{
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		
 	}
+	
+	// Buffers mit TextureInfo
+	public void finalizeBuffers(FloatBuffer positionData,Vertex[] vertices) {
+			for (Vertex v : vertices) {
+				positionData.put(v.position.asArray());
+//				texData.put(v.textureCoord.);
+			}
+			positionData.rewind();
+		}
 
 
 }
