@@ -19,7 +19,6 @@ import org.lwjgl.input.Keyboard;
 public class OBJModel extends ShapeNode implements App{
 
 	private Texture t;
-	private ByteBuffer texData;	
 	
 	
 	public OBJModel(Vertex[] vertices, Shader shader, Texture t) {
@@ -35,8 +34,7 @@ public class OBJModel extends ShapeNode implements App{
 	public void init() {
 		
 		positionData = positionBuffer(vertices.length);
-		colorData = colorBuffer(vertices.length);
-		finalizeBuffers(positionData, vertices);
+		finalizeBuffer(positionData, vertices);
 		
 	}
 
@@ -62,18 +60,17 @@ public class OBJModel extends ShapeNode implements App{
 				 glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				 positionData);
 				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, colorData);
+				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, ((ByteBuffer) t.getData().rewind()).asFloatBuffer());
 				 glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		
 	}
 	
-	// Buffers mit TextureInfo
-	public void finalizeBuffers(FloatBuffer positionData,Vertex[] vertices) {
+	// Buffers mit TextureInfo (wurden schon in Texture gemacht)
+	public void finalizeBuffer(FloatBuffer positionData,Vertex[] vertices) {
 			for (Vertex v : vertices) {
 				positionData.put(v.position.asArray());
-//				texData.put(v.textureCoord.);
 			}
 			positionData.rewind();
 		}
