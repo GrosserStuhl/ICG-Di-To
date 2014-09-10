@@ -30,6 +30,8 @@ public class Shader extends Node {
 	// The attribute indices for the vertex data.
 	public static int vertexAttribIdx = 0;
 	public static int colorAttribIdx = 1;
+	
+	public static int textureAttribIdx = 2;
 
 	public Shader() {
 
@@ -65,6 +67,7 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
+		glBindAttribLocation(program, textureAttribIdx, "texture");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -97,6 +100,17 @@ public class Shader extends Node {
 	public static int getColorAttribIdx() {
 		return colorAttribIdx;
 	}
+	
+	
+	public static int getTextureAttribIdx() {
+		return textureAttribIdx;
+	}
+	
+	public static void setTextureAttribIdx(int textureAttribIdx) {
+		Shader.textureAttribIdx = textureAttribIdx;
+	}
+	
+	
 
 	public void activate() {
 		// Activate the shader program and set the transformation matricies to
