@@ -1,7 +1,6 @@
 package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL11.GL_LINE;
@@ -13,10 +12,12 @@ import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import ogl.app.App;
 import ogl.app.Input;
+import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 
 import org.lwjgl.input.Keyboard;
@@ -24,21 +25,21 @@ import org.lwjgl.opengl.Display;
 
 public class OBJModel extends ShapeNode implements App{
 
-	public OBJModel(Vertex[] vertices, Shader shader) {
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t) {
 		super(vertices, shader);
-		// TODO Auto-generated constructor stub
+		
+		this.t = t;
 	}
 	
-	private FloatBuffer positionData;
-	private FloatBuffer colorData;
+	private Texture t;
+//	private FloatBuffer positionData;
 
 	@Override
 	public void init() {
 		
-		
 		positionData = positionBuffer(vertices.length);
 		colorData = colorBuffer(vertices.length);
-		finalizeBuffers(positionData, colorData, vertices);
+		finalizeBuffers(positionData, vertices);
 		
 	}
 
@@ -63,9 +64,9 @@ public class OBJModel extends ShapeNode implements App{
 				 getShader().getModelMatrixUniform().set(modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
 				 glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				 positionData);
-				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-				 glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
-				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
+//				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+//				 glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+//				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		

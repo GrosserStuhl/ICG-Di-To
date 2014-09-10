@@ -1,29 +1,30 @@
 package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import org.newdawn.slick.opengl.TextureLoader;
-
+import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
+
+import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.opengl.TextureLoader;
 
 public class ResourceLoader {
 
 	public static Texture loadTexture(String fileName){
 		
-		String[] splitArray = fileName.split("\\.");
-		String ext = splitArray[splitArray.length-1];
 		
 		try{
-			int id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/"+fileName))).getTextureID();
+			Texture t = new Texture(new File("./res/textures/"+fileName));
 			
-			return new Texture(id);
+			return t;
 		}catch(Exception e){
 			e.printStackTrace();
 			System.exit(1);
@@ -46,7 +47,9 @@ public class ResourceLoader {
 		ArrayList<Vector> vData = new ArrayList<Vector>();
 		ArrayList<Integer> fData = new ArrayList<Integer>();
 		ArrayList<Vector> nData = new ArrayList<Vector>();
-		ArrayList<Vector> tData = new ArrayList<Vector>();
+		ArrayList<Vector2f> texCoord = new ArrayList<Vector2f>();
+		
+		ArrayList<Integer> texFaceData = new ArrayList<Integer>();
 		
 		String line;
 		
@@ -64,13 +67,16 @@ public class ResourceLoader {
 					
 					nData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
+				} else if(line.startsWith("vt ")){
+					// extracts Vectornormal info
+					
+					texCoord.add(v2f(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2])));
+					
 				} else if(line.startsWith("f ") && !line.split("\\s+")[1].contains("/") ){
 					// face triangulated, without any other than pure vertex info 
 					//Bsp. Format:
 					// f 2 3 4
 					// f 2 3 4
-					
-					
 					
 					fData.add(Integer.parseInt(line.split("\\s+")[1]) -1);
 					fData.add(Integer.parseInt(line.split("\\s+")[2]) -1);
@@ -105,7 +111,6 @@ public class ResourceLoader {
 					//    Bsp. 7/2 : hier wäre die erste Zahl(7) die vertex koordinate und die zweite Zahl (2) die Texturkoordinate
 					//    			  wegen Einfachheit wurde hier erstmal auf Texturkoordinaten verzichtet und jedesmal nur die Vertexkoordinate extrahiert
 
-					System.out.println("Hier drin Texturen");
 					
 					
 					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) -1);
@@ -126,60 +131,43 @@ public class ResourceLoader {
 					//    Bsp. 7/2/6 : hier wäre die erste Zahl(7) die vertex koordinate, die zweite Zahl (2) die Texturkoordinate, die dritte Zahl (6) die Vektornormale
 
 					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) -1);
-//					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) -1);
+					texFaceData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) -1);
 					
 					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) -1);
-//					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) -1);
+					texFaceData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) -1);
 					
 					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) -1);
-//					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) -1);
+					texFaceData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) -1);
 				}
 		
 			}
 			meshReader.close();
-			//TO-DO: alle faces-Möglichkeiten angeben, jetzt 1/4 implementiert.
 			
 			Vector[] positionData = createMeshVertexData(vData);
+			Color[] col = null;
+			
+			//create arrays
 			int[] faces = createMeshFaceData(fData);
 			
+			Vertex[] vertices = null;
 			
-			// prüft ob das Modell(.obj) file auch zusätzlich ein Material File (.mtl) mit dem gleichen Namen hat
-			// und versucht dann dessen Infos herauszulesen.
-			if(new File("./res/models/"+ fileName.replace(".obj", ".mtl")).exists())
-			try{
-				meshReader = new BufferedReader(new FileReader("./res/models/"+ fileName.replace(".obj", ".mtl")));
+			// if theres texture data available read it and hand it over, if not create white color
+			if(!texCoord.isEmpty()){
+				int[] texFaces = createTextureFaces(texFaceData);
+				Vector2f[] texCoordArray = createTextureVertexData(texCoord);
 				
-				float Ns = 0; float Ka = 0; float Kd = 0; float Ks = 0;
-				
-				while((line = meshReader.readLine()) != null){
-					if (line.startsWith("Ns ")){
-						Ns = Float.parseFloat(line.split("\\s+")[1]);
-					} else if (line.startsWith("Ka ")){
-						Ka = Float.parseFloat(line.split("\\s+")[1]);
-					} else if (line.startsWith("Kd ")){
-						Kd = Float.parseFloat(line.split("\\s+")[1]);
-					} else if (line.startsWith("Ks ")){
-						Ks = Float.parseFloat(line.split("\\s+")[1]);
-					}
-				}
-				meshReader.close();
-				
-				if(Ns != 0 && Ka != 0 && Kd != 0 && Ks != 0)
-					mat = new Material(Ns,Ka,Kd,Ks);
-				
-			}catch(Exception e){
-				e.printStackTrace();
+				vertices = Vertex.meshVertices(positionData,texCoordArray, faces, texFaces);
+				return new Mesh(positionData,texCoordArray,vertices);
+			}else{
+				col = createWhiteColor(vData.size());
+				vertices = Vertex.meshVertices(positionData,col, faces);
+				return m = new Mesh(positionData,col,vertices);
 			}
 			
 			
-			Color[] whiteColor = createWhiteColor(vData.size());
-			
-			
-			Vertex[] vertices = Vertex.meshVertices(positionData,whiteColor, faces);
 			
 			
 			
-			return m = new Mesh(positionData,whiteColor, faces,vertices);
 			
 		} catch(Exception e){
 			
@@ -192,14 +180,42 @@ public class ResourceLoader {
 	}
 	
 	
+	public static Vector2f[] createTextureVertexData(ArrayList<Vector2f> data) {
+		Vector2f[] result = new Vector2f[data.size()];
+		
+		for (int i = 0; i < data.size(); i++) {
+			result[i] = data.get(i);
+		}
+		
+		
+		return result;
+	}
 	
-	
+	private static int[] createTextureFaces(ArrayList<Integer> texFaceData) {
+		int[] result = new int[texFaceData.size()];
+		
+		for (int i = 0; i < texFaceData.size(); i++) {
+			result[i] = texFaceData.get(i).intValue();
+		}
+		
+		System.out.println("CreateTextureFaces "+result.length + "input: "+texFaceData.size());
+		
+		return result;
+	}
+
+
 	private static Vector vec(float x, float y, float z) {
 		return vecmath.vector(x, y, z);
 	}
 	
+	
+	
 	private Color col(float r, float g, float b) {
 		return vecmath.color(r, g, b);
+	}
+	
+	private static Vector2f v2f(float x, float y) {
+		return new Vector2f(x,y);
 	}
 	
 	
@@ -228,6 +244,12 @@ public class ResourceLoader {
 		
 		return result;
 	}
+	
+	public static Color[] setTextureCoords(int length){
+		return null;
+	}
+	
+	
 	
 	public static Color[] createWhiteColor(int length){
 		Color[] c = new Color[length];

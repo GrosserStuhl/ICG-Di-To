@@ -1,7 +1,11 @@
 package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
+
+
 import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Vector2f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
@@ -11,7 +15,7 @@ public class Mesh {
 
 	public Vector[] positionData;
 	public Color[] color;
-	public int[] faceData;
+	public Vector2f[] texCoord;
 	
 	public Vertex[] vertices;
 	
@@ -22,10 +26,16 @@ public class Mesh {
 		
 	}
 	
-	public Mesh(Vector[] vData, Color[]color, int[] faces, Vertex[] vertices) {
+	public Mesh(Vector[] vData, Color[]color, Vertex[] vertices) {
 		this.positionData = vData;
 		this.color = color;
-		this.faceData = faces;
+		this.vertices = vertices;
+		
+	}
+	
+	public Mesh(Vector[] vData, Vector2f[] texCoord, Vertex[] vertices) {
+		this.positionData = vData;
+		this.texCoord = texCoord;
 		this.vertices = vertices;
 		
 	}
@@ -33,8 +43,7 @@ public class Mesh {
 	
 	
 	
-	
-	
+
 	public Vector[] getPositionData() {
 		return positionData;
 	}
@@ -54,13 +63,6 @@ public class Mesh {
 		this.color = color;
 	}
 
-	public int[] getFaceData() {
-		return faceData;
-	}
-
-	public void setFaceData(int[] faces) {
-		this.faceData = faces;
-	}
 	
 	public Vertex[] getVertices() {
 		return vertices;

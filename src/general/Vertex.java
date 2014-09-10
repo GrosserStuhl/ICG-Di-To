@@ -1,5 +1,9 @@
 package general;
 
+
+
+import org.lwjgl.util.vector.Vector2f;
+
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
@@ -7,15 +11,28 @@ public class Vertex {
 
 	Vector position;
 	Color color;
+	
+
+	Vector2f textureCoord;
 
 	Vertex(Vector p, Color c) {
 		position = p;
 		color = c;
 	}
+	
+	public Vertex(Vector p, Vector2f t) {
+		position = p;
+		textureCoord = t;
+	
+	}
 
 	// Make construction of vertices easy on the eyes.
 	public static Vertex v(Vector p, Color c) {
 		return new Vertex(p, c);
+	}
+	
+	public static Vertex vt(Vector p, Vector2f t) {
+		return new Vertex(p, t);
 	}
 
 	public static Vertex[] cubeVertices(Vector[] p, Color[] c) {
@@ -64,29 +81,7 @@ public class Vertex {
 		return color;
 	}
 
-	public static Vertex[] modelVertices(Vector[] p, Color[] c) {
-		// * 3 weil es drei float koordinaten x, y, z, gibt
-		Vertex[] vertices = new Vertex[p.length * 3];
 
-		System.out.println("LÄNGE : " + vertices.length);
-		System.out.println("Colorlength: " + c.length);
-
-		// pData richtig
-		// for (int i = 0; i < p.length; i++) {
-		// System.out.println(p[i]);
-		// }
-
-		for (int i = 0; i < vertices.length; i++) {
-			for (int j = 0; j < p.length; j++) {
-				vertices[i] = v(p[j], c[j]);
-			}
-		}
-		// for (int i = 0; i < vertices.length; i++) {
-		// System.out.println(toString(vertices[i].position,vertices[i].color));
-		// }
-
-		return vertices;
-	}
 
 	public static String toString(Vector position, Color color) {
 
@@ -97,7 +92,7 @@ public class Vertex {
 
 		Vertex[] vertices = new Vertex[faces.length];
 
-		System.out.println(p.length);
+//		System.out.println(p.length);
 
 		for (int i = 0; i < vertices.length; i++) {
 			vertices[i] = v(p[faces[i]], c[faces[i]]);
@@ -105,10 +100,22 @@ public class Vertex {
 
 		return vertices;
 	}
+	
+	
+	public static Vertex[] meshVertices(Vector[] p, Vector2f[] t, int[] faces, int[] tFaces) {
 
-	// public static String toString(){
-	//
-	// return "Vertex p:"+position+" Color:"+color;
-	// }
+		Vertex[] vertices = new Vertex[faces.length];
+
+
+		
+		for (int i = 0; i < vertices.length; i++) {
+			vertices[i] = vt(p[faces[i]], t[tFaces[i]]);
+		}
+
+		return vertices;
+	}
+	
+
+	
 
 }

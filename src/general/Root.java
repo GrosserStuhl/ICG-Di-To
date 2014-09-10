@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
+import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
@@ -81,6 +82,7 @@ public class Root extends Node implements App {
 	public Root() {
 
 	}
+	
 
 	@Override
 	public void init() {
@@ -106,10 +108,13 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_one.addNode(pyr);
 
-		Mesh m = ResourceLoader.loadMesh("smallBatman.obj");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
-		row_one.addNode(monkeyMod);
+//		Mesh m = ResourceLoader.loadMesh("Spongebob.obj");
+//		Texture t = ResourceLoader.loadTexture("spongebob.png");
+//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+//		row_one.addNode(monkeyMod);
 
+		glEnable(GL_TEXTURE);
+		
 		for (Node child : getChildNodes()) {
 			child.init();
 		}
