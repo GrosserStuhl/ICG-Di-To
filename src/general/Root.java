@@ -52,6 +52,28 @@ public class Root extends Node implements App {
 	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
 			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+	
+	// The positions of the cube vertices.
+		private Vector[] p_row2 = { 
+				vec(-w2, -h2, -d2 - 10), 
+				vec(w2, -h2, -d2 - 10),
+				vec(w2, h2, -d2 - 10), 
+				vec(-w2, h2, -d2 - 10), 
+				vec(w2, -h2, d2 - 10),
+				vec(-w2, -h2, d2 - 10), 
+				vec(-w2, h2, d2 - 10), 
+				vec(w2, h2, d2 - 10) };
+		
+		// The positions of the cube vertices.
+		private Vector[] p_row3 = { 
+				vec(-w2, -h2, -d2 - 20), 
+				vec(w2, -h2, -d2 - 20),
+				vec(w2, h2, -d2 - 20), 
+				vec(-w2, h2, -d2 - 20), 
+				vec(w2, -h2, d2 - 20),
+				vec(-w2, -h2, d2 - 20), 
+				vec(-w2, h2, d2 - 20), 
+				vec(w2, h2, d2 - 20) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
@@ -100,11 +122,17 @@ public class Root extends Node implements App {
 		addNode(cam);
 
 		vertices = Vertex.cubeVertices(p, c);
+		Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
+		Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
 		Cube cube = new Cube(vertices, shader);
 		row_one.addNode(cube);
+		Cube cube2 = new Cube(vertices_cube2, shader);
+		row_two.addNode(cube2);
+		Cube cube3 = new Cube(vertices_cube3, shader);
+		row_three.addNode(cube3);
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_one.addNode(pyr);
 

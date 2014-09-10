@@ -30,13 +30,21 @@ public abstract class Node implements App {
 		childNodes.remove(node);
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 		return "Node: " + name;
 	}
 
 	public void setSelected() {
-		
+
 	}
 
 }
