@@ -2,6 +2,8 @@ package general;
 
 
 
+import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Vector2f;
 
 import ogl.vecmath.Color;
@@ -102,17 +104,20 @@ public class Vertex {
 	}
 	
 	
-	public static Vertex[] meshVertices(Vector[] p, Vector2f[] t, int[] faces, int[] tFaces) {
+	public static Vertex[] meshVertices(Vector[] p, Vector2f[] t, ArrayList<OBJIndex> indices) {
 
-		Vertex[] vertices = new Vertex[faces.length];
-
-
+		Vertex[] vertices = new Vertex[indices.size()];
+		
 		
 		for (int i = 0; i < vertices.length; i++) {
-			vertices[i] = vt(p[faces[i]], t[tFaces[i]]);
+			
+			OBJIndex temp = indices.get(i);
+			
+			vertices[i] = vt(p[temp.vertexIndex],t[temp.texCoordIndex]);
 		}
 
 		return vertices;
+		
 	}
 	
 

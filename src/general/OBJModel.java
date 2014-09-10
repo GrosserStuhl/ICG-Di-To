@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -52,15 +53,22 @@ public class OBJModel extends ShapeNode implements App{
 		// The modeling transformation. Object space to world space.
 //				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
+			
+		
 				Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 						angle);
 				
 
 				 getShader().getModelMatrixUniform().set(modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+				 
 				 glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				 positionData);
 				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, ((ByteBuffer) t.getData().rewind()).asFloatBuffer());
+				 
+//				 Texture t = ResourceLoader.loadTexture("spongebob.png");
+				 
+				 //last number offset
+				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, ((ByteBuffer) t.getData()).asFloatBuffer());
 				 glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
