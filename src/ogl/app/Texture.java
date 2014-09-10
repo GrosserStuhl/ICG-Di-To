@@ -72,6 +72,7 @@ public final class Texture {
 				data.put((y * w + x) * 4 + 3, a);
 			}
 		}
+		
 
 		// Generate a new texture object id
 		IntBuffer objs = BufferUtils.createIntBuffer(1);

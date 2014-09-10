@@ -67,7 +67,7 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
-		glBindAttribLocation(program, textureAttribIdx, "texture");
+		glBindAttribLocation(program, textureAttribIdx, "tex");
 
 		// Link the shader program.
 		glLinkProgram(program);

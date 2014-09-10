@@ -83,13 +83,6 @@ public abstract class ShapeNode extends Node {
 	
 	
 	
-	// Buffers mit TextureInfo
-	protected void finalizeBuffers(FloatBuffer positionData,Vertex[] vertices) {
-		for (Vertex v : vertices) {
-			positionData.put(v.position.asArray());
-		}
-		positionData.rewind();
-	}
 
 	@Override
 	public void setSelected() {
