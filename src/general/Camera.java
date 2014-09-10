@@ -13,9 +13,9 @@ import org.lwjgl.opengl.Display;
 
 public class Camera extends Node {
 
-	private float x = 0.1f;
-	private float y = 0.1f;
-	private float z = -10f;
+	private float x = 0f;
+	private float y = 0f;
+	private float z = 10f;
 	private float roll = 0f;// The rotation along the z axis
 	private float pitch = 0f;// The rotation along the x axis
 	private float yaw = 0f;// The rotation along the y axis
@@ -56,7 +56,7 @@ public class Camera extends Node {
 	@Override
 	public void init() {
 		eye = vecmath.vector(x, y, z);
-		center = vecmath.vector(0f, 0f, 0.01f);
+		center = vecmath.vector(0f, 0f, 0.1f);
 		up = vecmath.vector(0f, 1f, 0f);
 		viewMatrix = vecmath.lookatMatrix(eye, center,
 				vecmath.vector(0f, 1f, 0f));
@@ -67,7 +67,7 @@ public class Camera extends Node {
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		System.out.println(elapsed);
+		System.out.println(eye);
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();
 			System.exit(0);
@@ -130,10 +130,10 @@ public class Camera extends Node {
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				// rotateY(0.2f);
-				center = center.add(vecmath.vector(-turnSpeed, 0, 0));
+				center = center.add(vecmath.vector(turnSpeed, 0, 0));
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				center = center.add(vecmath.vector(turnSpeed, 0, 0));
+				center = center.add(vecmath.vector(-turnSpeed, 0, 0));
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 				center = center.add(vecmath.vector(0, turnSpeed, 0));
@@ -179,7 +179,7 @@ public class Camera extends Node {
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				if (selectionIndex < 2)
 					selectionIndex++;
-				// Bewege eine Reihe hinter
+				// Bewege eine Position nach rechts
 				eye = vecmath.vector(0, 0, (selectionIndex * -OBJ_DISTANCE)
 						- OBJ_DISTANCE);
 				center = vecmath.vector(0, 0, selectionIndex * -OBJ_DISTANCE);
@@ -188,7 +188,7 @@ public class Camera extends Node {
 			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				if (selectionIndex > 0)
 					selectionIndex--;
-				// Bewege eine Reihe hinter
+				// Bewege eine Position nach links
 				eye = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, eye.z());
 				center = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0,
 						center.z());
