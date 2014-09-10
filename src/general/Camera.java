@@ -24,11 +24,12 @@ public class Camera extends Node {
 	private Shader shader;
 	private Matrix viewMatrix;
 	private ArrayList<Node> rootChildren;
-	private Input input;
 	private int rowIndex = 0;
 	private int selectionIndex = 0;
-	private final int ROW_DISTANCE = 10;
+	private final int ROW_DISTANCE = -15;
 	private final int OBJ_DISTANCE = 5;
+	private Vector oldEye;
+	private Vector oldCenter;
 
 	public Camera(ArrayList<Node> rootChildren, Shader shader) {
 		this.shader = shader;
@@ -38,120 +39,6 @@ public class Camera extends Node {
 	public void update() {
 		Vector eyeAdd = vecmath.vector(0, 0, 0);
 		Vector centerAdd = vecmath.vector(0, 0, 0);
-		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-			Display.destroy();
-			System.exit(0);
-		}
-		if (input.isKeyToggled(Keyboard.KEY_M)) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				// moveOnZ(0.02f);
-				Vector temp = vecmath.vector(center.x() - eye.x(), center.y()
-						- eye.y(), center.z() - eye.z());
-				center = center.add(temp.normalize().mult(0.008f));
-				eye = eye.add(temp.normalize().mult(0.008f));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				// moveOnZ(-0.02f);
-				Vector temp = vecmath.vector(eye.x() - center.x(), eye.y()
-						- center.y(), eye.z() - center.z());
-				center = center.add(temp.normalize().mult(0.008f));
-				eye = eye.add(temp.normalize().mult(0.008f));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				// moveOnX(-0.02f);
-				float eyeRightX = (eye.x() * (float) Math.cos(90)) + (eye.z() * (float) -Math.sin(90));
-				float eyeRightY = eye.y();
-				float eyeRightZ = (eye.x() * (float) Math.sin(90)) + (eye.z() * (float)Math.cos(90));
-				
-				Vector eyeRight = vecmath.vector(eyeRightX, eyeRightY, eyeRightZ);
-
-				float centerRightX = (center.x() * (float) Math.cos(90)) + (center.z() * (float) -Math.sin(90));
-				float centerRightY = center.y();
-				float centerRightZ = (center.x() * (float) Math.sin(90)) + (center.z() * (float)Math.cos(90));
-				
-				Vector centerRight = vecmath.vector(centerRightX, centerRightY, centerRightZ);
-				
-				center = center.add(eyeRight.normalize().mult(0.008f));
-				eye = eye.add(centerRight.normalize().mult(0.008f));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				// moveOnX(0.02f);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-				// rotateY(0.2f);
-				center = center.add(vecmath.vector(-0.02f, 0, 0));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				center = center.add(vecmath.vector(0.02f, 0, 0));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				center = center.add(vecmath.vector(0, 0.02f, 0));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				center = center.add(vecmath.vector(0, -0.02f, 0));
-			}
-
-			// updateCamera();
-			viewMatrix = vecmath.lookatMatrix(eye, center,
-					vecmath.vector(0f, 1f, 0f));
-			shader.getViewMatrixUniform().set(viewMatrix);
-		} else {
-			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				if (rowIndex < rootChildren.size())
-					rowIndex++;
-				// Bewege eine Reihe hinter
-				eye = vecmath.vector(0, 0, (rowIndex * ROW_DISTANCE)
-						- ROW_DISTANCE);
-				center = vecmath.vector(0, 0, rowIndex * ROW_DISTANCE);
-				setSelection();
-
-				System.out.println(eye);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				if (rowIndex > 0)
-					rowIndex--;
-				// Bewege eine Reihe hinter
-				eye = vecmath.vector(0, 0, (rowIndex * -ROW_DISTANCE)
-						- ROW_DISTANCE);
-				center = vecmath.vector(0, 0, rowIndex * -ROW_DISTANCE);
-				setSelection();
-
-				System.out.println(eye);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				// eye = eye.add(vecmath.vector(0.002f, 0, 0));
-				// center = center.add(vecmath.vector(0.002f, 0, 0));
-				// eye = vecmath.vector(-2, 0, -10);
-				// center = vecmath.vector(-2, 0, 0);
-				// viewMatrix = rootChildren.get(0).getTransformation();
-				// System.out.println(viewMatrix);
-				// shader.getViewMatrixUniform().set(
-				// viewMatrix.mult(vecmath.translationMatrix(vecmath
-				// .vector(0, 0, -10))));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				if (selectionIndex > 0)
-					selectionIndex--;
-				// Bewege eine Reihe hinter
-				eye = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, eye.z());
-				center = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0,
-						center.z());
-				setSelection();
-
-				System.out.println(eye);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-				center = center.add(vecmath.vector(-0.02f, 0, 0));
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				center = center.add(vecmath.vector(0.02f, 0, 0));
-			}
-			viewMatrix = vecmath.lookatMatrix(eye, center,
-					vecmath.vector(0f, 1f, 0f));
-			shader.getViewMatrixUniform().set(viewMatrix);
-			// setView();
-		}
-
 		// eye = eye.add(eyeAdd);
 		// center = vecmath.vector((float) x * pitch, (float) y * yaw, (float) z
 		// * roll);
@@ -180,15 +67,158 @@ public class Camera extends Node {
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		this.input = input;
+		System.out.println(elapsed);
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			Display.destroy();
+			System.exit(0);
+		}
+		if (input.isKeyToggled(Keyboard.KEY_M)) {
+			if (oldEye == null) {
+				oldEye = eye;
+				oldCenter = center;
+			}
+			float moveSpeed = elapsed * 10;
+			float turnSpeed = elapsed * 15;
+			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+				// moveOnZ(0.02f);
+				Vector temp = vecmath.vector(center.x() - eye.x(), center.y()
+						- eye.y(), center.z() - eye.z());
+				center = center.add(temp.normalize().mult(moveSpeed));
+				eye = eye.add(temp.normalize().mult(moveSpeed));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+				// moveOnZ(-0.02f);
+				Vector temp = vecmath.vector(eye.x() - center.x(), eye.y()
+						- center.y(), eye.z() - center.z());
+				center = center.add(temp.normalize().mult(moveSpeed));
+				eye = eye.add(temp.normalize().mult(moveSpeed));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+				// moveOnX(-0.02f);
+
+				Vector temp = vecmath.vector(center.x() - eye.x(), center.y()
+						- eye.y(), center.z() - eye.z());
+
+				float tempRightX = (temp.x() * (float) Math.cos(90))
+						+ (temp.z() * (float) -Math.sin(90));
+				float tempRightY = temp.y();
+				float tempRightZ = (temp.x() * (float) Math.sin(90))
+						+ (temp.z() * (float) Math.cos(90));
+
+				Vector tempRight = vecmath.vector(tempRightX, tempRightY,
+						tempRightZ);
+
+				center = center.add(tempRight.normalize().mult(moveSpeed));
+				eye = eye.add(tempRight.normalize().mult(moveSpeed));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				// moveOnX(0.02f);
+				Vector temp = vecmath.vector(center.x() - eye.x(), center.y()
+						- eye.y(), center.z() - eye.z());
+
+				float tempRightX = (temp.x() * (float) Math.cos(90))
+						+ (temp.z() * (float) -Math.sin(90));
+				float tempRightY = temp.y();
+				float tempRightZ = (temp.x() * (float) Math.sin(90))
+						+ (temp.z() * (float) Math.cos(90));
+
+				Vector tempRight = vecmath.vector(tempRightX, tempRightY,
+						tempRightZ);
+
+				center = center.sub(tempRight.normalize().mult(moveSpeed));
+				eye = eye.sub(tempRight.normalize().mult(moveSpeed));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				// rotateY(0.2f);
+				center = center.add(vecmath.vector(-turnSpeed, 0, 0));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				center = center.add(vecmath.vector(turnSpeed, 0, 0));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				center = center.add(vecmath.vector(0, turnSpeed, 0));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				center = center.add(vecmath.vector(0, -turnSpeed, 0));
+			}
+
+			// updateCamera();
+			viewMatrix = vecmath.lookatMatrix(eye, center,
+					vecmath.vector(0f, 1f, 0f));
+			shader.getViewMatrixUniform().set(viewMatrix);
+		} else {
+			if (oldEye != null) {
+				eye = oldEye;
+				center = oldCenter;
+			}
+			oldEye = null;
+			oldCenter = null;
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+				if (rowIndex < 2)
+					rowIndex++;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(0, 0, (rowIndex * ROW_DISTANCE)
+						- ROW_DISTANCE);
+				center = vecmath.vector(0, 0, rowIndex * ROW_DISTANCE);
+				setSelection();
+
+				System.out.println(eye);
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+				if (rowIndex > 0)
+					rowIndex--;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(0, 0, (rowIndex * -ROW_DISTANCE)
+						- ROW_DISTANCE);
+				center = vecmath.vector(0, 0, rowIndex * -ROW_DISTANCE);
+				setSelection();
+
+				System.out.println(eye);
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+				if (selectionIndex < 2)
+					selectionIndex++;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(0, 0, (selectionIndex * -OBJ_DISTANCE)
+						- OBJ_DISTANCE);
+				center = vecmath.vector(0, 0, selectionIndex * -OBJ_DISTANCE);
+				setSelection();
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				if (selectionIndex > 0)
+					selectionIndex--;
+				// Bewege eine Reihe hinter
+				eye = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, eye.z());
+				center = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0,
+						center.z());
+				setSelection();
+
+				System.out.println(eye);
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				center = center.add(vecmath.vector(-0.02f, 0, 0));
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				center = center.add(vecmath.vector(0.02f, 0, 0));
+			}
+			viewMatrix = vecmath.lookatMatrix(eye, center,
+					vecmath.vector(0f, 1f, 0f));
+			shader.getViewMatrixUniform().set(viewMatrix);
+			// setView();
+		}
 	}
 
 	@Override
 	public void display(int width, int height) {
-		update();
+
 	}
 
 	private void setSelection() {
+		System.out.println("row: " + rowIndex);
+		System.out.println("selection: " + selectionIndex);
+		if (rootChildren.get(0).getChildNodes().get(0) == null)
+			System.out.println("rootchild at 0 is null");
 		rootChildren.get(rowIndex).getChildNodes().get(selectionIndex)
 				.setSelected();
 	}
