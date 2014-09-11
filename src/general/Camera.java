@@ -165,16 +165,16 @@ public class Camera extends Node {
 					if (isKeyUp(Keyboard.KEY_W) == true) {
 						keysUp.remove(Keyboard.KEY_W);
 
-						 if (rowIndex < 2) {
-						 rowIndex++;
-						
-						 // Bewege eine Reihe hinter
-//						 center = center.add(vecmath.vector(0, 0,
-//						 ROW_DISTANCE));
-//						 eye = center.sub(vecmath.vector(0, 0, -10));
-						 animation = true;
-						 setSelection();
-						 }
+						if (rowIndex < 2) {
+							rowIndex++;
+
+							// Bewege eine Reihe hinter
+							// center = center.add(vecmath.vector(0, 0,
+							// ROW_DISTANCE));
+							// eye = center.sub(vecmath.vector(0, 0, -10));
+							animation = true;
+							setSelection();
+						}
 					}
 				} else if (!keysUp.contains(Keyboard.KEY_W))
 					keysUp.add(Keyboard.KEY_W);
@@ -238,7 +238,7 @@ public class Camera extends Node {
 			center = center.sub(vecmath.vector(0, 0, distance));
 			System.out.println(center);
 			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.z() < -20)
+			if (center.z() < ROW_DISTANCE * rowIndex)
 				animation = false;
 			if (animation == true)
 				System.out.println("animating");
