@@ -3,6 +3,8 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import ogl.app.Input;
 import ogl.vecmath.Matrix;
@@ -30,6 +32,7 @@ public class Camera extends Node {
 	private final int OBJ_DISTANCE = 5;
 	private Vector oldEye;
 	private Vector oldCenter;
+	private Set<Integer> keysUp = new HashSet<Integer>();
 
 	public Camera(ArrayList<Node> rootChildren, Shader shader) {
 		this.shader = shader;
@@ -37,8 +40,8 @@ public class Camera extends Node {
 	}
 
 	public void update() {
-		Vector eyeAdd = vecmath.vector(0, 0, 0);
-		Vector centerAdd = vecmath.vector(0, 0, 0);
+		// Vector eyeAdd = vecmath.vector(0, 0, 0);
+		// Vector centerAdd = vecmath.vector(0, 0, 0);
 		// eye = eye.add(eyeAdd);
 		// center = vecmath.vector((float) x * pitch, (float) y * yaw, (float) z
 		// * roll);
@@ -63,11 +66,16 @@ public class Camera extends Node {
 		shader.getViewMatrixUniform().set(viewMatrix);
 
 		setSelection();
+
+		for (int i = 0; i <= 220; i++) {
+			keysUp.add(i);
+		}
 	}
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		System.out.println(eye);
+
+		// System.out.println(eye);
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();
 			System.exit(0);
@@ -154,48 +162,65 @@ public class Camera extends Node {
 			oldEye = null;
 			oldCenter = null;
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				if (rowIndex < 2)
-					rowIndex++;
-				// Bewege eine Reihe hinter
-				eye = vecmath.vector(0, 0, (rowIndex * ROW_DISTANCE)
-						- ROW_DISTANCE);
-				center = vecmath.vector(0, 0, rowIndex * ROW_DISTANCE);
-				setSelection();
+			if (input.isKeyDown(Keyboard.KEY_W)) {
+				if (isKeyUp(Keyboard.KEY_W) == true) {
+					keysUp.remove(Keyboard.KEY_W);
 
-				System.out.println(eye);
-			}
+					if (rowIndex < 2) {
+						rowIndex++;
+
+						// Bewege eine Reihe hinter
+						center = center.add(vecmath.vector(0, 0, ROW_DISTANCE));
+						eye = center.sub(vecmath.vector(0, 0, -10));
+						setSelection();
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_W))
+				keysUp.add(Keyboard.KEY_W);
 			if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				if (rowIndex > 0)
-					rowIndex--;
-				// Bewege eine Reihe hinter
-				eye = vecmath.vector(0, 0, (rowIndex * -ROW_DISTANCE)
-						- ROW_DISTANCE);
-				center = vecmath.vector(0, 0, rowIndex * -ROW_DISTANCE);
-				setSelection();
+				if (isKeyUp(Keyboard.KEY_S) == true) {
+					keysUp.remove(Keyboard.KEY_S);
 
-				System.out.println(eye);
-			}
+					if (rowIndex > 0) {
+						rowIndex--;
+						// Bewege eine Reihe hinter
+						center = center.sub(vecmath.vector(0, 0, ROW_DISTANCE));
+						eye = center.sub(vecmath.vector(0, 0, -10));
+						setSelection();
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_S))
+				keysUp.add(Keyboard.KEY_S);
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				if (selectionIndex < 2)
-					selectionIndex++;
-				// Bewege eine Position nach rechts
-				eye = vecmath.vector(0, 0, (selectionIndex * -OBJ_DISTANCE)
-						- OBJ_DISTANCE);
-				center = vecmath.vector(0, 0, selectionIndex * -OBJ_DISTANCE);
-				setSelection();
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				if (selectionIndex > 0)
-					selectionIndex--;
-				// Bewege eine Position nach links
-				eye = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0, eye.z());
-				center = vecmath.vector(selectionIndex * OBJ_DISTANCE, 0,
-						center.z());
-				setSelection();
+				if (isKeyUp(Keyboard.KEY_D) == true) {
+					keysUp.remove(Keyboard.KEY_D);
 
-				System.out.println(eye);
-			}
+					if (selectionIndex < 2) {
+						selectionIndex++;
+
+						// Bewege eine Position nach rechts
+						center = center.add(vecmath.vector(OBJ_DISTANCE, 0, 0));
+						eye = center.sub(vecmath.vector(0, 0, -10));
+						setSelection();
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_D))
+				keysUp.add(Keyboard.KEY_D);
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				if (isKeyUp(Keyboard.KEY_A) == true) {
+					keysUp.remove(Keyboard.KEY_A);
+
+					if (selectionIndex > 0) {
+						selectionIndex--;
+
+						// Bewege eine Position nach links
+						center = center.sub(vecmath.vector(OBJ_DISTANCE, 0, 0));
+						eye = center.sub(vecmath.vector(0, 0, -10));
+						setSelection();
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_A))
+				keysUp.add(Keyboard.KEY_A);
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				center = center.add(vecmath.vector(-0.02f, 0, 0));
 			}
@@ -275,5 +300,9 @@ public class Camera extends Node {
 
 	public void rotateX(float amt) {
 		pitch += amt;
+	}
+
+	private boolean isKeyUp(int key) {
+		return keysUp.contains(key);
 	}
 }
