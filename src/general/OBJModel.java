@@ -37,8 +37,9 @@ public class OBJModel extends ShapeNode implements App{
 	@Override
 	public void init() {
 
-		t = ResourceLoader.loadTexture("superman.png");
+//		t = ResourceLoader.loadTexture("superman.png");
 		positionData = positionBuffer(vertices.length);
+		colorData = colorBuffer(vertices.length);
 		finalizeBuffer(positionData, vertices);
 		
 	}
@@ -58,16 +59,14 @@ public class OBJModel extends ShapeNode implements App{
 //				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
 			
-		// für den sampler
-//		glUniform1i(glGetUniformLocation(s.getProgram(), "img"));
 		
 		
-				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				int location = GL20.glGetUniformLocation(s.getProgram(), "img");
-				GL20.glUniform1i(location, 0);
-				// 0 because it is to use texture unit 0
-				
-				t.bind();
+//				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+//				int location = GL20.glGetUniformLocation(s.getProgram(), "img");
+//				GL20.glUniform1i(location, 0);
+//				// 0 because it is to use texture unit 0
+//				
+//				t.bind();
 		
 				Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 						angle);
@@ -79,11 +78,10 @@ public class OBJModel extends ShapeNode implements App{
 				 positionData);
 				 glEnableVertexAttribArray(Shader.getVertexAttribIdx());
 				 
-//				 Texture t = ResourceLoader.loadTexture("spongebob.png");
 				 
 				 //last number offset
-				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, ((ByteBuffer) t.getData()).asFloatBuffer());
-				 glEnableVertexAttribArray(Shader.getTextureAttribIdx());
+				 glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		

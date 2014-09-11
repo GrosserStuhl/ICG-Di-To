@@ -120,6 +120,23 @@ public class Vertex {
 		
 	}
 	
+	public static Vertex[] fakeColor(Vector[] p, Color[] c,  ArrayList<OBJIndex> indices){
+		
+		Vertex[] vertices = new Vertex[indices.size()];
+
+//		System.out.println(p.length);
+
+		for (int i = 0; i < vertices.length; i++) {
+			
+			OBJIndex temp = indices.get(i);
+			
+			vertices[i] = v(p[temp.vertexIndex], c[temp.vertexIndex]);
+		}
+		
+		return vertices;
+		
+	}
+	
 
 	
 

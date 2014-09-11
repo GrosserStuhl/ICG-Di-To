@@ -198,8 +198,10 @@ public class ResourceLoader {
 //			}
 			
 			
-			Vertex[] vertices  = Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
-			return new Mesh(positionData, createTextureVertexData(texCoord), vertices);
+			col = createWhiteColor(positionData.length);
+			
+			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);// Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
+			return new Mesh(positionData,col,vertices); //, createTextureVertexData(texCoord), vertices);
 			
 			
 		} catch(Exception e){

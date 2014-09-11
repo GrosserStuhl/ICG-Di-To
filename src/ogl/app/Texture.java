@@ -79,7 +79,6 @@ public final class Texture {
 		glGenTextures(objs);
 		obj = objs.get(0);
 		
-		System.out.println("obj "+obj);
 
 		// Bind the texture object
 		bind();

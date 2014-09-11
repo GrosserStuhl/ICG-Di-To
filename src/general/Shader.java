@@ -37,7 +37,7 @@ public class Shader extends Node {
 	public Shader() {
 
 		// Set background color to black.
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
 		// Enable depth testing.
 		glEnable(GL11.GL_DEPTH_TEST);
