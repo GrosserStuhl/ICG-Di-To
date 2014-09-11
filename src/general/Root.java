@@ -139,9 +139,9 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_one.addNode(pyr);
 
-//		Mesh m = ResourceLoader.loadMesh("superman.obj");
-//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
-//		row_one.addNode(monkeyMod);
+		Mesh m = ResourceLoader.loadMesh("smallSuper.obj");
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
+		row_one.addNode(monkeyMod);
 
 		for (Node child : getChildNodes()) {
 			child.init();

@@ -12,6 +12,7 @@ import java.nio.FloatBuffer;
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.Texture;
+import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 
 import org.lwjgl.input.Keyboard;
@@ -40,7 +41,7 @@ public class OBJModel extends ShapeNode implements App{
 //		t = ResourceLoader.loadTexture("superman.png");
 		positionData = positionBuffer(vertices.length);
 		colorData = colorBuffer(vertices.length);
-		finalizeBuffer(positionData, vertices);
+		finalizeBuffer(positionData, colorData, vertices);
 		
 	}
 
@@ -88,11 +89,13 @@ public class OBJModel extends ShapeNode implements App{
 	}
 	
 	// Buffers mit TextureInfo (wurden schon in Texture gemacht)
-	public void finalizeBuffer(FloatBuffer positionData,Vertex[] vertices) {
+	public void finalizeBuffer(FloatBuffer positionData,FloatBuffer colorData, Vertex[] vertices) {
 			for (Vertex v : vertices) {
 				positionData.put(v.position.asArray());
+				colorData.put(v.color.asArray());
 			}
 			positionData.rewind();
+			colorData.rewind();
 		}
 
 

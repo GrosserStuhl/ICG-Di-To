@@ -198,7 +198,7 @@ public class ResourceLoader {
 //			}
 			
 			
-			col = createWhiteColor(positionData.length);
+			col = createWhiteColor(vData.size());
 			
 			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);// Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
 			return new Mesh(positionData,col,vertices); //, createTextureVertexData(texCoord), vertices);
@@ -290,7 +290,7 @@ public class ResourceLoader {
 		Color[] c = new Color[length];
 		
 		for (int i = 0; i < c.length; i++) {
-			c[i] = vecmath.color(220, 220, 220);
+			c[i] = vecmath.color(1, 0, 0);
 		}
 		
 		return c;
