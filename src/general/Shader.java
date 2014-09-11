@@ -32,6 +32,8 @@ public class Shader extends Node {
 	public static int colorAttribIdx = 1;
 	public static int textureAttribIdx = 2;
 
+	
+	
 	public Shader() {
 
 		// Set background color to black.
@@ -66,7 +68,56 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
-		glBindAttribLocation(program, textureAttribIdx, "tex");
+//		glBindAttribLocation(program, textureAttribIdx, "tex");
+
+		// Link the shader program.
+		glLinkProgram(program);
+		Util.checkLinkage(program);
+
+		// Bind the matrix uniforms to locations on this shader program. This
+		// needs
+		// to be done *after* linking the program.
+		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
+		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
+		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
+	}
+	
+	
+	public Shader(String fileNameVS, String fileNameFS) {
+
+		// Set background color to black.
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+		// Enable depth testing.
+		glEnable(GL11.GL_DEPTH_TEST);
+
+		// Create and compile the vertex shader.
+		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
+		// load vertexShader
+		glShaderSource(vs, ResourceLoader.loadShader(fileNameVS));
+		glCompileShader(vs);
+		Util.checkCompilation(vs);
+
+		// Create and compile the fragment shader.
+		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
+		//load fragmentShader
+		glShaderSource(fs,  ResourceLoader.loadShader(fileNameFS));
+		glCompileShader(fs);
+		Util.checkCompilation(fs);
+
+		// Create the shader program and link vertex and fragment shader
+		// together.
+		program = glCreateProgram();
+		glAttachShader(program, vs);
+		glAttachShader(program, fs);
+
+		// Bind the vertex attribute data locations for this shader program. The
+		// shader expects to get vertex and color data from the mesh. This needs
+		// to
+		// be done *before* linking the program.
+		glBindAttribLocation(program, vertexAttribIdx, "vertex");
+		glBindAttribLocation(program, colorAttribIdx, "color");
+		glBindAttribLocation(program, textureAttribIdx, "texcoord");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -107,6 +158,10 @@ public class Shader extends Node {
 	
 	public static void setTextureAttribIdx(int textureAttribIdx) {
 		Shader.textureAttribIdx = textureAttribIdx;
+	}
+	
+	public int getProgram() {
+		return program;
 	}
 	
 	

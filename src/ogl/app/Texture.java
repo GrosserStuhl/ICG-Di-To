@@ -78,6 +78,8 @@ public final class Texture {
 		IntBuffer objs = BufferUtils.createIntBuffer(1);
 		glGenTextures(objs);
 		obj = objs.get(0);
+		
+		System.out.println("obj "+obj);
 
 		// Bind the texture object
 		bind();
@@ -112,6 +114,10 @@ public final class Texture {
 
 	public ByteBuffer getData() {
 		return data;
+	}
+	
+	public int getObj() {
+		return obj;
 	}
 
 }

@@ -19,6 +19,7 @@ public class Root extends Node implements App {
 	}
 
 	private Shader shader;
+	private Shader textureShader;
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -110,6 +111,8 @@ public class Root extends Node implements App {
 	public void init() {
 
 		shader = new Shader();
+//		textureShader = new Shader("simpleTexture.vs","simpleTexture.fs");
+		
 
 		RowNode row_one = new RowNode();
 		RowNode row_two = new RowNode();
@@ -137,8 +140,7 @@ public class Root extends Node implements App {
 		row_one.addNode(pyr);
 
 //		Mesh m = ResourceLoader.loadMesh("superman.obj");
-//		Texture t = ResourceLoader.loadTexture("superman.png");
-//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
 //		row_one.addNode(monkeyMod);
 
 		for (Node child : getChildNodes()) {

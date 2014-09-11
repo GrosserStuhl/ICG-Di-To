@@ -3,8 +3,7 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -16,16 +15,20 @@ import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
 
 public class OBJModel extends ShapeNode implements App{
 
 	private Texture t;
+	private Shader s;
 	
 	
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t) {
+	public OBJModel(Vertex[] vertices, Shader shader) {
 		super(vertices, shader);
 		
-		this.t = t;
+		this.s= shader;
 	}
 	
 
@@ -33,7 +36,8 @@ public class OBJModel extends ShapeNode implements App{
 
 	@Override
 	public void init() {
-		
+
+		t = ResourceLoader.loadTexture("superman.png");
 		positionData = positionBuffer(vertices.length);
 		finalizeBuffer(positionData, vertices);
 		
@@ -54,6 +58,16 @@ public class OBJModel extends ShapeNode implements App{
 //				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
 			
+		// für den sampler
+//		glUniform1i(glGetUniformLocation(s.getProgram(), "img"));
+		
+		
+				GL13.glActiveTexture(GL13.GL_TEXTURE0);
+				int location = GL20.glGetUniformLocation(s.getProgram(), "img");
+				GL20.glUniform1i(location, 0);
+				// 0 because it is to use texture unit 0
+				
+				t.bind();
 		
 				Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 						angle);
