@@ -22,7 +22,7 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
  * button status and mouse position.
  */
 public final class Input {
-  private Set<Integer> keys = new HashSet<Integer>();
+  private Set<Integer> keysDown = new HashSet<Integer>();
   private Set<Integer> buttons = new HashSet<Integer>();
   private Set<Integer> toggled = new HashSet<Integer>();
   private Vector mpos = vecmath.vector(0, 0, 0);
@@ -36,9 +36,9 @@ public final class Input {
    * @return Returns true if the key is currently pressed.
    */
   public boolean isKeyDown(int k) {
-    return keys.contains(k);
+    return keysDown.contains(k);
   }
-
+  
   /**
    * Determine if the specified mouse button is currently pressed.
    * 
@@ -96,14 +96,14 @@ public final class Input {
       int k = Keyboard.getEventKey();
       if (Keyboard.getEventKeyState()) {
         // Key pressed.
-        keys.add(k);
+        keysDown.add(k);
         if (toggled.contains(k))
           toggled.remove(k);
         else
           toggled.add(k);
       } else {
         // Key released.
-        keys.remove(k);
+        keysDown.remove(k);
       }
     }
     if (Mouse.next()) {

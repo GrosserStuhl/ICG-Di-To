@@ -56,25 +56,25 @@ public class Root extends Node implements App {
 	
 	// The positions of the cube vertices.
 		private Vector[] p_row2 = { 
-				vec(-w2, -h2, -d2 - 10), 
-				vec(w2, -h2, -d2 - 10),
-				vec(w2, h2, -d2 - 10), 
-				vec(-w2, h2, -d2 - 10), 
-				vec(w2, -h2, d2 - 10),
-				vec(-w2, -h2, d2 - 10), 
-				vec(-w2, h2, d2 - 10), 
-				vec(w2, h2, d2 - 10) };
+				vec(-w2, -h2, -d2 - 15), 
+				vec(w2, -h2, -d2 - 15),
+				vec(w2, h2, -d2 - 15), 
+				vec(-w2, h2, -d2 - 15), 
+				vec(w2, -h2, d2 - 15),
+				vec(-w2, -h2, d2 - 15), 
+				vec(-w2, h2, d2 - 15), 
+				vec(w2, h2, d2 - 15) };
 		
 		// The positions of the cube vertices.
 		private Vector[] p_row3 = { 
-				vec(-w2, -h2, -d2 - 20), 
-				vec(w2, -h2, -d2 - 20),
-				vec(w2, h2, -d2 - 20), 
-				vec(-w2, h2, -d2 - 20), 
-				vec(w2, -h2, d2 - 20),
-				vec(-w2, -h2, d2 - 20), 
-				vec(-w2, h2, d2 - 20), 
-				vec(w2, h2, d2 - 20) };
+				vec(-w2, -h2, -d2 - 30), 
+				vec(w2, -h2, -d2 - 30),
+				vec(w2, h2, -d2 - 30), 
+				vec(-w2, h2, -d2 - 30), 
+				vec(w2, -h2, d2 - 30),
+				vec(-w2, -h2, d2 - 30), 
+				vec(-w2, h2, d2 - 30), 
+				vec(w2, h2, d2 - 30) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
