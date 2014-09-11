@@ -33,6 +33,7 @@ public class Camera extends Node {
 	private Vector oldEye;
 	private Vector oldCenter;
 	private Set<Integer> keysUp = new HashSet<Integer>();
+	private boolean animation = false;
 
 	public Camera(ArrayList<Node> rootChildren, Shader shader) {
 		this.shader = shader;
@@ -80,6 +81,7 @@ public class Camera extends Node {
 			Display.destroy();
 			System.exit(0);
 		}
+		if(animation == false) {
 		if (input.isKeyToggled(Keyboard.KEY_M)) {
 			if (oldEye == null) {
 				oldEye = eye;
@@ -166,14 +168,16 @@ public class Camera extends Node {
 				if (isKeyUp(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
 
-					if (rowIndex < 2) {
-						rowIndex++;
-
-						// Bewege eine Reihe hinter
-						center = center.add(vecmath.vector(0, 0, ROW_DISTANCE));
-						eye = center.sub(vecmath.vector(0, 0, -10));
-						setSelection();
-					}
+//					if (rowIndex < 2) {
+//						rowIndex++;
+//
+//						// Bewege eine Reihe hinter
+//						center = center.add(vecmath.vector(0, 0, ROW_DISTANCE));
+//						eye = center.sub(vecmath.vector(0, 0, -10));
+//						setSelection();
+//					}
+				animation = true;
+				System.out.println("animation activated");
 				}
 			} else if (!keysUp.contains(Keyboard.KEY_W))
 				keysUp.add(Keyboard.KEY_W);
@@ -231,6 +235,14 @@ public class Camera extends Node {
 					vecmath.vector(0f, 1f, 0f));
 			shader.getViewMatrixUniform().set(viewMatrix);
 			// setView();
+		}} else {
+			center = center.add(vecmath.vector(0, 0, z *= -elapsed));
+			eye = center.sub(vecmath.vector(0, 0, -10));
+			viewMatrix = vecmath.lookatMatrix(eye, center,
+					vecmath.vector(0f, 1f, 0f));
+			shader.getViewMatrixUniform().set(viewMatrix);
+			if(z<-20)
+				animation = false;
 		}
 	}
 
