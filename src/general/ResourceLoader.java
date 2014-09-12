@@ -174,10 +174,11 @@ public class ResourceLoader {
 			}
 			meshReader.close();
 			
-			System.out.println(vData.size());
 			
 			Vector[] positionData = createMeshVertexData(vData);
 			Color[] col = null;
+			
+			
 			
 			//create arrays
 //			int[] faces = toIntArray(fData);

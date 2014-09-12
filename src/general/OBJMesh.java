@@ -20,13 +20,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 
-public class OBJModel extends ShapeNode implements App{
+public class OBJMesh extends ShapeNode implements App{
 
 	private Texture t;
 	private Shader s;
 	
 	
-	public OBJModel(Vertex[] vertices, Shader shader) {
+	public OBJMesh(Vertex[] vertices, Shader shader) {
 		super(vertices, shader);
 		
 		this.s= shader;
@@ -81,8 +81,8 @@ public class OBJModel extends ShapeNode implements App{
 				 
 				 
 				 //last number offset
-				 glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0, t.getData().asFloatBuffer());
-				 glEnableVertexAttribArray(Shader.getTextureAttribIdx());
+				 glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+				 glEnableVertexAttribArray(Shader.getColorAttribIdx());
 				
 				 glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		
