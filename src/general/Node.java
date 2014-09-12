@@ -30,6 +30,8 @@ public abstract class Node implements App {
 		childNodes.remove(node);
 	}
 
+	public abstract void display(int width, int height, Matrix parentMatrix);
+
 	public String getName() {
 		return name;
 	}

@@ -66,19 +66,16 @@ public class Cube extends ShapeNode implements App {
 	}
 
 	@Override
-	public void display(int width, int height) {
-
-
-		
+	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
 		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 				angle);
-		this.setTransformation(modelMatrix);
+		this.setTransformation(parentMatrix.mult(modelMatrix));
 
 		// Activate the shader program and set the transformation matricies to
 		// the
 		// uniform variables.
-		getShader().getModelMatrixUniform().set(modelMatrix);
+		getShader().getModelMatrixUniform().set(getTransformation());
 
 		
 		

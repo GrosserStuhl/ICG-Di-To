@@ -29,29 +29,21 @@ public class Pyramid extends ShapeNode {
 	}
 
 	@Override
-	public void display(int width, int height) {
-
+	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
 		// Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 0, 1),
 		// angle);
-		Matrix modelMatrix = vecmath.translationMatrix(-vertices[0]
-				.getPosition().x(), -vertices[0].getPosition().y(), -vertices[0]
-				.getPosition().z());
-//		getShader().getModelMatrixUniform().set(
-//				modelMatrix.mult(vecmath.rotationMatrix(
-//						vecmath.vector(1, 0, 1), angle)));
-		getShader().getModelMatrixUniform().set(
-				modelMatrix.mult(vecmath.translationMatrix(vertices[0]
-						.getPosition().x(), vertices[0].getPosition().y(), vertices[0]
-								.getPosition().z())));
-		getShader().getModelMatrixUniform().set(
-				modelMatrix.mult(vecmath.rotationMatrix(
-						vecmath.vector(1, 0, 1), angle)));
+		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(vecmath.vector(5, 0, 0)));
+		Matrix trans = modelMatrix.getTranslation();
+		modelMatrix = modelMatrix.mult(trans.invertRigid());
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(0, 1, 0, angle));
+		modelMatrix = modelMatrix.mult(trans);
+		setTransformation(modelMatrix);
 
 		// Activate the shader program and set the transformation matricies to
 		// the
 		// uniform variables.
-		getShader().getModelMatrixUniform().set(modelMatrix);
+		getShader().getModelMatrixUniform().set(getTransformation());
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.

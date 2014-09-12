@@ -5,6 +5,7 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 import java.nio.FloatBuffer;
 
 import ogl.app.Input;
+import ogl.vecmath.Matrix;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
@@ -40,7 +41,12 @@ public abstract class ShapeNode extends Node {
 			// Increase the angle with a speed of 90 degrees per second.
 			angle += 90 * elapsed;
 	}
-
+	
+	@Override 
+	public void display(int width, int height) {
+		
+	}
+	
 	public Shader getShader() {
 		return shader;
 	}
@@ -82,9 +88,6 @@ public abstract class ShapeNode extends Node {
 		positionData.rewind();
 		colorData.rewind();
 	}
-	
-	
-	
 
 	@Override
 	public void setSelected() {

@@ -34,11 +34,20 @@ public class Camera extends Node {
 	private Vector oldCenter;
 	private Set<Integer> keysUp = new HashSet<Integer>();
 	private boolean animation = false;
+	private int animDirection;
+	private boolean w = false;
 
 	public Camera(ArrayList<Node> rootChildren, Shader shader) {
 		this.shader = shader;
 		this.rootChildren = rootChildren;
 	}
+
+	// (i*m1*m2)^-1
+	// ====================
+	// disp() {
+	// viewM = root.findCam();
+	// setVM(viewM)
+	// root.display(transMatrix) }
 
 	public void update() {
 		// Vector eyeAdd = vecmath.vector(0, 0, 0);
@@ -75,7 +84,6 @@ public class Camera extends Node {
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-
 		// System.out.println(eye);
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			Display.destroy();
@@ -151,8 +159,6 @@ public class Camera extends Node {
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 					center = center.add(vecmath.vector(0, -turnSpeed, 0));
 				}
-
-				// updateCamera();
 			} else {
 				if (oldEye != null) {
 					eye = oldEye;
@@ -162,33 +168,42 @@ public class Camera extends Node {
 				oldCenter = null;
 
 				if (input.isKeyDown(Keyboard.KEY_W)) {
-					if (isKeyUp(Keyboard.KEY_W) == true) {
-						keysUp.remove(Keyboard.KEY_W);
-
-						if (rowIndex < 2) {
-							rowIndex++;
-
-							// Bewege eine Reihe hinter
-							// center = center.add(vecmath.vector(0, 0,
-							// ROW_DISTANCE));
-							// eye = center.sub(vecmath.vector(0, 0, -10));
-							animation = true;
-							setSelection();
-						}
-					}
+					// if (isKeyUp(Keyboard.KEY_W) == true) {
+					// keysUp.remove(Keyboard.KEY_W);
+					//
+					// if (animation == false) {
+					// if (rowIndex < 2) {
+					// rowIndex++;
+					//
+					// // Bewege eine Reihe hinter
+					// // center = center.add(vecmath.vector(0, 0,
+					// // ROW_DISTANCE));
+					// // eye = center.sub(vecmath.vector(0, 0, -10));
+					// animation = true;
+					// animDirection = 0;
+					// setSelection();
+					// }
+					// }
+					// }
+					w = true;
+					setTransformation(getTransformation().mult(vecmath.translationMatrix(0, 0, elapsed*5)));
 				} else if (!keysUp.contains(Keyboard.KEY_W))
 					keysUp.add(Keyboard.KEY_W);
 				if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 					if (isKeyUp(Keyboard.KEY_S) == true) {
 						keysUp.remove(Keyboard.KEY_S);
 
-						if (rowIndex > 0) {
-							rowIndex--;
-							// Bewege eine Reihe hinter
-							center = center.sub(vecmath.vector(0, 0,
-									ROW_DISTANCE));
-							eye = center.sub(vecmath.vector(0, 0, -10));
-							setSelection();
+						if (animation == false) {
+							if (rowIndex > 0) {
+								rowIndex--;
+								// // Bewege eine Reihe hinter
+								// center = center.sub(vecmath.vector(0, 0,
+								// ROW_DISTANCE));
+								// eye = center.sub(vecmath.vector(0, 0, -10));
+								animation = true;
+								animDirection = 1;
+								setSelection();
+							}
 						}
 					}
 				} else if (!keysUp.contains(Keyboard.KEY_S))
@@ -197,14 +212,19 @@ public class Camera extends Node {
 					if (isKeyUp(Keyboard.KEY_D) == true) {
 						keysUp.remove(Keyboard.KEY_D);
 
-						if (selectionIndex < 2) {
-							selectionIndex++;
+						if (animation == false) {
+							if (selectionIndex < 2) {
+								selectionIndex++;
 
-							// Bewege eine Position nach rechts
-							center = center.add(vecmath.vector(OBJ_DISTANCE, 0,
-									0));
-							eye = center.sub(vecmath.vector(0, 0, -10));
-							setSelection();
+								// // Bewege eine Position nach rechts
+								// center =
+								// center.add(vecmath.vector(OBJ_DISTANCE, 0,
+								// 0));
+								// eye = center.sub(vecmath.vector(0, 0, -10));
+								animation = true;
+								animDirection = 2;
+								setSelection();
+							}
 						}
 					}
 				} else if (!keysUp.contains(Keyboard.KEY_D))
@@ -213,43 +233,40 @@ public class Camera extends Node {
 					if (isKeyUp(Keyboard.KEY_A) == true) {
 						keysUp.remove(Keyboard.KEY_A);
 
-						if (selectionIndex > 0) {
-							selectionIndex--;
+						if (animation == false) {
+							if (selectionIndex > 0) {
+								selectionIndex--;
 
-							// Bewege eine Position nach links
-							center = center.sub(vecmath.vector(OBJ_DISTANCE, 0,
-									0));
-							eye = center.sub(vecmath.vector(0, 0, -10));
-							setSelection();
+								// // Bewege eine Position nach links
+								// center =
+								// center.sub(vecmath.vector(OBJ_DISTANCE, 0,
+								// 0));
+								// eye = center.sub(vecmath.vector(0, 0, -10));
+								animation = true;
+								animDirection = 3;
+								setSelection();
+							}
 						}
 					}
 				} else if (!keysUp.contains(Keyboard.KEY_A))
 					keysUp.add(Keyboard.KEY_A);
 				if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-					center = center.add(vecmath.vector(-0.02f, 0, 0));
+//					center = center.add(vecmath.vector(-0.02f, 0, 0));
+					w = true;
+					Matrix trans = getTransformation().getTranslation();
+					Vector positon = getTransformation().getPosition();
+					setTransformation(getTransformation().mult(trans.invertRigid()));
+					setTransformation(getTransformation().mult(vecmath.rotationMatrix(0, 1, 0, -elapsed*10)));
+					setTransformation(getTransformation().mult(trans));
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 					center = center.add(vecmath.vector(0.02f, 0, 0));
 				}
-				// setView();
 			}
 		} else {
-			float distance = elapsed * 10;
-			center = center.sub(vecmath.vector(0, 0, distance));
-			System.out.println(center);
-			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.z() < ROW_DISTANCE * rowIndex)
-				animation = false;
 			if (animation == true)
-				System.out.println("animating");
+				animate(elapsed, animDirection);
 		}
-	}
-
-	@Override
-	public void display(int width, int height) {
-		viewMatrix = vecmath.lookatMatrix(eye, center,
-				vecmath.vector(0f, 1f, 0f));
-		shader.getViewMatrixUniform().set(viewMatrix);
 	}
 
 	private void setSelection() {
@@ -259,6 +276,48 @@ public class Camera extends Node {
 			System.out.println("rootchild at 0 is null");
 		rootChildren.get(rowIndex).getChildNodes().get(selectionIndex)
 				.setSelected();
+	}
+
+	private void animate(float elapsed, int direction) {
+		// System.out.println("animating");
+		float distance;
+		switch (direction) {
+		case 0: // Vorwärts
+			distance = elapsed * 10;
+			center = center.sub(vecmath.vector(0, 0, distance));
+			System.out.println(center);
+			eye = center.sub(vecmath.vector(0, 0, -10));
+			if (center.z() < ROW_DISTANCE * rowIndex)
+				animation = false;
+			break;
+
+		case 1: // Rückwärts
+			distance = elapsed * 10;
+			center = center.add(vecmath.vector(0, 0, distance));
+			System.out.println(center);
+			eye = center.sub(vecmath.vector(0, 0, -10));
+			if (center.z() > ROW_DISTANCE * rowIndex)
+				animation = false;
+			break;
+
+		case 2: // Rechts
+			distance = elapsed * 5;
+			center = center.add(vecmath.vector(distance, 0, 0));
+			System.out.println(center);
+			eye = center.sub(vecmath.vector(0, 0, -10));
+			if (center.x() > OBJ_DISTANCE * selectionIndex)
+				animation = false;
+			break;
+
+		default: // Links
+			distance = elapsed * 5;
+			center = center.sub(vecmath.vector(distance, 0, 0));
+			System.out.println(center);
+			eye = center.sub(vecmath.vector(0, 0, -10));
+			if (center.x() < OBJ_DISTANCE * selectionIndex)
+				animation = false;
+			break;
+		}
 	}
 
 	private Matrix lookAtMatrix(Vector eye, Vector target, Vector up) {
@@ -317,5 +376,21 @@ public class Camera extends Node {
 
 	private boolean isKeyUp(int key) {
 		return keysUp.contains(key);
+	}
+
+	@Override
+	public void display(int width, int height, Matrix parentMatrix) {
+		if(w==false) 
+			setTransformation(parentMatrix.mult(vecmath.translationMatrix(vecmath
+					.vector(0, 0, -15))));
+//		viewMatrix = vecmath.lookatMatrix(eye, center,
+//				vecmath.vector(0f, 1f, 0f));
+		shader.getViewMatrixUniform().set(getTransformation());
+	}
+
+	@Override
+	public void display(int width, int height) {
+		// TODO Auto-generated method stub
+
 	}
 }

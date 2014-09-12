@@ -150,9 +150,9 @@ public class Root extends Node implements App {
 		textureShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
 
-		RowNode row_one = new RowNode();
-		RowNode row_two = new RowNode();
-		RowNode row_three = new RowNode();
+		RowNode row_one = new RowNode(0);
+		RowNode row_two = new RowNode(1);
+		RowNode row_three = new RowNode(2);
 		addNode(row_one);
 		addNode(row_two);
 		addNode(row_three);
@@ -199,6 +199,12 @@ public class Root extends Node implements App {
 
 	@Override
 	public void display(int width, int height) {
+		setTransformation(vecmath.identityMatrix());
+//		setTransformation(vecmath.matrix(
+//				1, 0, 0, 0, 
+//				0, 1, 0, 0, 
+//				0, 0, 1, 0, 
+//				0, 0, 0, 1));
 		// Adjust the the viewport to the actual window size. This
 		// makes the
 		// rendered image fill the entire window.
@@ -215,6 +221,7 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
+		
 
 		// The inverse camera transformation. World space to camera
 		// space.
@@ -234,8 +241,14 @@ public class Root extends Node implements App {
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 
 		for (Node child : getChildNodes()) {
-			child.display(width, height);
+			child.display(width, height, getTransformation());
 		}
+	}
+
+	@Override
+	public void display(int width, int height, Matrix parentMatrix) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

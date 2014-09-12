@@ -1,13 +1,15 @@
 package general;
 
 import ogl.app.Input;
+import ogl.vecmath.Matrix;
+import static ogl.vecmathimp.FactoryDefault.vecmath;
 
 public class RowNode extends Node {
 
+	private int rowIndex;
 
-//KOmmentar für TOM
-	public RowNode() {
-
+	public RowNode(int rowIndex) {
+		this.rowIndex = rowIndex;
 	}
 
 	@Override
@@ -27,9 +29,15 @@ public class RowNode extends Node {
 
 	@Override
 	public void display(int width, int height) {
-		for (Node child : getChildNodes()) {
-			child.display(width, height);
-		}
+
 	}
 
+	@Override
+	public void display(int width, int height, Matrix parentMatrix) {
+		setTransformation(vecmath.translationMatrix(0, 0, rowIndex*20));
+		
+		for (Node child : getChildNodes()) {
+			child.display(width, height, getTransformation());
+		}
+	}
 }

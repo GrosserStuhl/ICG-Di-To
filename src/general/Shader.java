@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import ogl.app.Input;
 import ogl.app.MatrixUniform;
 import ogl.app.Util;
+import ogl.vecmath.Matrix;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -189,6 +190,13 @@ public class Shader extends Node {
 
 	@Override
 	public void display(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void display(int width, int height, Matrix parentMatrix) {
 		// TODO Auto-generated method stub
 		
 	}
