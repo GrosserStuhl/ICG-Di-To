@@ -3,7 +3,6 @@ package shapes;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_COORD_ARRAY;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
@@ -67,6 +66,9 @@ public class Cube extends ShapeNode implements App {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
+		
+		t.bind();
+		
 		// The modeling transformation. Object space to world space.
 		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 				angle);
@@ -76,8 +78,6 @@ public class Cube extends ShapeNode implements App {
 		// the
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
-
-		
 		
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.

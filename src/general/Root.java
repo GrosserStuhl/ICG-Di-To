@@ -181,9 +181,13 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_one.addNode(pyr);
 
-		Mesh m = ResourceLoader.loadMesh("smallSuper.obj");
-		OBJMesh monkeyMod = new OBJMesh(m.getVertices(), shader);
+//		Mesh m = ResourceLoader.loadMesh("testMoon.obj");
+		
+		Mesh m = ResourceLoader.loadMesh("test.obj");
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
 		row_one.addNode(monkeyMod);
+		
+		
 
 		for (Node child : getChildNodes()) {
 			child.init();
@@ -232,9 +236,9 @@ public class Root extends Node implements App {
 		// matricies to
 		// the
 		// uniform variables.
-		shader.activate();
-		// shader.getViewMatrixUniform().set(viewMatrix);
-		shader.getProjectionMatrixUniform().set(projectionMatrix);
+//		shader.activate();
+//		// shader.getViewMatrixUniform().set(viewMatrix);
+//		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		
 		
 		textureShader.activate();

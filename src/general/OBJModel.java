@@ -12,7 +12,9 @@ import ogl.app.Input;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector2f;
 
 public class OBJModel extends ShapeNode implements App {
 
@@ -24,16 +26,24 @@ public class OBJModel extends ShapeNode implements App {
 
 		this.s = shader;
 	}
+	
+	FloatBuffer positionData;
+	FloatBuffer textureData;
+	
 
 	@Override
 	public void init() {
 
-		// t = ResourceLoader.loadTexture("superman.png");
-		positionData = positionBuffer(vertices.length);
-		colorData = colorBuffer(vertices.length);
-		finalizeBuffer(positionData, colorData, vertices);
+//		t = ResourceLoader.loadTexture("MoonMap2.jpg");
+		t = ResourceLoader.loadTexture("brick.jpg");
+		positionData  = positionBuffer(vertices.length);
+		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
+		
+		finalizeTextured(positionData,textureData,vertices);
 
 	}
+	
+	
 
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -65,7 +75,9 @@ public class OBJModel extends ShapeNode implements App {
 		// GL20.glUniform1i(location, 0);
 		// // 0 because it is to use texture unit 0
 		//
-		// t.bind();
+		
+		//ohne t.bind() funktioniert es nicht!!!
+		t.bind();
 
 		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 				angle);
@@ -78,11 +90,39 @@ public class OBJModel extends ShapeNode implements App {
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
 
 		// last number offset
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-				colorData);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
+				textureData);
+		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
+		
+		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
+		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
+	}
+	
+	
+	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
+		for (Vertex v : vertices) {
+			
+			if(v.getPosition() != null)
+			positionData.put(v.getPosition().asArray());
+			
+			if(v.getTextureCoord() != null)
+			textureData.put(asArray(v.getTextureCoord()));
+			
+		}
+		positionData.rewind();
+		textureData.rewind();
+	}
+	
+	public float[] asArray(Vector2f t){
+
+		float[] res = new float[2];
+		res[0] = t.getX();
+		res[1] = t.getY();
+		
+		return res;
+		
 	}
 
 }

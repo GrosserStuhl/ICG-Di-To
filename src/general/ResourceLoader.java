@@ -176,7 +176,7 @@ public class ResourceLoader {
 			
 			
 			Vector[] positionData = createMeshVertexData(vData);
-			Color[] col = null;
+//			Color[] col = null;
 			
 			
 			
@@ -199,10 +199,14 @@ public class ResourceLoader {
 //			}
 			
 			
-			col = createWhiteColor(vData.size());
+//			col = createWhiteColor(vData.size());
 			
-			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);// Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
-			return new Mesh(positionData,col,vertices); //, createTextureVertexData(texCoord), vertices);
+			
+			Vertex[] vertices = Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
+			return new Mesh(positionData,createTextureVertexData(texCoord),vertices);
+			
+//			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);
+//			return new Mesh(positionData,col,vertices); 
 			
 			
 		} catch(Exception e){
@@ -234,7 +238,7 @@ public class ResourceLoader {
 		OBJIndex result = new OBJIndex();
 		result.vertexIndex = Integer.parseInt(values[0]) -1;
 		result.texCoordIndex = Integer.parseInt(values[1]) -1;
-//		result.normalIndex = Integer.parseInt(values[2]) -1;
+		result.normalIndex = Integer.parseInt(values[2]) -1;
 		
 		return result;
 		
