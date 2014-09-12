@@ -68,7 +68,7 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
-//		glBindAttribLocation(program, textureAttribIdx, "tex");
+		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -80,6 +80,13 @@ public class Shader extends Node {
 		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
+	}
+	
+	public void activate() {
+		// Activate the shader program and set the transformation matricies to
+		// the
+		// uniform variables.
+		glUseProgram(program);
 	}
 	
 	
@@ -117,7 +124,7 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
-		glBindAttribLocation(program, textureAttribIdx, "texcoord");
+		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -166,12 +173,7 @@ public class Shader extends Node {
 	
 	
 
-	public void activate() {
-		// Activate the shader program and set the transformation matricies to
-		// the
-		// uniform variables.
-		glUseProgram(program);
-	}
+	
 
 	@Override
 	public void init() {

@@ -76,6 +76,8 @@ public abstract class ShapeNode extends Node {
 		for (Vertex v : vertices) {
 			positionData.put(v.position.asArray());
 			colorData.put(v.color.asArray());
+			
+			
 		}
 		positionData.rewind();
 		colorData.rewind();

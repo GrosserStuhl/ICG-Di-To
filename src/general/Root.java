@@ -2,6 +2,9 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.util.vector.Vector2f;
+
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
@@ -38,6 +41,10 @@ public class Root extends Node implements App {
 	private Color col(float r, float g, float b) {
 		return vecmath.color(r, g, b);
 	}
+	
+	private Vector2f v2f(float x, float y){
+		return new Vector2f(x,y);
+	}
 
 	//
 	// 6 ------- 7
@@ -50,9 +57,15 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+	private Vector[] p = { 
+			vec(-w2, -h2, -d2),
+			vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), 
+			vec(-w2, h2, -d2), 
+			vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), 
+			vec(-w2, h2, d2), 
+			vec(w2, h2, d2) };
 	
 	// The positions of the cube vertices.
 		private Vector[] p_row2 = { 
@@ -77,9 +90,28 @@ public class Root extends Node implements App {
 				vec(w2, h2, d2 - 30) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
+	private Color[] c = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0),
+			col(0, 1, 0),
 			col(0, 1, 0) };
+	
+	
+	private Vector2f[] cubeTexture = {
+			v2f(1, 0), 
+			v2f(1, 0), 
+			v2f(1, 0),
+			v2f(1, 0), 
+			v2f(0, 1), 
+			v2f(0, 1),
+			v2f(0, 1),
+			v2f(0, 1)
+	};
+	
 
 	// Pyramid
 
@@ -99,8 +131,12 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0) };
+	private Color[] colorT = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0) };
 
 	public Root() {
 
@@ -111,7 +147,7 @@ public class Root extends Node implements App {
 	public void init() {
 
 		shader = new Shader();
-//		textureShader = new Shader("simpleTexture.vs","simpleTexture.fs");
+		textureShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
 
 		RowNode row_one = new RowNode();
@@ -124,14 +160,20 @@ public class Root extends Node implements App {
 		Camera cam = new Camera(getChildNodes(), shader);
 		addNode(cam);
 
-		vertices = Vertex.cubeVertices(p, c);
-		Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
-		Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
+		vertices = Vertex.cubeTexture(p, cubeTexture);
+		// cube mit color ohne textur
+//		Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
+//		Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
+		
+		Vertex[] vertices_cube2 = Vertex.cubeTexture(p_row2, cubeTexture);
+		Vertex[] vertices_cube3 = Vertex.cubeTexture(p_row3, cubeTexture);
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
-		Cube cube = new Cube(vertices, shader);
+		Cube cube = new Cube(vertices, textureShader);
 		row_one.addNode(cube);
+		
+		
 		Cube cube2 = new Cube(vertices_cube2, shader);
 		row_two.addNode(cube2);
 		Cube cube3 = new Cube(vertices_cube3, shader);
@@ -140,7 +182,7 @@ public class Root extends Node implements App {
 		row_one.addNode(pyr);
 
 		Mesh m = ResourceLoader.loadMesh("smallSuper.obj");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
+		OBJMesh monkeyMod = new OBJMesh(m.getVertices(), shader);
 		row_one.addNode(monkeyMod);
 
 		for (Node child : getChildNodes()) {
@@ -186,6 +228,10 @@ public class Root extends Node implements App {
 		shader.activate();
 		// shader.getViewMatrixUniform().set(viewMatrix);
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
+		
+		
+		textureShader.activate();
+		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 
 		for (Node child : getChildNodes()) {
 			child.display(width, height);

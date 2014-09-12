@@ -6,13 +6,13 @@ attribute vec3 vertex;
 attribute vec3 color;
 varying vec3 fcolor;
 
-attribute vec2 tex;
-varying vec2 ftex;
+attribute vec2 textureCoord;
+varying vec2 ftextureCoord;
 
 void main() {
 
 	fcolor = color;
-	ftex = tex;
+	ftextureCoord = textureCoord;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
 			
 			

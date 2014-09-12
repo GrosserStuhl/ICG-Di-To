@@ -3,50 +3,58 @@ package shapes;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_COORD_ARRAY;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+
+import java.nio.FloatBuffer;
+
+import general.ResourceLoader;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
-
 import ogl.app.App;
 import ogl.app.Input;
+import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Cube extends ShapeNode implements App {
 
+	
+	private Shader s;
+	
 	public Cube(Vertex[] vertices, Shader shader) {
 		super(vertices, shader);
+		this.s = shader;
 	}
+	
 
-	// private FloatBuffer positionData2;
-	//
-	// private FloatBuffer positionDataT;
-	// private FloatBuffer colorDataT;
-
-	// Mesh DATA
-	// private Vertex[] meshVertices;
-	// private FloatBuffer positionDataM;
-	// private FloatBuffer colorDataM;
-
+	FloatBuffer textureData;
+	Texture t;
+	
 	public void init() {
 
 		// Prepare the vertex data arrays.
 		// Compile vertex data into a Java Buffer data structures that can be
 		// passed to the OpenGL API efficently.
 		positionData = positionBuffer(vertices.length);
+		textureData = BufferUtils.createFloatBuffer(vertices.length * 2); // because of Vector2f
+		
 		colorData = colorBuffer(vertices.length);
-		finalizeBuffers(positionData, colorData, vertices);
+		
+		
+		t = ResourceLoader.loadTexture("wood.jpg");
+		
+		finalizeTextured(positionData,textureData,vertices);
+		
+//		finalizeBuffers(positionData, colorData, vertices);
 
-		// Mesh blenderCube = ResourceLoader.loadMesh("monkeyMod.obj");
-		// meshVertices = Vertex.testVertices(blenderCube.getPositionData(),
-		// blenderCube.getColorData(), blenderCube.getFaceData());
-		// positionDataM = positionBuffer(meshVertices.length);
-		// colorDataM = colorBuffer(meshVertices.length);
-		// finalizeBuffers(positionDataM, colorDataM, meshVertices);
 	}
 
 	@Override
@@ -60,6 +68,8 @@ public class Cube extends ShapeNode implements App {
 	@Override
 	public void display(int width, int height) {
 
+
+		
 		// The modeling transformation. Object space to world space.
 		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
 				angle);
@@ -70,21 +80,52 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(modelMatrix);
 
+		
+		
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
+		
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-				colorData);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		
+		
+		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
+				textureData);
+		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
+		
+		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
+		GL20.glDisableVertexAttribArray(Shader.getTextureAttribIdx());
 
 		// getShader().getModelMatrixUniform().set(
 		// modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
 	}
+	
+	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
+		for (Vertex v : vertices) {
+			positionData.put(v.getPosition().asArray());
+			textureData.put(asArray(v.getTextureCoord()));
+			
+		}
+		positionData.rewind();
+		textureData.rewind();
+	}
+	
+	public float[] asArray(Vector2f t){
+
+		float[] res = new float[2];
+		res[0] = t.getX();
+		res[1] = t.getY();
+		
+		return res;
+		
+	}
+	
+	
+	
 
 	public Vector getLookAtVector() {
 		// Vordere linke Ecke

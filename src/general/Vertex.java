@@ -90,6 +90,16 @@ public class Vertex {
 		return "Vertex p:" + position + " Color:" + color;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static Vertex[] meshVertices(Vector[] p, Color[] c, int[] faces) {
 
 		Vertex[] vertices = new Vertex[faces.length];
@@ -136,6 +146,36 @@ public class Vertex {
 		return vertices;
 		
 	}
+
+	
+	
+	
+	public static Vertex[] cubeTexture(Vector[] p, Vector2f[] t) {
+		
+		Vertex[] vertices = {
+				// back (urspr. Front)
+				vt(p[0], t[0]), vt(p[1], t[1]), vt(p[4], t[4]),
+				// front (urspr. batk)
+				vt(p[2], t[2]), vt(p[4], t[4]), vt(p[3], t[3]),
+				// left
+				vt(p[4], t[4]), vt(p[0], t[0]), vt(p[3], t[3]),
+				// right
+				vt(p[1], t[1]), vt(p[2], t[2]), vt(p[4], t[4]),
+				// bottom
+				vt(p[3], t[3]), vt(p[2], t[2]), vt(p[1], t[1]),
+
+		/*
+		 * geht iwie auch ohne v(p[0], c[0])
+		 */};
+
+		return vertices;
+	}
+	
+	public Vector2f getTextureCoord() {
+		return textureCoord;
+	}
+	
+
 	
 
 	
