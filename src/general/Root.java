@@ -117,16 +117,16 @@ public class Root extends Node implements App {
 
 	private Vector[] t = {
 			// hinten links-unten
-			vec(-w2 + 3, -h2, -d2),
+			vec(-w2, -h2, -d2),
 			// hinten rechts-unten
-			vec(w2 + 3, -h2, -d2),
+			vec(w2, -h2, -d2),
 			// vorne rechts-unten
-			vec(w2 + 3, -h2, d2),
+			vec(w2, -h2, d2),
 			// vorne links-unten
-			vec(-w2 + 3, -h2, d2),
+			vec(-w2, -h2, d2),
 
 			// nach oben
-			vec(0 + 3, d2, 0)
+			vec(0, d2, 0)
 
 	};
 
