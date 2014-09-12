@@ -7,6 +7,8 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 public class RowNode extends Node {
 
 	private int rowIndex;
+	
+	//ddd
 
 	public RowNode(int rowIndex) {
 		this.rowIndex = rowIndex;
