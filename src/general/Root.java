@@ -8,7 +8,6 @@ import org.lwjgl.util.vector.Vector2f;
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
-import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
@@ -23,6 +22,8 @@ public class Root extends Node implements App {
 
 	private Shader shader;
 	private Shader textureShader;
+	private Camera cam;
+	private InputManager manager;
 
 	// Width, depth and height of the cube divided by 2.
 	float w2 = 0.5f;
@@ -41,9 +42,9 @@ public class Root extends Node implements App {
 	private Color col(float r, float g, float b) {
 		return vecmath.color(r, g, b);
 	}
-	
-	private Vector2f v2f(float x, float y){
-		return new Vector2f(x,y);
+
+	private Vector2f v2f(float x, float y) {
+		return new Vector2f(x, y);
 	}
 
 	//
@@ -57,61 +58,29 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { 
-			vec(-w2, -h2, -d2),
-			vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), 
-			vec(-w2, h2, -d2), 
-			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2), 
-			vec(w2, h2, d2) };
-	
+	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+
 	// The positions of the cube vertices.
-		private Vector[] p_row2 = { 
-				vec(-w2, -h2, -d2 - 15), 
-				vec(w2, -h2, -d2 - 15),
-				vec(w2, h2, -d2 - 15), 
-				vec(-w2, h2, -d2 - 15), 
-				vec(w2, -h2, d2 - 15),
-				vec(-w2, -h2, d2 - 15), 
-				vec(-w2, h2, d2 - 15), 
-				vec(w2, h2, d2 - 15) };
-		
-		// The positions of the cube vertices.
-		private Vector[] p_row3 = { 
-				vec(-w2, -h2, -d2 - 30), 
-				vec(w2, -h2, -d2 - 30),
-				vec(w2, h2, -d2 - 30), 
-				vec(-w2, h2, -d2 - 30), 
-				vec(w2, -h2, d2 - 30),
-				vec(-w2, -h2, d2 - 30), 
-				vec(-w2, h2, d2 - 30), 
-				vec(w2, h2, d2 - 30) };
+	private Vector[] p_row2 = { vec(-w2, -h2, -d2 - 15),
+			vec(w2, -h2, -d2 - 15), vec(w2, h2, -d2 - 15),
+			vec(-w2, h2, -d2 - 15), vec(w2, -h2, d2 - 15),
+			vec(-w2, -h2, d2 - 15), vec(-w2, h2, d2 - 15), vec(w2, h2, d2 - 15) };
+
+	// The positions of the cube vertices.
+	private Vector[] p_row3 = { vec(-w2, -h2, -d2 - 30),
+			vec(w2, -h2, -d2 - 30), vec(w2, h2, -d2 - 30),
+			vec(-w2, h2, -d2 - 30), vec(w2, -h2, d2 - 30),
+			vec(-w2, -h2, d2 - 30), vec(-w2, h2, d2 - 30), vec(w2, h2, d2 - 30) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
-			col(0, 1, 0),
+	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
-	
-	
-	private Vector2f[] cubeTexture = {
-			v2f(1, 0), 
-			v2f(1, 0), 
-			v2f(1, 0),
-			v2f(1, 0), 
-			v2f(0, 1), 
-			v2f(0, 1),
-			v2f(0, 1),
-			v2f(0, 1)
-	};
-	
+
+	private Vector2f[] cubeTexture = { v2f(1, 0), v2f(1, 0), v2f(1, 0),
+			v2f(1, 0), v2f(0, 1), v2f(0, 1), v2f(0, 1), v2f(0, 1) };
 
 	// Pyramid
 
@@ -131,24 +100,18 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0) };
+	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0) };
 
 	public Root() {
 
 	}
-	
 
 	@Override
 	public void init() {
 
 		shader = new Shader();
-		textureShader = new Shader("originalVertex.vs","originalFragment.fs");
-		
+		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
@@ -157,14 +120,16 @@ public class Root extends Node implements App {
 		addNode(row_two);
 		addNode(row_three);
 
-		Camera cam = new Camera(getChildNodes(), shader);
+		setTransformation(vecmath.identityMatrix());
+		cam = new Camera(getChildNodes(), getTransformation());
 		addNode(cam);
+		manager = new InputManager(cam, getChildNodes());
 
 		vertices = Vertex.cubeTexture(p, cubeTexture);
 		// cube mit color ohne textur
-//		Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
-//		Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
-		
+		// Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
+		// Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
+
 		Vertex[] vertices_cube2 = Vertex.cubeTexture(p_row2, cubeTexture);
 		Vertex[] vertices_cube3 = Vertex.cubeTexture(p_row3, cubeTexture);
 
@@ -172,8 +137,7 @@ public class Root extends Node implements App {
 
 		Cube cube = new Cube(vertices, textureShader);
 		row_one.addNode(cube);
-		
-		
+
 		Cube cube2 = new Cube(vertices_cube2, shader);
 		row_two.addNode(cube2);
 		Cube cube3 = new Cube(vertices_cube3, shader);
@@ -181,13 +145,11 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_one.addNode(pyr);
 
-//		Mesh m = ResourceLoader.loadMesh("testMoon.obj");
-		
+		// Mesh m = ResourceLoader.loadMesh("testMoon.obj");
+
 		Mesh m = ResourceLoader.loadMesh("test.obj");
 		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
 		row_one.addNode(monkeyMod);
-		
-		
 
 		for (Node child : getChildNodes()) {
 			child.init();
@@ -196,6 +158,7 @@ public class Root extends Node implements App {
 
 	@Override
 	public void simulate(float elapsed, Input input) {
+		manager.update(elapsed, input);
 		for (Node child : getChildNodes()) {
 			child.simulate(elapsed, input);
 		}
@@ -203,12 +166,6 @@ public class Root extends Node implements App {
 
 	@Override
 	public void display(int width, int height) {
-		setTransformation(vecmath.identityMatrix());
-//		setTransformation(vecmath.matrix(
-//				1, 0, 0, 0, 
-//				0, 1, 0, 0, 
-//				0, 0, 1, 0, 
-//				0, 0, 0, 1));
 		// Adjust the the viewport to the actual window size. This
 		// makes the
 		// rendered image fill the entire window.
@@ -225,7 +182,8 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
-		
+
+		Matrix viewMatrix = cam.getTransformation();
 
 		// The inverse camera transformation. World space to camera
 		// space.
@@ -236,13 +194,13 @@ public class Root extends Node implements App {
 		// matricies to
 		// the
 		// uniform variables.
-//		shader.activate();
-//		// shader.getViewMatrixUniform().set(viewMatrix);
-//		shader.getProjectionMatrixUniform().set(projectionMatrix);
-		
-		
+		// shader.activate();
+		// // shader.getViewMatrixUniform().set(viewMatrix);
+		// shader.getProjectionMatrixUniform().set(projectionMatrix);
+
 		textureShader.activate();
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
+		textureShader.getViewMatrixUniform().set(viewMatrix);
 
 		for (Node child : getChildNodes()) {
 			child.display(width, height, getTransformation());
@@ -252,7 +210,7 @@ public class Root extends Node implements App {
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -1,7 +1,6 @@
 package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,14 +16,12 @@ public class Camera extends Node {
 
 	private float x = 0f;
 	private float y = 0f;
-	private float z = 10f;
+	private float z = 0f;
 	private float roll = 0f;// The rotation along the z axis
 	private float pitch = 0f;// The rotation along the x axis
 	private float yaw = 0f;// The rotation along the y axis
 	private Vector eye, center, up;
-
-	private Shader shader;
-	private Matrix viewMatrix;
+	
 	private ArrayList<Node> rootChildren;
 	private int rowIndex = 0;
 	private int selectionIndex = 0;
@@ -35,11 +32,11 @@ public class Camera extends Node {
 	private Set<Integer> keysUp = new HashSet<Integer>();
 	private boolean animation = false;
 	private int animDirection;
-	private boolean w = false;
 
-	public Camera(ArrayList<Node> rootChildren, Shader shader) {
-		this.shader = shader;
+	public Camera(ArrayList<Node> rootChildren, Matrix parentMatrix) {
 		this.rootChildren = rootChildren;
+		setTransformation(parentMatrix.mult(vecmath
+				.translationMatrix(0, 0, -20)));
 	}
 
 	// (i*m1*m2)^-1
@@ -49,31 +46,12 @@ public class Camera extends Node {
 	// setVM(viewM)
 	// root.display(transMatrix) }
 
-	public void update() {
-		// Vector eyeAdd = vecmath.vector(0, 0, 0);
-		// Vector centerAdd = vecmath.vector(0, 0, 0);
-		// eye = eye.add(eyeAdd);
-		// center = vecmath.vector((float) x * pitch, (float) y * yaw, (float) z
-		// * roll);
-		// center = center.add(centerAdd);
-
-		// updateCamera();
-		// viewMatrix = vecmath.lookatMatrix(eye, center,
-		// vecmath.vector(0f, 1f, 0f));
-		// shader.getViewMatrixUniform().set(viewMatrix);
-		// viewMatrix = lookAtMatrix(vecmath.vector(x, y, z), vecmath.vector(0f,
-		// 0f, 0f), vecmath.vector(0f, 1f, 0f));
-		// shader.getViewMatrixUniform().set(viewMatrix);
-	}
-
 	@Override
 	public void init() {
 		eye = vecmath.vector(x, y, z);
 		center = vecmath.vector(0f, 0f, 0.1f);
 		up = vecmath.vector(0f, 1f, 0f);
-		viewMatrix = vecmath.lookatMatrix(eye, center,
-				vecmath.vector(0f, 1f, 0f));
-		shader.getViewMatrixUniform().set(viewMatrix);
+//		setTransformation(vecmath.lookatMatrix(eye, center, up));
 
 		setSelection();
 
@@ -95,69 +73,97 @@ public class Camera extends Node {
 					oldEye = eye;
 					oldCenter = center;
 				}
-				float moveSpeed = elapsed * 10;
-				float turnSpeed = elapsed * 15;
+				float moveSpeed = elapsed;
+				float turnSpeed = elapsed;
 				if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-					// moveOnZ(0.02f);
-					Vector temp = vecmath.vector(center.x() - eye.x(),
-							center.y() - eye.y(), center.z() - eye.z());
-					center = center.add(temp.normalize().mult(moveSpeed));
-					eye = eye.add(temp.normalize().mult(moveSpeed));
+					moveOnZ(moveSpeed);
+					updateCamera();
+					// Vector temp = vecmath.vector(center.x() - eye.x(),
+					// center.y() - eye.y(), center.z() - eye.z());
+					// center = center.add(temp.normalize().mult(moveSpeed));
+					// eye = eye.add(temp.normalize().mult(moveSpeed));
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-					// moveOnZ(-0.02f);
-					Vector temp = vecmath.vector(eye.x() - center.x(), eye.y()
-							- center.y(), eye.z() - center.z());
-					center = center.add(temp.normalize().mult(moveSpeed));
-					eye = eye.add(temp.normalize().mult(moveSpeed));
+					moveOnZ(-moveSpeed);
+					updateCamera();
+					// Vector temp = vecmath.vector(eye.x() - center.x(),
+					// eye.y()
+					// - center.y(), eye.z() - center.z());
+					// center = center.add(temp.normalize().mult(moveSpeed));
+					// eye = eye.add(temp.normalize().mult(moveSpeed));
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-					// moveOnX(-0.02f);
+					moveOnX(-moveSpeed);
 
-					Vector temp = vecmath.vector(center.x() - eye.x(),
-							center.y() - eye.y(), center.z() - eye.z());
-
-					float tempRightX = (temp.x() * (float) Math.cos(90))
-							+ (temp.z() * (float) -Math.sin(90));
-					float tempRightY = temp.y();
-					float tempRightZ = (temp.x() * (float) Math.sin(90))
-							+ (temp.z() * (float) Math.cos(90));
-
-					Vector tempRight = vecmath.vector(tempRightX, tempRightY,
-							tempRightZ);
-
-					center = center.add(tempRight.normalize().mult(moveSpeed));
-					eye = eye.add(tempRight.normalize().mult(moveSpeed));
+					// Vector temp = vecmath.vector(center.x() - eye.x(),
+					// center.y() - eye.y(), center.z() - eye.z());
+					// Vector right = temp.cross(up);
+					//
+					// center = center.add(right.normalize().mult(moveSpeed));
+					// eye = eye.add(right.normalize().mult(moveSpeed));
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-					// moveOnX(0.02f);
+					moveOnX(moveSpeed);
+					// Vector temp = vecmath.vector(center.x() - eye.x(),
+					// center.y() - eye.y(), center.z() - eye.z());
+					//
+					// Vector right = temp.cross(up);
+					//
+					// center = center.sub(right.normalize().mult(moveSpeed));
+					// eye = eye.sub(right.normalize().mult(moveSpeed));
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+					// Vector temp = vecmath.vector(center.x() - eye.x(),
+					// center.y() - eye.y(), center.z() - eye.z());
+					//
+					// float vecX = (temp.x() * (float) Math.cos(-turnSpeed))
+					// + (temp.z() * (float) Math.sin(-turnSpeed));
+					// float vecY = temp.y();
+					// float vecZ = (temp.x() * (float) -Math.sin(-turnSpeed))
+					// + (temp.z() * (float) Math.cos(-turnSpeed));
+					//
+					// center = vecmath.vector(vecX, vecY, vecZ);
+					rotateY(turnSpeed);
+					updateCamera();
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+					// Vector temp = vecmath.vector(center.x() - eye.x(),
+					// center.y() - eye.y(), center.z() - eye.z());
+					//
+					// float vecX = (temp.x() * (float) Math.cos(turnSpeed))
+					// + (temp.z() * (float) Math.sin(turnSpeed));
+					// float vecY = temp.y();
+					// float vecZ = (temp.x() * (float) -Math.sin(turnSpeed))
+					// + (temp.z() * (float) Math.cos(turnSpeed));
+					//
+					// center = vecmath.vector(vecX, vecY, vecZ);
+					rotateY(-turnSpeed);
+				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 					Vector temp = vecmath.vector(center.x() - eye.x(),
 							center.y() - eye.y(), center.z() - eye.z());
 
-					float tempRightX = (temp.x() * (float) Math.cos(90))
-							+ (temp.z() * (float) -Math.sin(90));
-					float tempRightY = temp.y();
-					float tempRightZ = (temp.x() * (float) Math.sin(90))
-							+ (temp.z() * (float) Math.cos(90));
+					float vecX = temp.x();
+					float vecY = (temp.y() * (float) Math.cos(turnSpeed))
+							+ (temp.z() * (float) -Math.sin(turnSpeed));
+					float vecZ = (temp.y() * (float) Math.sin(turnSpeed))
+							+ (temp.z() * (float) Math.cos(turnSpeed));
 
-					Vector tempRight = vecmath.vector(tempRightX, tempRightY,
-							tempRightZ);
-
-					center = center.sub(tempRight.normalize().mult(moveSpeed));
-					eye = eye.sub(tempRight.normalize().mult(moveSpeed));
-				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-					// rotateY(0.2f);
-					center = center.add(vecmath.vector(turnSpeed, 0, 0));
-				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-					center = center.add(vecmath.vector(-turnSpeed, 0, 0));
-				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-					center = center.add(vecmath.vector(0, turnSpeed, 0));
+					center = vecmath.vector(vecX, vecY, vecZ);
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-					center = center.add(vecmath.vector(0, -turnSpeed, 0));
+					// center = center.add(vecmath.vector(0, -turnSpeed, 0));
+					Vector temp = vecmath.vector(center.x() - eye.x(),
+							center.y() - eye.y(), center.z() - eye.z());
+
+					float vecX = temp.x();
+					float vecY = (temp.y() * (float) Math.cos(-turnSpeed))
+							+ (temp.z() * (float) -Math.sin(-turnSpeed));
+					float vecZ = (temp.y() * (float) Math.sin(-turnSpeed))
+							+ (temp.z() * (float) Math.cos(-turnSpeed));
+
+					// center = center.add(vecmath.vector(vecX, vecY, vecZ));
+					center = vecmath.vector(vecX, vecY, vecZ);
 				}
 			} else {
 				if (oldEye != null) {
@@ -185,8 +191,7 @@ public class Camera extends Node {
 					// }
 					// }
 					// }
-					w = true;
-					setTransformation(getTransformation().mult(vecmath.translationMatrix(0, 0, elapsed*5)));
+					z += elapsed / 100;
 				} else if (!keysUp.contains(Keyboard.KEY_W))
 					keysUp.add(Keyboard.KEY_W);
 				if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -251,21 +256,22 @@ public class Camera extends Node {
 				} else if (!keysUp.contains(Keyboard.KEY_A))
 					keysUp.add(Keyboard.KEY_A);
 				if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
-//					center = center.add(vecmath.vector(-0.02f, 0, 0));
-					w = true;
-					Matrix trans = getTransformation().getTranslation();
-					Vector positon = getTransformation().getPosition();
-					setTransformation(getTransformation().mult(trans.invertRigid()));
-					setTransformation(getTransformation().mult(vecmath.rotationMatrix(0, 1, 0, -elapsed*10)));
-					setTransformation(getTransformation().mult(trans));
+					// center = center.add(vecmath.vector(-0.02f, 0, 0));
+					// Matrix trans = getTransformation().getTranslation();
+					// // Vector positon = getTransformation().getPosition();
+					// //
+					// setTransformation(getTransformation().mult(trans.invertRigid()));
+					// setTransformation(getTransformation().mult(
+					// vecmath.rotationMatrix(0, 1, 0, -elapsed * 15)));
+					// setTransformation(getTransformation().mult(trans));
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 					center = center.add(vecmath.vector(0.02f, 0, 0));
 				}
 			}
 		} else {
-			if (animation == true)
-				animate(elapsed, animDirection);
+			// if (animation == true)
+			// animate(elapsed, animDirection);
 		}
 	}
 
@@ -320,39 +326,15 @@ public class Camera extends Node {
 		}
 	}
 
-	private Matrix lookAtMatrix(Vector eye, Vector target, Vector up) {
-		Vector zaxis = eye.sub(target);
-		zaxis = zaxis.normalize();
-		Vector xaxis = up.cross(zaxis);
-		xaxis = xaxis.normalize();
-		Vector yaxis = zaxis.cross(xaxis);
-
-		Matrix orientation = vecmath.matrix(xaxis.asArray()[0],
-				yaxis.asArray()[0], zaxis.asArray()[0], 0, xaxis.asArray()[1],
-				yaxis.asArray()[1], zaxis.asArray()[1], 0, xaxis.asArray()[2],
-				yaxis.asArray()[2], zaxis.asArray()[2], 0, 0, 0, 0, 1);
-
-		Matrix translation = vecmath.matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
-				-eye.asArray()[0], -eye.asArray()[1], -eye.asArray()[2], 1);
-
-		return orientation.mult(translation);
-	}
-
 	private void updateCamera() {
-		viewMatrix = vecmath.rotationMatrix(vecmath.vector(1, 0, 0), pitch);
-		viewMatrix = vecmath.rotationMatrix(vecmath.vector(0, 1, 0), yaw);
-		viewMatrix = vecmath.rotationMatrix(vecmath.vector(0, 0, 1), roll);
-		viewMatrix = vecmath.translationMatrix(vecmath.vector(x, y, z));
-		shader.getViewMatrixUniform().set(viewMatrix);
-	}
-
-	private void setView() {
-		viewMatrix = vecmath.lookatMatrix(
-				vecmath.vector(eye.x(), eye.y(), eye.z()),
-				vecmath.vector(eye.x() + center.x(), eye.y() + center.y(),
-						eye.z() + center.z()),
-				vecmath.vector(up.x(), up.y(), up.z()));
-		shader.getViewMatrixUniform().set(viewMatrix);
+		setTransformation(getTransformation().mult(
+				vecmath.rotationMatrix(vecmath.vector(1, 0, 0), pitch)));
+		setTransformation(getTransformation().mult(
+				vecmath.rotationMatrix(vecmath.vector(0, 1, 0), yaw)));
+		setTransformation(getTransformation().mult(
+				vecmath.rotationMatrix(vecmath.vector(0, 0, 1), roll)));
+		setTransformation(getTransformation().mult(
+				vecmath.translationMatrix(vecmath.vector(x, y, z))));
 	}
 
 	private void moveOnZ(float amt) {
@@ -377,20 +359,22 @@ public class Camera extends Node {
 	private boolean isKeyUp(int key) {
 		return keysUp.contains(key);
 	}
+	
+	public void moveForward(float amt) {
+		
+	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		if(w==false) 
-			setTransformation(parentMatrix.mult(vecmath.translationMatrix(vecmath
-					.vector(0, 0, -15))));
-//		viewMatrix = vecmath.lookatMatrix(eye, center,
-//				vecmath.vector(0f, 1f, 0f));
-		shader.getViewMatrixUniform().set(getTransformation());
+		// viewMatrix = vecmath.lookatMatrix(eye, center, up);
+		// setTransformation(viewMatrix);
+		System.out.println(getTransformation());
+		// System.out.println("center: " + center);
+		// System.out.println("eye: " + eye);
+		// updateCamera();
 	}
 
 	@Override
 	public void display(int width, int height) {
-		// TODO Auto-generated method stub
-
 	}
 }
