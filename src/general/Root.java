@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
+import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
