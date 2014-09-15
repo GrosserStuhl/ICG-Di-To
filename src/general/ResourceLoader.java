@@ -20,6 +20,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 public class ResourceLoader {
 
 	
+	
 	public static String loadShader(String fileName){
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
@@ -66,7 +67,6 @@ public class ResourceLoader {
 		
 		Mesh m = null;
 		
-		Material mat = null;
 		
 		BufferedReader meshReader = null;
 		
@@ -113,7 +113,7 @@ public class ResourceLoader {
 //			
 //			else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/+\\d+") ){
 //					
-//					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Geometryinfos. Das Format z.B.  
+//					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Normaleninfos. Das Format z.B.  
 //					// f  1//2  7//2  5//2
 //					// f  1//2  7//2  5//2 ...
 //					
@@ -135,7 +135,7 @@ public class ResourceLoader {
 //			
 			else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/{1}\\d+") ){
 					
-					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Texturinfos. Das Format z.B.  
+					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Texturinfos. Hier fehlen die Vektornormalen. Das Format z.B.  
 					// f  1/2  7/2  5/2
 					// f  1/2  7/2  5/2 ...
 					
@@ -145,8 +145,8 @@ public class ResourceLoader {
 					
 					
 				for (int j = 0; j < line.split("\\s+").length - 2; j++) {
-					indices.add(parseOBJIndex(line.split("\\s+")[1 ]));
-					indices.add(parseOBJIndex(line.split("\\s+")[2 + j]));
+					indices.add(parseOBJIndex(line.split("\\s+")[1 ],false));
+					indices.add(parseOBJIndex(line.split("\\s+")[2 + j],false));
 				}
 					
 		
@@ -161,9 +161,9 @@ public class ResourceLoader {
 //					texFaceData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) -1);
 					
 				for (int j = 0; j < line.split("\\s+").length - 3; j++) {
-					indices.add(parseOBJIndex(line.split("\\s+")[1 ]));
-					indices.add(parseOBJIndex(line.split("\\s+")[2 + j]));
-					indices.add(parseOBJIndex(line.split("\\s+")[3 + j]));
+					indices.add(parseOBJIndex(line.split("\\s+")[1], true));
+					indices.add(parseOBJIndex(line.split("\\s+")[2 + j], true));
+					indices.add(parseOBJIndex(line.split("\\s+")[3 + j], true));
 				}
 				
 					
@@ -202,8 +202,8 @@ public class ResourceLoader {
 //			col = createWhiteColor(vData.size());
 			
 			
-			Vertex[] vertices = Vertex.meshVertices(positionData, createTextureVertexData(texCoord), indices);
-			return new Mesh(positionData,createTextureVertexData(texCoord),vertices);
+			Vertex[] vertices = Vertex.meshVertices(positionData, toVector2fArray(texCoord), indices);
+			return new Mesh(positionData,toVector2fArray(texCoord),vertices);
 			
 //			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);
 //			return new Mesh(positionData,col,vertices); 
@@ -220,7 +220,7 @@ public class ResourceLoader {
 	}
 	
 	
-	public static Vector2f[] createTextureVertexData(ArrayList<Vector2f> data) {
+	public static Vector2f[] toVector2fArray(ArrayList<Vector2f> data) {
 		Vector2f[] result = new Vector2f[data.size()];
 		
 		for (int i = 0; i < data.size(); i++) {
@@ -232,17 +232,21 @@ public class ResourceLoader {
 	}
 	
 	
-	private static OBJIndex parseOBJIndex(String token){
+	private static OBJIndex parseOBJIndex(String token, boolean hasVectorNormals){
 		
-		String[] values = token.split("/");
+		String[] values = token.split("\\/");
 		OBJIndex result = new OBJIndex();
 		result.vertexIndex = Integer.parseInt(values[0]) -1;
 		result.texCoordIndex = Integer.parseInt(values[1]) -1;
+		
+		if(hasVectorNormals)
 		result.normalIndex = Integer.parseInt(values[2]) -1;
 		
 		return result;
 		
 	}
+	
+	
 
 
 	private static Vector vec(float x, float y, float z) {
@@ -251,9 +255,7 @@ public class ResourceLoader {
 	
 	
 	
-	private Color col(float r, float g, float b) {
-		return vecmath.color(r, g, b);
-	}
+
 	
 	private static Vector2f v2f(float x, float y) {
 		return new Vector2f(x,y);

@@ -157,10 +157,10 @@ public class Root extends Node implements App {
 		OBJModel monkeyMod = new OBJModel(m.getVertices(), textureShader,t, vecmath.vector(0, 5, 0));
 		row_three.addNode(monkeyMod);
 		
-//		Mesh m = ResourceLoader.loadOBJModel("test.obj");
-//		Texture t = ResourceLoader.loadTexture("brick.jpg");
-//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
-//		row_one.addNode(monkeyMod);
+		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
+		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
+		OBJModel crate = new OBJModel(m2.getVertices(), textureShader,t2, vecmath.vector(-10, 0, 0));
+		row_three.addNode(crate);
 		
 //		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 //		Texture t2 = ResourceLoader.loadTexture("optimus.png");
