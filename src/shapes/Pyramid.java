@@ -25,7 +25,7 @@ public class Pyramid extends ShapeNode {
 		// Pressing key 'r' toggles the cube animation.
 		if (input.isKeyToggled(Keyboard.KEY_P))
 			// Increase the angle with a speed of 90 degrees per second.
-			angle += 80 * elapsed;
+			angle += 120 * elapsed;
 	}
 
 	@Override
@@ -34,10 +34,10 @@ public class Pyramid extends ShapeNode {
 		// Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 0, 1),
 		// angle);
 		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(vecmath.vector(5, 0, 0)));
-		Matrix trans = modelMatrix.getTranslation();
-		modelMatrix = modelMatrix.mult(trans.invertRigid());
-		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(0, 1, 0, angle));
-		modelMatrix = modelMatrix.mult(trans);
+//		Matrix trans = modelMatrix.getTranslation();
+//		modelMatrix = modelMatrix.mult(trans.invertRigid());
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
+//		modelMatrix = modelMatrix.mult(trans);
 		setTransformation(modelMatrix);
 
 		// Activate the shader program and set the transformation matricies to
