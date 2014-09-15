@@ -143,7 +143,7 @@ public class Root extends Node implements App {
 		Cube cube3 = new Cube(vertices_cube3, shader);
 		row_three.addNode(cube3);
 		Pyramid pyr = new Pyramid(verticesT, shader);
-		row_one.addNode(pyr);
+		row_two.addNode(pyr);
 
 //		Mesh m = ResourceLoader.loadMesh("testMoon.obj");
 		

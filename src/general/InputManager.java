@@ -17,6 +17,7 @@ public class InputManager {
 	private Set<Integer> keysUp = new HashSet<Integer>();
 
 	public InputManager(Camera cam, ArrayList<Node> children) {
+		//nbnn
 		this.cam = cam;
 		nodes = children;
 

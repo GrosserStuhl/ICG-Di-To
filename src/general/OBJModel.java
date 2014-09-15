@@ -26,10 +26,9 @@ public class OBJModel extends ShapeNode implements App {
 		this.t = t;
 		this.s = shader;
 	}
-	
+
 	FloatBuffer positionData;
 	FloatBuffer textureData;
-	
 
 	@Override
 	public void init() {
@@ -39,12 +38,10 @@ public class OBJModel extends ShapeNode implements App {
 		
 		positionData  = positionBuffer(vertices.length);
 		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
-		
-		finalizeTextured(positionData,textureData,vertices);
+
+		finalizeTextured(positionData, textureData, vertices);
 
 	}
-	
-	
 
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -76,15 +73,17 @@ public class OBJModel extends ShapeNode implements App {
 		// GL20.glUniform1i(location, 0);
 		// // 0 because it is to use texture unit 0
 		//
-		
-		//ohne t.bind() funktioniert es nicht!!!
+
+		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
 
-		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
-				angle);
+		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(-5, 0,
+				0));
 
-		getShader().getModelMatrixUniform().set(
-				modelMatrix.mult(vecmath.translationMatrix(2, 0, 0)));
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(vecmath.vector(1, 1, 1), angle));
+		setTransformation(modelMatrix);
+
+		getShader().getModelMatrixUniform().set(getTransformation());
 
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
@@ -96,34 +95,34 @@ public class OBJModel extends ShapeNode implements App {
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
-		
+
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
 	}
-	
-	
-	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
+
+	private void finalizeTextured(FloatBuffer positionData,
+			FloatBuffer textureData, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			
-			if(v.getPosition() != null)
-			positionData.put(v.getPosition().asArray());
-			
-			if(v.getTextureCoord() != null)
-			textureData.put(asArray(v.getTextureCoord()));
-			
+
+			if (v.getPosition() != null)
+				positionData.put(v.getPosition().asArray());
+
+			if (v.getTextureCoord() != null)
+				textureData.put(asArray(v.getTextureCoord()));
+
 		}
 		positionData.rewind();
 		textureData.rewind();
 	}
-	
-	public float[] asArray(Vector2f t){
+
+	public float[] asArray(Vector2f t) {
 
 		float[] res = new float[2];
 		res[0] = t.getX();
 		res[1] = t.getY();
-		
+
 		return res;
-		
+
 	}
 
 }
