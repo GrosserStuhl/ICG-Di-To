@@ -16,7 +16,7 @@ public class Camera extends Node {
 
 	private float x = 0f;
 	private float y = 0f;
-	private float z = 0f;
+	private float z = -10f;
 	private float roll = 0f;// The rotation along the z axis
 	private float pitch = 0f;// The rotation along the x axis
 	private float yaw = 0f;// The rotation along the y axis
@@ -49,7 +49,7 @@ public class Camera extends Node {
 	@Override
 	public void init() {
 		eye = vecmath.vector(x, y, z);
-		center = vecmath.vector(0f, 0f, 0.1f);
+		center = vecmath.vector(0f, 0f, 0f);
 		up = vecmath.vector(0f, 1f, 0f);
 		// setTransformation(vecmath.lookatMatrix(eye, center, up));
 
@@ -73,8 +73,8 @@ public class Camera extends Node {
 					oldEye = eye;
 					oldCenter = center;
 				}
-				float moveSpeed = elapsed;
-				float turnSpeed = elapsed;
+				float moveSpeed = elapsed*10;
+				float turnSpeed = elapsed*5;
 				if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 					// moveOnZ(moveSpeed);
 					Vector temp = vecmath.vector(center.x() - eye.x(),
@@ -386,8 +386,8 @@ public class Camera extends Node {
 	public void display(int width, int height, Matrix parentMatrix) {
 		 setTransformation(vecmath.lookatMatrix(eye, center, up));
 //		System.out.println(getTransformation());
-		// System.out.println("center: " + center);
-		// System.out.println("eye: " + eye);
+		 System.out.println("center: " + center);
+		 System.out.println("eye: " + eye);
 		// updateCamera();
 	}
 

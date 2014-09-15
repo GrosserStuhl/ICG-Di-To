@@ -36,7 +36,7 @@ public class RowNode extends Node {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		setTransformation(vecmath.translationMatrix(0, 0, -rowIndex*20));
+		setTransformation(vecmath.translationMatrix(0, 0, rowIndex*20));
 		
 		for (Node child : getChildNodes()) {
 			child.display(width, height, getTransformation());
