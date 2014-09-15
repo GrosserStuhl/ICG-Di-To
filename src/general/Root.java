@@ -154,7 +154,7 @@ public class Root extends Node implements App {
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), textureShader,t);
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), textureShader,t, vecmath.vector(0, 5, 0));
 		row_three.addNode(monkeyMod);
 		
 //		Mesh m = ResourceLoader.loadOBJModel("test.obj");

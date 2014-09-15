@@ -11,6 +11,7 @@ import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
@@ -19,12 +20,14 @@ import org.lwjgl.util.vector.Vector2f;
 public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
-	private Shader s;
+	private Vector translation;
+	
 
-	public OBJModel(Vertex[] vertices, Shader shader,Texture t) {
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t, Vector translation) {
 		super(vertices, shader);
 		this.t = t;
-		this.s = shader;
+		this.translation = translation;
+		
 	}
 
 	FloatBuffer positionData;
@@ -77,11 +80,11 @@ public class OBJModel extends ShapeNode implements App {
 		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
 
-		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(-5, 0,
-				0));
-
-		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(vecmath.vector(1, 1, 1), angle));
+		
+		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
 		setTransformation(modelMatrix);
+		
 
 		
 		getShader().activate();
@@ -101,7 +104,7 @@ public class OBJModel extends ShapeNode implements App {
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
 		
-		getShader().deactivate();
+//		getShader().deactivate();
 	}
 
 	private void finalizeTextured(FloatBuffer positionData,
