@@ -62,7 +62,7 @@ public class ResourceLoader {
 	}
 	
 	
-	public static Mesh loadMesh(String fileName){
+	public static Mesh loadOBJModel(String fileName){
 		
 		Mesh m = null;
 		

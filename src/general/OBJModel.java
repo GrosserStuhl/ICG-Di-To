@@ -21,9 +21,9 @@ public class OBJModel extends ShapeNode implements App {
 	private Texture t;
 	private Shader s;
 
-	public OBJModel(Vertex[] vertices, Shader shader) {
+	public OBJModel(Vertex[] vertices, Shader shader,Texture t) {
 		super(vertices, shader);
-
+		this.t = t;
 		this.s = shader;
 	}
 	
@@ -35,7 +35,8 @@ public class OBJModel extends ShapeNode implements App {
 	public void init() {
 
 //		t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		t = ResourceLoader.loadTexture("brick.jpg");
+		
+		
 		positionData  = positionBuffer(vertices.length);
 		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
 		

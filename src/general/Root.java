@@ -183,9 +183,15 @@ public class Root extends Node implements App {
 
 //		Mesh m = ResourceLoader.loadMesh("testMoon.obj");
 		
-		Mesh m = ResourceLoader.loadMesh("test.obj");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader);
-		row_one.addNode(monkeyMod);
+//		Mesh m = ResourceLoader.loadOBJModel("test.obj");
+//		Texture t = ResourceLoader.loadTexture("brick.jpg");
+//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+//		row_one.addNode(monkeyMod);
+		
+		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
+		Texture t2 = ResourceLoader.loadTexture("optimus.png");
+		OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
+		row_one.addNode(monkeyMod2);
 		
 		
 
