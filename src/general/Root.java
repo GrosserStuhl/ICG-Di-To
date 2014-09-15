@@ -146,7 +146,10 @@ public class Root extends Node implements App {
 		Pyramid pyr = new Pyramid(verticesT, shader);
 		row_two.addNode(pyr);
 
-//		Mesh m = ResourceLoader.loadMesh("testMoon.obj");
+		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
+		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+		row_three.addNode(monkeyMod);
 		
 //		Mesh m = ResourceLoader.loadOBJModel("test.obj");
 //		Texture t = ResourceLoader.loadTexture("brick.jpg");
