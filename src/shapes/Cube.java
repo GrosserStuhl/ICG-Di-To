@@ -29,6 +29,7 @@ public class Cube extends ShapeNode implements App {
 	
 	public Cube(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader);
+		
 		this.translation = translation;
 		
 	}
@@ -68,15 +69,15 @@ public class Cube extends ShapeNode implements App {
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
 		
 		
-		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
 				colorData);
-		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
-		GL20.glDisableVertexAttribArray(Shader.getTextureAttribIdx());
+		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
 
 	}
 	

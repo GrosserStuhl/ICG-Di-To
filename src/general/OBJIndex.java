@@ -8,7 +8,7 @@ public class OBJIndex {
 	 
 	
 	public OBJIndex() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 }
