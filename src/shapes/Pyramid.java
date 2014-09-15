@@ -6,18 +6,27 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL20;
 
 import ogl.app.Input;
 import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 
 public class Pyramid extends ShapeNode {
 
-	public Pyramid(Vertex[] vertices, Shader shader) {
+	
+	private Vector translation;
+	
+	
+	
+	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader);
-		// TODO Auto-generated constructor stub
+		
+		this.translation = translation;
+		
 	}
 
 	@Override
@@ -33,16 +42,14 @@ public class Pyramid extends ShapeNode {
 		// The modeling transformation. Object space to world space.
 		// Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 0, 1),
 		// angle);
-		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(vecmath.vector(5, 0, 0)));
-//		Matrix trans = modelMatrix.getTranslation();
-//		modelMatrix = modelMatrix.mult(trans.invertRigid());
+		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
-//		modelMatrix = modelMatrix.mult(trans);
 		setTransformation(modelMatrix);
 
 		// Activate the shader program and set the transformation matricies to
 		// the
 		// uniform variables.
+//		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
@@ -55,6 +62,12 @@ public class Pyramid extends ShapeNode {
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
+		
+		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
+		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
+		
+//		getShader().deactivate();
+		
 	}
 
 }

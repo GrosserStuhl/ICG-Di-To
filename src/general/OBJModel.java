@@ -83,6 +83,8 @@ public class OBJModel extends ShapeNode implements App {
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(vecmath.vector(1, 1, 1), angle));
 		setTransformation(modelMatrix);
 
+		
+		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
@@ -98,6 +100,8 @@ public class OBJModel extends ShapeNode implements App {
 
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
+		
+		getShader().deactivate();
 	}
 
 	private void finalizeTextured(FloatBuffer positionData,

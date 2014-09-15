@@ -25,37 +25,18 @@ import org.lwjgl.util.vector.Vector2f;
 
 public class Cube extends ShapeNode implements App {
 
+	private Vector translation;
 	
-	private Shader s;
-	
-	public Cube(Vertex[] vertices, Shader shader) {
+	public Cube(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader);
-		this.s = shader;
+		this.translation = translation;
+		
 	}
 	
 
-	FloatBuffer textureData;
-	Texture t;
 	
-	public void init() {
-
-		// Prepare the vertex data arrays.
-		// Compile vertex data into a Java Buffer data structures that can be
-		// passed to the OpenGL API efficently.
-		positionData = positionBuffer(vertices.length);
-		textureData = BufferUtils.createFloatBuffer(vertices.length * 2); // because of Vector2f
-		
-		colorData = colorBuffer(vertices.length);
-		
-		
-		t = ResourceLoader.loadTexture("wood.jpg");
-		
-		finalizeTextured(positionData,textureData,vertices);
-		
-//		finalizeBuffers(positionData, colorData, vertices);
-
-	}
-
+	
+	
 	@Override
 	public void simulate(float elapsed, Input input) {
 		// Pressing key 'r' toggles the cube animation.
@@ -67,13 +48,13 @@ public class Cube extends ShapeNode implements App {
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		
-		t.bind();
 		
-		// The modeling transformation. Object space to world space.
-		Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 1, 1),
-				angle);
-		this.setTransformation(parentMatrix.mult(modelMatrix));
-
+		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
+		setTransformation(modelMatrix);
+		
+		
+		
 		// Activate the shader program and set the transformation matricies to
 		// the
 		// uniform variables.
@@ -88,7 +69,7 @@ public class Cube extends ShapeNode implements App {
 		
 		
 		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
-				textureData);
+				colorData);
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
@@ -97,29 +78,8 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getTextureAttribIdx());
 
-		// getShader().getModelMatrixUniform().set(
-		// modelMatrix.mult(vecmath.translationMatrix(-2, 0, 0)));
 	}
 	
-	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
-		for (Vertex v : vertices) {
-			positionData.put(v.getPosition().asArray());
-			textureData.put(asArray(v.getTextureCoord()));
-			
-		}
-		positionData.rewind();
-		textureData.rewind();
-	}
-	
-	public float[] asArray(Vector2f t){
-
-		float[] res = new float[2];
-		res[0] = t.getX();
-		res[1] = t.getY();
-		
-		return res;
-		
-	}
 	
 	
 	

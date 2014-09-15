@@ -76,8 +76,14 @@ public class Root extends Node implements App {
 			vec(-w2, -h2, d2 - 30), vec(-w2, h2, d2 - 30), vec(w2, h2, d2 - 30) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
+	private Color[] c = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0),
 			col(0, 1, 0) };
 
 	private Vector2f[] cubeTexture = { v2f(1, 0), v2f(1, 0), v2f(1, 0),
@@ -101,8 +107,12 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0) };
+	private Color[] colorT = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0) };
 
 	public Root() {
 
@@ -113,20 +123,25 @@ public class Root extends Node implements App {
 
 		shader = new Shader();
 		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
+		
+		addNode(shader);
+		addNode(textureShader);
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
 		RowNode row_three = new RowNode(2);
-		addNode(row_one);
-		addNode(row_two);
-		addNode(row_three);
+		shader.addNode(row_one);
+		shader.addNode(row_two);
+		textureShader.addNode(row_three);
 
 		setTransformation(vecmath.identityMatrix());
 		cam = new Camera(getChildNodes(), getTransformation());
 		addNode(cam);
 		manager = new InputManager(cam, getChildNodes());
 
-		vertices = Vertex.cubeTexture(p, cubeTexture);
+		
+		
+		vertices = Vertex.cubeVertices(p, c);
 		// cube mit color ohne textur
 		// Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
 		// Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
@@ -136,19 +151,19 @@ public class Root extends Node implements App {
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
-		Cube cube = new Cube(vertices, textureShader);
+		Cube cube = new Cube(vertices, shader,vecmath.vector(0f,0f,0f));
 		row_one.addNode(cube);
 
-		Cube cube2 = new Cube(vertices_cube2, shader);
-		row_two.addNode(cube2);
-		Cube cube3 = new Cube(vertices_cube3, shader);
-		row_three.addNode(cube3);
-		Pyramid pyr = new Pyramid(verticesT, shader);
+		Cube cube2 = new Cube(vertices, shader,vecmath.vector(-5, 0, 0));
+		row_one.addNode(cube2);
+		Cube cube3 = new Cube(vertices, shader,vecmath.vector(-15, 0, 0));
+		row_one.addNode(cube3);
+		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(5, 0, 0));
 		row_two.addNode(pyr);
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+		OBJModel monkeyMod = new OBJModel(m.getVertices(), textureShader,t);
 		row_three.addNode(monkeyMod);
 		
 //		Mesh m = ResourceLoader.loadOBJModel("test.obj");
@@ -206,17 +221,26 @@ public class Root extends Node implements App {
 		// matricies to
 		// the
 		// uniform variables.
-		// shader.activate();
-		// // shader.getViewMatrixUniform().set(viewMatrix);
-		// shader.getProjectionMatrixUniform().set(projectionMatrix);
+		
+		
+		
+		 shader.activate();
+		 shader.getProjectionMatrixUniform().set(projectionMatrix);
+		 shader.getViewMatrixUniform().set(viewMatrix);
 
+		 getChildNodes().get(0).display(width, height, getTransformation());
+		 
+		 
 		textureShader.activate();
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 		textureShader.getViewMatrixUniform().set(viewMatrix);
+		
+		 getChildNodes().get(1).display(width, height, getTransformation());
+		 getChildNodes().get(2).display(width, height, getTransformation());
 
-		for (Node child : getChildNodes()) {
-			child.display(width, height, getTransformation());
-		}
+//		for (Node child : getChildNodes()) {
+//			child.display(width, height, getTransformation());
+//		}
 	}
 
 	@Override

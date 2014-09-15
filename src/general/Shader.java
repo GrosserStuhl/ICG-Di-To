@@ -1,5 +1,6 @@
 package general;
 
+import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glAttachShader;
@@ -90,6 +91,11 @@ public class Shader extends Node {
 		glUseProgram(program);
 	}
 	
+	public void deactivate() {
+		
+		glUseProgram(0);
+	}
+	
 	
 	public Shader(String fileNameVS, String fileNameFS) {
 
@@ -174,31 +180,57 @@ public class Shader extends Node {
 	
 	
 
-	
-
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
+
+		for (Node child : getChildNodes()) {
+			child.init();
+		}
 	}
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		// TODO Auto-generated method stub
-		
+		for (Node child : getChildNodes()) {
+			child.simulate(elapsed, input);
+		}
 	}
 
 	@Override
 	public void display(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		// TODO Auto-generated method stub
 		
+		for (Node child : getChildNodes()) {
+			child.display(width, height, getTransformation());
+		}
 	}
+
+//	@Override
+//	public void init() {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void simulate(float elapsed, Input input) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void display(int width, int height) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//
+//	@Override
+//	public void display(int width, int height, Matrix parentMatrix) {
+//		 
+//		
+//	}
 
 }
