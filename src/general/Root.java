@@ -59,21 +59,16 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+	private Vector[] p = { 
+			vec(-w2, -h2, -d2), 
+			vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), 
+			vec(-w2, h2, -d2), 
+			vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), 
+			vec(-w2, h2, d2), 
+			vec(w2, h2, d2) };
 
-	// The positions of the cube vertices.
-	private Vector[] p_row2 = { vec(-w2, -h2, -d2 - 15),
-			vec(w2, -h2, -d2 - 15), vec(w2, h2, -d2 - 15),
-			vec(-w2, h2, -d2 - 15), vec(w2, -h2, d2 - 15),
-			vec(-w2, -h2, d2 - 15), vec(-w2, h2, d2 - 15), vec(w2, h2, d2 - 15) };
-
-	// The positions of the cube vertices.
-	private Vector[] p_row3 = { vec(-w2, -h2, -d2 - 30),
-			vec(w2, -h2, -d2 - 30), vec(w2, h2, -d2 - 30),
-			vec(-w2, h2, -d2 - 30), vec(w2, -h2, d2 - 30),
-			vec(-w2, -h2, d2 - 30), vec(-w2, h2, d2 - 30), vec(w2, h2, d2 - 30) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { 
@@ -86,8 +81,6 @@ public class Root extends Node implements App {
 			col(0, 1, 0),
 			col(0, 1, 0) };
 
-	private Vector2f[] cubeTexture = { v2f(1, 0), v2f(1, 0), v2f(1, 0),
-			v2f(1, 0), v2f(0, 1), v2f(0, 1), v2f(0, 1), v2f(0, 1) };
 
 	// Pyramid
 
@@ -146,8 +139,6 @@ public class Root extends Node implements App {
 		// Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
 		// Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
 
-		Vertex[] vertices_cube2 = Vertex.cubeTexture(p_row2, cubeTexture);
-		Vertex[] vertices_cube3 = Vertex.cubeTexture(p_row3, cubeTexture);
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
