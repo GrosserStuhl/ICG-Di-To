@@ -167,9 +167,9 @@ public class Root extends Node implements App {
 		row_three.addNode(monkeyMod);
 		
 //		Mesh m = ResourceLoader.loadOBJModel("test.obj");
-		Texture t = ResourceLoader.loadTexture("brick.jpg");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
-		row_one.addNode(monkeyMod);
+//		Texture t = ResourceLoader.loadTexture("brick.jpg");
+//		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
+//		row_one.addNode(monkeyMod);
 		
 //		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 //		Texture t2 = ResourceLoader.loadTexture("optimus.png");
