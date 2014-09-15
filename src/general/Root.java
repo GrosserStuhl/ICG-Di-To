@@ -153,10 +153,10 @@ public class Root extends Node implements App {
 //		OBJModel monkeyMod = new OBJModel(m.getVertices(), shader,t);
 //		row_one.addNode(monkeyMod);
 		
-		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
-		Texture t2 = ResourceLoader.loadTexture("optimus.png");
-		OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
-		row_one.addNode(monkeyMod2);
+//		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
+//		Texture t2 = ResourceLoader.loadTexture("optimus.png");
+//		OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
+//		row_one.addNode(monkeyMod2);
 		
 		
 
