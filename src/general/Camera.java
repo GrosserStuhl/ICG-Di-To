@@ -196,22 +196,25 @@ public class Camera extends Node {
 				} else if (!keysUp.contains(Keyboard.KEY_W))
 					keysUp.add(Keyboard.KEY_W);
 				if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-					if (isKeyUp(Keyboard.KEY_S) == true) {
-						keysUp.remove(Keyboard.KEY_S);
-
-						if (animation == false) {
-							if (rowIndex > 0) {
-								rowIndex--;
-								// // Bewege eine Reihe hinter
-								// center = center.sub(vecmath.vector(0, 0,
-								// ROW_DISTANCE));
-								// eye = center.sub(vecmath.vector(0, 0, -10));
-								animation = true;
-								animDirection = 1;
-								setSelection();
-							}
-						}
-					}
+//					if (isKeyUp(Keyboard.KEY_S) == true) {
+//						keysUp.remove(Keyboard.KEY_S);
+//
+//						if (animation == false) {
+//							if (rowIndex > 0) {
+//								rowIndex--;
+//								// // Bewege eine Reihe hinter
+//								// center = center.sub(vecmath.vector(0, 0,
+//								// ROW_DISTANCE));
+//								// eye = center.sub(vecmath.vector(0, 0, -10));
+//								animation = true;
+//								animDirection = 1;
+//								setSelection();
+//							}
+//						}
+//					}
+					z -= (float) ((elapsed/10) * Math.sin(Math.toRadians(yaw + 90)));
+					x -= (float) ((elapsed/10) * Math.cos(Math.toRadians(yaw + 90)));
+					setTransformation((vecmath.translationMatrix(x,0,z).mult(getTransformation())));
 				} else if (!keysUp.contains(Keyboard.KEY_S))
 					keysUp.add(Keyboard.KEY_S);
 				if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
@@ -259,10 +262,7 @@ public class Camera extends Node {
 				if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 					// center = center.add(vecmath.vector(-0.02f, 0, 0));
 					 Matrix trans = getTransformation().getTranslation();
-					// // Vector positon = getTransformation().getPosition();
-					// //
 					 setTransformation(getTransformation().mult(trans.invertRigid()));
-//					 setTransformation(getTransformation().mult(vecmath.rotationMatrix(0, 1, 0, -elapsed * 15)));
 					 yaw += elapsed;
 					 setTransformation(vecmath.rotationMatrix(0, 1, 0, yaw).mult(getTransformation()));
 					 setTransformation(getTransformation().mult(trans));
@@ -270,10 +270,7 @@ public class Camera extends Node {
 				if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 //					center = center.add(vecmath.vector(0.02f, 0, 0));
 					 Matrix trans = getTransformation().getTranslation();
-						// // Vector positon = getTransformation().getPosition();
-						// //
 					 setTransformation(getTransformation().mult(trans.invertRigid()));
-//					 setTransformation(getTransformation().mult(vecmath.rotationMatrix(0, 1, 0, -elapsed * 15)));
 					 yaw -= elapsed;
 					 setTransformation(vecmath.rotationMatrix(0, 1, 0, yaw).mult(getTransformation()));
 					 setTransformation(getTransformation().mult(trans));
