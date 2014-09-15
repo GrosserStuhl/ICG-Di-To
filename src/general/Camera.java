@@ -16,7 +16,7 @@ public class Camera extends Node {
 
 	private float x = 0f;
 	private float y = 0f;
-	private float z = -10f;
+	private float z = 10f;
 	private float roll = 0f;// The rotation along the z axis
 	private float pitch = 0f;// The rotation along the x axis
 	private float yaw = 0f;// The rotation along the y axis
