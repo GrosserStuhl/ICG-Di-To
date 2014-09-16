@@ -121,15 +121,15 @@ public class Root extends Node implements App {
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
-		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
+		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
 		row_one.addNode(cube);
 
-		Cube cube2 = new Cube(vertices, shader, vecmath.vector(-5, 0, 0));
+		Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
 		row_one.addNode(cube2);
-		Cube cube3 = new Cube(vertices, shader, vecmath.vector(-15, 0, 0));
+		Cube cube3 = new Cube(vertices, shader, vecmath.vector(3, 0, 0));
 		row_one.addNode(cube3);
-		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(5, 0, 0));
-		row_two.addNode(pyr);
+		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		cube.addNode(pyr);
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");

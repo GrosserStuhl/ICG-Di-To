@@ -8,17 +8,16 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
+import general.Node;
 import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 import ogl.app.App;
-import ogl.app.Input;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 
 public class Cube extends ShapeNode implements App {
@@ -31,14 +30,6 @@ public class Cube extends ShapeNode implements App {
 	}
 	
 	FloatBuffer ambientData;
-
-	@Override
-	public void simulate(float elapsed, Input input) {
-		// Pressing key 'r' toggles the cube animation.
-		if (input.isKeyToggled(Keyboard.KEY_R))
-			// Increase the angle with a speed of 90 degrees per second.
-			angle += 150 * elapsed;
-	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -81,7 +72,6 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getBaseAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
-
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){

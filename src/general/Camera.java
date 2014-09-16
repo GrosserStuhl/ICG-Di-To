@@ -17,15 +17,16 @@ public class Camera extends Node {
 
 	private Vector oldEye;
 	private Vector oldCenter;
-	private boolean animation = false;
+	private boolean animationFor = false;
+	private boolean animationBack = false;
 	private float totalPan = -3f;
 	private float totalTilt = 0;
 	private boolean freeMode;
-	private Vector target;
+	private float animationStartZ = 0;
 
 	public Camera(Matrix parentMatrix) {
-		setTransformation(parentMatrix.mult(vecmath
-				.translationMatrix(0, 0, -20)));
+		setTransformation(parentMatrix);
+		// .mult(vecmath.translationMatrix(0, 0, 0)));
 	}
 
 	// (i*m1*m2)^-1
@@ -37,19 +38,30 @@ public class Camera extends Node {
 
 	@Override
 	public void init() {
-		eye = vecmath.vector(x, y, z);
-		center = vecmath.vector(0f, 0f, 0f);
+		center = getTransformation().getPosition();
+		eye = center.add(vecmath.vector(0, 0, 10f));
 		up = vecmath.vector(0f, 1f, 0f);
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		if (animation) {
-			Vector temp = vecmath.vector(target.x() - center.x(), target.y()
-					- center.y(), target.z() - center.z());
-			center = center.add(temp.normalize().mult(elapsed * 20));
-			eye = center.sub(vecmath.vector(0, 0, -10));
+		if (animationFor) {
+			if (center.z() < animationStartZ - 20) {
+				System.out.println("animation end");
+				animationFor = false;
+			} else {
+				center = center.sub(vecmath.vector(0, 0, 0.02f));
+				eye = center.add(vecmath.vector(0, 0, 10f));
+			}
+		} else if (animationBack) {
+			if (center.z() > animationStartZ + 20) {
+				System.out.println("animation end");
+				animationBack = false;
+			} else {
+				center = center.add(vecmath.vector(0, 0, 0.02f));
+				eye = center.add(vecmath.vector(0, 0, 10f));
+			}
 		}
 	}
 
@@ -57,9 +69,9 @@ public class Camera extends Node {
 	public void display(int width, int height, Matrix parentMatrix) {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 		// System.out.println(getTransformation());
-//		System.out.println("center: " + center);
-//		System.out.println("eye: " + eye);
-//		System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
+		// System.out.println("center: " + center);
+		// System.out.println("eye: " + eye);
+		// System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
 	}
 
 	@Override
@@ -78,16 +90,8 @@ public class Camera extends Node {
 		}
 	}
 
-	public void animateMovement(Vector target) {
-		this.target = target;
-		if (!center.equals(target))
-			animation = true;
-		else
-			animation = false;
-	}
-
 	public boolean isAnimationActive() {
-		return animation;
+		return animationFor;
 	}
 
 	public void moveOnZ(float moveSpeed) {
@@ -127,6 +131,16 @@ public class Camera extends Node {
 		float vecZ = (float) Math.cos(totalPan) * afterTiltZ;
 
 		center = eye.add(vecmath.vector(vecX, vecY, vecZ));
+	}
+
+	public void moveRowForward() {
+		animationFor = true;
+		animationStartZ = center.z();
+	}
+
+	public void moveRowBack() {
+		animationBack = true;
+		animationStartZ = center.z();
 	}
 
 	private void updateCamera() {

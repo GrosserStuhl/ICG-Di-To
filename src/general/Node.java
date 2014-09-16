@@ -46,7 +46,9 @@ public abstract class Node implements App {
 	}
 
 	public void setSelected() {
-
+	}
+	
+	public void deselect() {
 	}
 	
 	public Shader getShader() {

@@ -35,12 +35,16 @@ public abstract class ShapeNode extends Node {
 		positionData = positionBuffer(vertices.length);
 		colorData = colorBuffer(vertices.length);
 		finalizeBuffers(positionData, colorData, vertices);
+
+		for (Node child : getChildNodes()) {
+			child.init();
+		}
 	}
 
 	@Override
 	public void simulate(float elapsed, Input input) {
 		// Pressing key 'r' toggles the cube animation.
-		if (input.isKeyToggled(Keyboard.KEY_R))
+		if (isSelected())
 			// Increase the angle with a speed of 90 degrees per second.
 			angle += 90 * elapsed;
 	}
@@ -91,8 +95,6 @@ public abstract class ShapeNode extends Node {
 		positionData.rewind();
 		colorData.rewind();
 	}
-	
-	
 
 	public void setTranslation(Vector translation) {
 		this.translation = translation;
@@ -104,8 +106,14 @@ public abstract class ShapeNode extends Node {
 
 	@Override
 	public void setSelected() {
-		System.out.println("I, " + getName() + ", got selected");
-		setTranslation(vecmath.vector(0, 5, 0));
+		System.out.println(getName() + " got selected");
+		selected = true;
 		// Hier shader ändern um farbe zu ändern
+	}
+
+	@Override
+	public void deselect() {
+		selected = false;
+		angle = 0;
 	}
 }

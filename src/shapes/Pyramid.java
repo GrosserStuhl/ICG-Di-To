@@ -8,12 +8,11 @@ import static org.lwjgl.opengl.GL11.*;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 
-import ogl.app.Input;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+import general.Node;
 import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;
@@ -30,14 +29,6 @@ public class Pyramid extends ShapeNode {
 	}
 	
 	FloatBuffer ambientData;
-
-	@Override
-	public void simulate(float elapsed, Input input) {
-		// Pressing key 'r' toggles the cube animation.
-		if (input.isKeyToggled(Keyboard.KEY_P))
-			// Increase the angle with a speed of 90 degrees per second.
-			angle += 120 * elapsed;
-	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -73,8 +64,6 @@ public class Pyramid extends ShapeNode {
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
-		
-		
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
