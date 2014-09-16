@@ -16,17 +16,9 @@ import general.ShapeNode;
 import general.Vertex;
 
 public class Pyramid extends ShapeNode {
-
-	
-	private Vector translation;
-	
-	
 	
 	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
-		super(vertices, shader);
-		
-		this.translation = translation;
-		
+		super(vertices, shader, translation);
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 import java.nio.FloatBuffer;
 
 import ogl.app.Input;
+import ogl.vecmath.Vector;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
@@ -13,16 +15,18 @@ public abstract class ShapeNode extends Node {
 	protected FloatBuffer positionData;
 	protected FloatBuffer colorData;
 	protected Vertex[] vertices;
+	protected Vector translation;
 	private Shader shader;
 
 	// Initialize the rotation angle of the cube.
 	protected float angle = 0;
 
-	public ShapeNode(Vertex[] vertices, Shader shader) {
+	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation) {
 		this.positionData = positionBuffer(vertices.length);
 		this.colorData = colorBuffer(vertices.length);
 		this.vertices = vertices;
 		this.shader = shader;
+		this.translation = translation;
 	}
 
 	@Override
@@ -45,6 +49,7 @@ public abstract class ShapeNode extends Node {
 
 	}
 
+	@Override
 	public Shader getShader() {
 		return shader;
 	}
@@ -86,9 +91,14 @@ public abstract class ShapeNode extends Node {
 		colorData.rewind();
 	}
 
+	public void setTranslation(Vector translation) {
+		this.translation = translation;
+	}
+
 	@Override
 	public void setSelected() {
-		System.out.println("I, " + getClass() + ", got selected");
+		System.out.println("I, " + getName() + ", got selected");
+		setTranslation(vecmath.vector(0, 5, 0));
 		// Hier shader ändern um farbe zu ändern
 	}
 }

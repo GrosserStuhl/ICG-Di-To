@@ -11,6 +11,7 @@ import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
 
 import org.lwjgl.input.Keyboard;
 
@@ -19,8 +20,8 @@ public class OBJMesh extends ShapeNode implements App {
 	private Texture t;
 	private Shader s;
 
-	public OBJMesh(Vertex[] vertices, Shader shader) {
-		super(vertices, shader);
+	public OBJMesh(Vertex[] vertices, Shader shader, Vector translation) {
+		super(vertices, shader, translation);
 
 		this.s = shader;
 	}

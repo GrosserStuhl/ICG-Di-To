@@ -20,14 +20,11 @@ import org.lwjgl.util.vector.Vector2f;
 public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
-	private Vector translation;
-	
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t, Vector translation) {
-		super(vertices, shader);
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t,
+			Vector translation) {
+		super(vertices, shader, translation);
 		this.t = t;
-		this.translation = translation;
-		
 	}
 
 	FloatBuffer positionData;
@@ -36,10 +33,9 @@ public class OBJModel extends ShapeNode implements App {
 	@Override
 	public void init() {
 
-//		t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		
-		
-		positionData  = positionBuffer(vertices.length);
+		// t = ResourceLoader.loadTexture("MoonMap2.jpg");
+
+		positionData = positionBuffer(vertices.length);
 		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
 
 		finalizeTextured(positionData, textureData, vertices);
@@ -80,13 +76,11 @@ public class OBJModel extends ShapeNode implements App {
 		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
 
-		
-		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
+		Matrix modelMatrix = parentMatrix.mult(vecmath
+				.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
 		setTransformation(modelMatrix);
-		
 
-		
 		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 
@@ -103,8 +97,8 @@ public class OBJModel extends ShapeNode implements App {
 
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
-		
-//		getShader().deactivate();
+
+		// getShader().deactivate();
 	}
 
 	private void finalizeTextured(FloatBuffer positionData,

@@ -1,35 +1,23 @@
 package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import ogl.app.Input;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 public class Camera extends Node {
 
 	private float x = 0f;
 	private float y = 0f;
-	private float z = 10f;
+	private float z = 30f;
 	private float roll = 0f;// The rotation along the z axis
 	private float pitch = 0f;// The rotation along the x axis
 	private float yaw = 0f;// The rotation along the y axis
 	private Vector eye, center, up;
 
-	private int rowIndex = 0;
-	private int selectionIndex = 0;
-	private final int ROW_DISTANCE = -15;
-	private final int OBJ_DISTANCE = 5;
 	private Vector oldEye;
 	private Vector oldCenter;
 	private boolean animation = false;
-	private int animDirection;
 	private float totalPan = -3f;
 	private float totalTilt = 0;
 	private boolean freeMode;
@@ -69,9 +57,9 @@ public class Camera extends Node {
 	public void display(int width, int height, Matrix parentMatrix) {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 		// System.out.println(getTransformation());
-		System.out.println("center: " + center);
-		System.out.println("eye: " + eye);
-		System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
+//		System.out.println("center: " + center);
+//		System.out.println("eye: " + eye);
+//		System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
 	}
 
 	@Override
@@ -139,48 +127,6 @@ public class Camera extends Node {
 		float vecZ = (float) Math.cos(totalPan) * afterTiltZ;
 
 		center = eye.add(vecmath.vector(vecX, vecY, vecZ));
-	}
-
-	private void animate(float elapsed, int direction) {
-		// System.out.println("animating");
-		float distance;
-		switch (direction) {
-		case 0: // Vorwärts
-			distance = elapsed * 10;
-			center = center.sub(vecmath.vector(0, 0, distance));
-			System.out.println(center);
-			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.z() < ROW_DISTANCE * rowIndex)
-				animation = false;
-			break;
-
-		case 1: // Rückwärts
-			distance = elapsed * 10;
-			center = center.add(vecmath.vector(0, 0, distance));
-			System.out.println(center);
-			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.z() > ROW_DISTANCE * rowIndex)
-				animation = false;
-			break;
-
-		case 2: // Rechts
-			distance = elapsed * 5;
-			center = center.add(vecmath.vector(distance, 0, 0));
-			System.out.println(center);
-			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.x() > OBJ_DISTANCE * selectionIndex)
-				animation = false;
-			break;
-
-		default: // Links
-			distance = elapsed * 5;
-			center = center.sub(vecmath.vector(distance, 0, 0));
-			System.out.println(center);
-			eye = center.sub(vecmath.vector(0, 0, -10));
-			if (center.x() < OBJ_DISTANCE * selectionIndex)
-				animation = false;
-			break;
-		}
 	}
 
 	private void updateCamera() {
