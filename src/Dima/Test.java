@@ -8,15 +8,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-
-import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -49,9 +45,9 @@ public class Test {
 		Camera cam = new Camera(70, (float) Display.getWidth()
 				/ (float) Display.getHeight(), 0.3f, 1000);
 		float translation = 0;
-		Mouse.setGrabbed(true);
 		boolean forward, back, left, right;
 
+		Mouse.setGrabbed(true);
 		Font awtFont = new Font("Arial", Font.BOLD, 40);
 		TrueTypeFont font = new TrueTypeFont(awtFont, true);
 

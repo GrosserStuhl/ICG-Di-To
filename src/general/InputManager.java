@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import ogl.app.Input;
@@ -25,7 +26,6 @@ public class InputManager {
 		nodes = children;
 
 		setSelection();
-		System.out.println("WTF");
 
 		for (int i = 0; i <= 220; i++) {
 			keysUp.add(i);
@@ -44,6 +44,7 @@ public class InputManager {
 			if (modeChanged == false) {
 				cam.changeMode();
 				modeChanged = true;
+				Mouse.setGrabbed(true);
 			}
 
 			float moveSpeed = elapsed * 10;
@@ -72,6 +73,8 @@ public class InputManager {
 			if (input.isKeyDown(Keyboard.KEY_DOWN)) {
 				cam.rotateX(-turnSpeed);
 			}
+			cam.rotateY((float) -Mouse.getDX() / 500);
+			cam.rotateX((float) Mouse.getDY() / 500);
 		} else {
 			if (modeChanged == true) {
 				cam.changeMode();

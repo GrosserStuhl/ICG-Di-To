@@ -8,7 +8,6 @@ import ogl.app.Input;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Keyboard;
 
 public abstract class ShapeNode extends Node {
 
@@ -96,6 +95,7 @@ public abstract class ShapeNode extends Node {
 		colorData.rewind();
 	}
 
+	@Override
 	public void setTranslation(Vector translation) {
 		this.translation = translation;
 	}

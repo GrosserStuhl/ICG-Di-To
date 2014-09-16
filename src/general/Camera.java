@@ -25,16 +25,8 @@ public class Camera extends Node {
 	private float animationStartZ = 0;
 
 	public Camera(Matrix parentMatrix) {
-		setTransformation(parentMatrix);
-		// .mult(vecmath.translationMatrix(0, 0, 0)));
+		setTransformation(parentMatrix.mult(vecmath.translationMatrix(3, 0, 5)));
 	}
-
-	// (i*m1*m2)^-1
-	// ====================
-	// disp() {
-	// viewM = root.findCam();
-	// setVM(viewM)
-	// root.display(transMatrix) }
 
 	@Override
 	public void init() {
@@ -48,7 +40,6 @@ public class Camera extends Node {
 	public void simulate(float elapsed, Input input) {
 		if (animationFor) {
 			if (center.z() < animationStartZ - 20) {
-				System.out.println("animation end");
 				animationFor = false;
 			} else {
 				center = center.sub(vecmath.vector(0, 0, 0.02f));
@@ -56,7 +47,6 @@ public class Camera extends Node {
 			}
 		} else if (animationBack) {
 			if (center.z() > animationStartZ + 20) {
-				System.out.println("animation end");
 				animationBack = false;
 			} else {
 				center = center.add(vecmath.vector(0, 0, 0.02f));

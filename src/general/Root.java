@@ -134,14 +134,14 @@ public class Root extends Node implements App {
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
-				vecmath.vector(0, 5, 0));
-		row_three.addNode(moon);
+				vecmath.vector(0, 0, 0));
+		cube2.addNode(moon);
 
 		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
 		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
-				vecmath.vector(-10, 0, 0));
-		row_three.addNode(crate);
+				vecmath.vector(0, 0, 0));
+		cube3.addNode(crate);
 
 		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 		// Texture t2 = ResourceLoader.loadTexture("optimus.png");

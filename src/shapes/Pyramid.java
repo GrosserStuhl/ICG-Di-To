@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL20;
 
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
-import general.Node;
 import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;

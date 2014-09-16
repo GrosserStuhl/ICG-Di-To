@@ -1,8 +1,10 @@
 package general;
 
 import java.util.ArrayList;
+
 import ogl.app.App;
 import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
 
 public abstract class Node implements App {
 
@@ -53,6 +55,9 @@ public abstract class Node implements App {
 	
 	public Shader getShader() {
 		return null;
+	}
+	
+	public void setTranslation(Vector translation) {
 	}
 
 }

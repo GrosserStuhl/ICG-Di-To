@@ -8,13 +8,11 @@ import static org.lwjgl.opengl.GL20.*;
 import java.nio.FloatBuffer;
 
 import ogl.app.App;
-import ogl.app.Input;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -46,15 +44,6 @@ public class OBJModel extends ShapeNode implements App {
 		
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
-
-	}
-
-	@Override
-	public void simulate(float elapsed, Input input) {
-		// Pressing key 'r' toggles the cube animation.
-		if (input.isKeyToggled(Keyboard.KEY_B))
-			// Increase the angle with a speed of 90 degrees per second.
-			angle += 150 * elapsed;
 
 	}
 
