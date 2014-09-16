@@ -90,6 +90,8 @@ public abstract class ShapeNode extends Node {
 		positionData.rewind();
 		colorData.rewind();
 	}
+	
+	
 
 	public void setTranslation(Vector translation) {
 		this.translation = translation;

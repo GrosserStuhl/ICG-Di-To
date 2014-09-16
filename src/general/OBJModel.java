@@ -15,6 +15,7 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
 public class OBJModel extends ShapeNode implements App {
@@ -29,6 +30,8 @@ public class OBJModel extends ShapeNode implements App {
 
 	FloatBuffer positionData;
 	FloatBuffer textureData;
+	FloatBuffer ambientData;
+	
 
 	@Override
 	public void init() {
@@ -39,6 +42,10 @@ public class OBJModel extends ShapeNode implements App {
 		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
 
 		finalizeTextured(positionData, textureData, vertices);
+		
+		
+		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
+		finalizeAmbientBuffer(ambientData, vertices);
 
 	}
 
@@ -92,13 +99,27 @@ public class OBJModel extends ShapeNode implements App {
 		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
 				textureData);
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
+		
+		
+		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+				ambientData);
+		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
+		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 
 		// getShader().deactivate();
+	}
+	
+	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
+		for (int i = 0; i<vertices.length;i++) {
+			a.put(PhongShader.ambientToArray());
+		}
+		a.rewind();
 	}
 
 	private void finalizeTextured(FloatBuffer positionData,

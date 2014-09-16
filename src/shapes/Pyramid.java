@@ -5,12 +5,16 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 
 import ogl.app.Input;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
@@ -19,7 +23,13 @@ public class Pyramid extends ShapeNode {
 	
 	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader, translation);
+		
+		
+		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
+		finalizeAmbientBuffer(ambientData, vertices);
 	}
+	
+	FloatBuffer ambientData;
 
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -49,17 +59,29 @@ public class Pyramid extends ShapeNode {
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0,
 				colorData);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
+		
+		
+		
+		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+				ambientData);
+		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
 		
-//		getShader().deactivate();
 		
+	}
+	
+	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
+		for (int i = 0; i<vertices.length;i++) {
+			a.put(PhongShader.ambientToArray());
+		}
+		a.rewind();
 	}
 
 }

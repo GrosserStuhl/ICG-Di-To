@@ -32,6 +32,10 @@ public class Shader extends Node {
 	public static int vertexAttribIdx = 0;
 	public static int colorAttribIdx = 1;
 	public static int textureAttribIdx = 2;
+	public static int baseAttribIdx = 3;
+	
+	public static int ambientAttribIdx = 4;
+
 
 	
 	
@@ -46,14 +50,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("testVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("phongVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		//load fragmentShader
-		glShaderSource(fs,  ResourceLoader.loadShader("testFragment.fs"));
+		glShaderSource(fs,  ResourceLoader.loadShader("phongFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -68,7 +72,8 @@ public class Shader extends Node {
 		// to
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
-		glBindAttribLocation(program, colorAttribIdx, "color");
+		glBindAttribLocation(program, baseAttribIdx, "baseColor");
+		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
 
 		// Link the shader program.
@@ -175,6 +180,14 @@ public class Shader extends Node {
 	
 	public int getProgram() {
 		return program;
+	}
+	
+	public static int getBaseAttribIdx() {
+		return baseAttribIdx;
+	}
+	
+	public static int getAmbientAttribIdx() {
+		return ambientAttribIdx;
 	}
 	
 	

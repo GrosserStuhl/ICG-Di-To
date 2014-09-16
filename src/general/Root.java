@@ -4,6 +4,7 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import ogl.app.App;
 import ogl.app.Input;
@@ -96,6 +97,9 @@ public class Root extends Node implements App {
 	@Override
 	public void init() {
 
+		
+		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
+		
 		shader = new Shader();
 		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
 

@@ -5,6 +5,7 @@ package general;
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;

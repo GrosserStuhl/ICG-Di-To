@@ -18,4 +18,15 @@ public class PhongShader {
 		PhongShader.ambientLight = ambientLight;
 	}
 	
+	public static float[] ambientToArray(){
+		
+		float[] res = new float[3];
+		res[0] = ambientLight.x;
+		res[1] = ambientLight.y;
+		res[2] = ambientLight.z;
+		
+		return res;
+		
+	}
+	
 }
