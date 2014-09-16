@@ -17,6 +17,7 @@ public abstract class ShapeNode extends Node {
 	protected Vertex[] vertices;
 	protected Vector translation;
 	private Shader shader;
+	private boolean selected;
 
 	// Initialize the rotation angle of the cube.
 	protected float angle = 0;
@@ -95,6 +96,10 @@ public abstract class ShapeNode extends Node {
 
 	public void setTranslation(Vector translation) {
 		this.translation = translation;
+	}
+
+	public boolean isSelected() {
+		return selected;
 	}
 
 	@Override

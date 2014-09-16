@@ -80,9 +80,8 @@ public class InputManager {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
 
-					Vector target = nodes.get(1).getChildNodes().get(0)
-							.getChildNodes().get(0).getTransformation()
-							.getPosition();
+					Vector target = nodes.get(2).getChildNodes().get(0)
+							.getTransformation().getPosition();
 					cam.animateMovement(target);
 				}
 			} else if (!keysUp.contains(Keyboard.KEY_W)
