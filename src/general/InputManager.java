@@ -23,6 +23,7 @@ public class InputManager {
 		// nbnn
 		this.cam = cam;
 		nodes = children;
+		
 
 		for (int i = 0; i <= 220; i++) {
 			keysUp.add(i);
@@ -74,10 +75,6 @@ public class InputManager {
 				cam.changeMode();
 				modeChanged = false;
 			}
-			if (input.isKeyDown(Keyboard.KEY_W)) {
-
-			}
-
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
@@ -105,9 +102,5 @@ public class InputManager {
 		if (nodes.get(0).getChildNodes().get(0) == null)
 			System.out.println("node at 0 is null");
 		nodes.get(rowIndex).getChildNodes().get(selectionIndex).setSelected();
-	}
-
-	private boolean isKeyUp(int key) {
-		return keysUp.contains(key);
 	}
 }

@@ -128,7 +128,7 @@ public class Root extends Node implements App {
 		textureShader.addNode(row_three);
 
 		setTransformation(vecmath.identityMatrix());
-		cam = new Camera(getChildNodes(), getTransformation());
+		cam = new Camera(getTransformation());
 		addNode(cam);
 		manager = new InputManager(cam, getChildNodes());
 
@@ -236,8 +236,6 @@ public class Root extends Node implements App {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

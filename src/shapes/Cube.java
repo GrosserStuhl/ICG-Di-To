@@ -6,22 +6,16 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
-import java.nio.FloatBuffer;
-
-import general.ResourceLoader;
 import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 import ogl.app.App;
 import ogl.app.Input;
-import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Vector2f;
 
 public class Cube extends ShapeNode implements App {
 
@@ -33,10 +27,6 @@ public class Cube extends ShapeNode implements App {
 		this.translation = translation;
 		
 	}
-	
-
-	
-	
 	
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -80,17 +70,4 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
 
 	}
-	
-	
-	
-	
-
-	public Vector getLookAtVector() {
-		// Vordere linke Ecke
-		Vector edge = vertices[3].getPosition();
-		//Position für Kamera 
-		edge.add(vecmath.vector(0.5f, 0, 10f));
-		return edge;
-	}
-
 }

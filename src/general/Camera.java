@@ -22,7 +22,6 @@ public class Camera extends Node {
 	private float yaw = 0f;// The rotation along the y axis
 	private Vector eye, center, up;
 
-	private ArrayList<Node> rootChildren;
 	private int rowIndex = 0;
 	private int selectionIndex = 0;
 	private final int ROW_DISTANCE = -15;
@@ -36,8 +35,7 @@ public class Camera extends Node {
 	private boolean freeMode;
 	private Vector target;
 
-	public Camera(ArrayList<Node> rootChildren, Matrix parentMatrix) {
-		this.rootChildren = rootChildren;
+	public Camera(Matrix parentMatrix) {
 		setTransformation(parentMatrix.mult(vecmath
 				.translationMatrix(0, 0, -20)));
 	}
