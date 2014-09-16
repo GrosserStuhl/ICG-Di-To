@@ -59,28 +59,14 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { 
-			vec(-w2, -h2, -d2), 
-			vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), 
-			vec(-w2, h2, -d2), 
-			vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), 
-			vec(-w2, h2, d2), 
-			vec(w2, h2, d2) };
-
+	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
+	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
-
 
 	// Pyramid
 
@@ -100,12 +86,8 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0) };
+	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0) };
 
 	public Root() {
 
@@ -116,59 +98,65 @@ public class Root extends Node implements App {
 
 		shader = new Shader();
 		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
-		
-		addNode(shader);
-		addNode(textureShader);
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
 		RowNode row_three = new RowNode(2);
-		shader.addNode(row_one);
-		shader.addNode(row_two);
-		textureShader.addNode(row_three);
+		addNode(row_one);
+		addNode(row_two);
+		addNode(row_three);
 
 		setTransformation(vecmath.identityMatrix());
-		cam = new Camera(getChildNodes(), getTransformation());
+		cam = new Camera(getTransformation());
 		addNode(cam);
-		manager = new InputManager(cam, getChildNodes());
 
-		
-		
 		vertices = Vertex.cubeVertices(p, c);
 		// cube mit color ohne textur
 		// Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
 		// Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
 
-
 		verticesT = Vertex.triangleVertices(t, colorT);
 
-		Cube cube = new Cube(vertices, shader,vecmath.vector(0f,0f,0f));
+		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
 		row_one.addNode(cube);
 
-		Cube cube2 = new Cube(vertices, shader,vecmath.vector(-5, 0, 0));
+		Cube cube2 = new Cube(vertices, shader, vecmath.vector(-5, 0, 0));
 		row_one.addNode(cube2);
-		Cube cube3 = new Cube(vertices, shader,vecmath.vector(-15, 0, 0));
+		Cube cube3 = new Cube(vertices, shader, vecmath.vector(-15, 0, 0));
 		row_one.addNode(cube3);
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(5, 0, 0));
 		row_two.addNode(pyr);
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		OBJModel monkeyMod = new OBJModel(m.getVertices(), textureShader,t, vecmath.vector(0, 5, 0));
-		row_three.addNode(monkeyMod);
-		
+		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
+				vecmath.vector(0, 5, 0));
+		row_three.addNode(moon);
+
 		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
 		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-		OBJModel crate = new OBJModel(m2.getVertices(), textureShader,t2, vecmath.vector(-10, 0, 0));
+		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
+				vecmath.vector(-10, 0, 0));
 		row_three.addNode(crate);
-		
-//		Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
-//		Texture t2 = ResourceLoader.loadTexture("optimus.png");
-//		OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
-//		row_one.addNode(monkeyMod2);
-		
-		
 
+		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
+		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
+		// OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
+		// row_one.addNode(monkeyMod2);
+
+		row_one.setName("Row One");
+		row_two.setName("Row Two");
+		row_three.setName("Row Three");
+		cam.setName("Camera");
+		cube.setName("Cube1");
+		cube2.setName("Cube2");
+		cube3.setName("Cube3");
+		pyr.setName("Pyramid");
+		moon.setName("Moon");
+		crate.setName("Crate");
+		
+		manager = new InputManager(cam, getChildNodes());
+		
 		for (Node child : getChildNodes()) {
 			child.init();
 		}
@@ -212,32 +200,39 @@ public class Root extends Node implements App {
 		// matricies to
 		// the
 		// uniform variables.
-		
-		
-		
-		 shader.activate();
-		 shader.getProjectionMatrixUniform().set(projectionMatrix);
-		 shader.getViewMatrixUniform().set(viewMatrix);
 
-		 getChildNodes().get(0).display(width, height, getTransformation());
-		 
-		 
+		shader.activate();
+		shader.getProjectionMatrixUniform().set(projectionMatrix);
+		shader.getViewMatrixUniform().set(viewMatrix);
+
+		// getChildNodes().get(0).display(width, height, getTransformation());
+		for (Node child : getChildNodes()) {
+			if (child.getShader() != null && child.getShader().equals(shader))
+				child.display(width, height, getTransformation());
+			else child.display(width, height, getTransformation());
+		}
+
 		textureShader.activate();
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 		textureShader.getViewMatrixUniform().set(viewMatrix);
-		
-		 getChildNodes().get(1).display(width, height, getTransformation());
-		 getChildNodes().get(2).display(width, height, getTransformation());
 
-//		for (Node child : getChildNodes()) {
-//			child.display(width, height, getTransformation());
-//		}
+		// getChildNodes().get(1).display(width, height, getTransformation());
+		// getChildNodes().get(2).display(width, height, getTransformation());
+
+		for (Node child : getChildNodes()) {
+			if (child.getShader() != null
+					&& child.getShader().equals(textureShader))
+				child.display(width, height, getTransformation());
+			else child.display(width, height, getTransformation());
+		}
+
+		// for (Node child : getChildNodes()) {
+		// child.display(width, height, getTransformation());
+		// }
 	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

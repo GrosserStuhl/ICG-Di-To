@@ -1,12 +1,7 @@
 package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-
-
-
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -15,7 +10,6 @@ import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.util.vector.Vector2f;
-import org.newdawn.slick.opengl.TextureLoader;
 
 public class ResourceLoader {
 

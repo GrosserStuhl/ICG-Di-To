@@ -1,10 +1,4 @@
 package general;
-import static ogl.vecmathimp.FactoryDefault.vecmath;
-
-
-
-import java.util.ArrayList;
-
 import org.lwjgl.util.vector.Vector2f;
 
 import ogl.vecmath.Color;

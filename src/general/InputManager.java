@@ -24,6 +24,8 @@ public class InputManager {
 		this.cam = cam;
 		nodes = children;
 
+		// setSelection();
+
 		for (int i = 0; i <= 220; i++) {
 			keysUp.add(i);
 		}
@@ -74,10 +76,6 @@ public class InputManager {
 				cam.changeMode();
 				modeChanged = false;
 			}
-			if (input.isKeyDown(Keyboard.KEY_W)) {
-
-			}
-
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
@@ -92,8 +90,15 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_W);
 			if (input.isKeyDown(Keyboard.KEY_S)) {
 			}
-			if (input.isKeyDown(Keyboard.KEY_D)) {
-			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+				if (keysUp.contains(Keyboard.KEY_D) == true) {
+					keysUp.remove(Keyboard.KEY_D);
+					selectionIndex++;
+					setSelection();
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_D)
+					&& !Keyboard.isKeyDown(Keyboard.KEY_D))
+				keysUp.add(Keyboard.KEY_D);
 			if (input.isKeyDown(Keyboard.KEY_A)) {
 			}
 		}
@@ -102,12 +107,6 @@ public class InputManager {
 	private void setSelection() {
 		System.out.println("row: " + rowIndex);
 		System.out.println("selection: " + selectionIndex);
-		if (nodes.get(0).getChildNodes().get(0) == null)
-			System.out.println("node at 0 is null");
 		nodes.get(rowIndex).getChildNodes().get(selectionIndex).setSelected();
-	}
-
-	private boolean isKeyUp(int key) {
-		return keysUp.contains(key);
 	}
 }
