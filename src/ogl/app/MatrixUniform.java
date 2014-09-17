@@ -5,12 +5,13 @@
 package ogl.app;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+
+
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 
 import java.nio.FloatBuffer;
 
 import ogl.vecmath.Matrix;
-import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 
@@ -56,9 +57,5 @@ public class MatrixUniform extends Uniform {
     glUniformMatrix4(location, false, buffer);
   }
   
-  public void set(Vector value){
-	  buffer = BufferUtils.createFloatBuffer(12);
-	  
-  }
   
 }

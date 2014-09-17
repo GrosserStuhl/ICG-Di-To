@@ -106,7 +106,7 @@ public class Root extends Node implements App {
 		
 		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
 		//first Vector3f is color and second the direction of the light
-		PhongShader.setDirectionalLight(new BaseLight(new Vector3f(1,1,1),0.8f),vecmath.vector(1,1,1));
+		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(1,1,1),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");

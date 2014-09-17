@@ -61,8 +61,9 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 
-//		getShader().getDirectionalLightColor().set();
-		
+		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
+		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
+		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
 		
 		
 		

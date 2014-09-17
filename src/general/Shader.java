@@ -37,9 +37,9 @@ public class Shader extends Node {
 	public static int ambientAttribIdx = 4;
 
 	public static int normalAttribIdx = 5;
-	public MatrixUniform directionalLightColor;
-	public MatrixUniform directionalLightIntensity;
-	public MatrixUniform directionalLightDirection;
+	public ColorUniform directionalLightColor;
+	public FloatUniform directionalLightIntensity;
+	public VectorUniform directionalLightDirection;
 
 	// public static int diffuseColorAttribIdx = 6;
 	// public static int diffuseIntensityAttribIdx = 7;
@@ -56,14 +56,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("phongAmbVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("phongAmbDiffVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		// load fragmentShader
-		glShaderSource(fs, ResourceLoader.loadShader("phongAmbFragment.fs"));
+		glShaderSource(fs, ResourceLoader.loadShader("phongAmbDiffFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -102,12 +102,12 @@ public class Shader extends Node {
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 
-		directionalLightColor = new MatrixUniform(program,
+		directionalLightColor = new ColorUniform(program,
 				"directionalLight.base.color");
-		directionalLightIntensity = new MatrixUniform(program,
+		directionalLightIntensity = new FloatUniform(program,
 				"directionalLight.base.intensity");
-		directionalLightDirection = new MatrixUniform(program,
-				"directionalLight.base.direction");
+		directionalLightDirection = new VectorUniform(program,
+				"directionalLight.direction");
 	}
 
 	public void activate() {
@@ -227,29 +227,29 @@ public class Shader extends Node {
 		return normalAttribIdx;
 	}
 
-	public void setDirectionalLightColor(MatrixUniform directionalLightColor) {
+	public void setDirectionalLightColor(ColorUniform directionalLightColor) {
 		this.directionalLightColor = directionalLightColor;
 	}
 
 	public void setDirectionalLightDirection(
-			MatrixUniform directionalLightDirection) {
+			VectorUniform directionalLightDirection) {
 		this.directionalLightDirection = directionalLightDirection;
 	}
 
 	public void setDirectionalLightIntensity(
-			MatrixUniform directionalLightIntensity) {
+			FloatUniform directionalLightIntensity) {
 		this.directionalLightIntensity = directionalLightIntensity;
 	}
 
-	public MatrixUniform getDirectionalLightColor() {
+	public ColorUniform getDirectionalLightColor() {
 		return directionalLightColor;
 	}
 
-	public MatrixUniform getDirectionalLightDirection() {
+	public VectorUniform getDirectionalLightDirection() {
 		return directionalLightDirection;
 	}
 
-	public MatrixUniform getDirectionalLightIntensity() {
+	public FloatUniform getDirectionalLightIntensity() {
 		return directionalLightIntensity;
 	}
 
