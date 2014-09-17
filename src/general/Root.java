@@ -101,7 +101,7 @@ public class Root extends Node implements App {
 		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
 		
 		shader = new Shader();
-		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
+		textureShader = new Shader("phongTVertex.vs", "phongTFragment.fs");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
