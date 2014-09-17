@@ -24,6 +24,7 @@ public class Vertex {
 		normal = vecmath.vector(0f, 0f, 0f);
 	}
 	
+	
 //	Vertex(Vector p, Color c, Vector n) {
 //		position = p;
 //		color = c;
@@ -91,6 +92,20 @@ public class Vertex {
 	public Color getColor() {
 		return color;
 	}
+	
+	public Vector2f getTextureCoord() {
+		return textureCoord;
+	}
+	
+	public void setNormal(Vector normal) {
+		this.normal = normal;
+	}
+	
+	public Vector getNormal() {
+		return normal;
+	}
+	
+
 
 
 
@@ -189,51 +204,43 @@ public class Vertex {
 
 
 	
-	public Vector2f getTextureCoord() {
-		return textureCoord;
-	}
 	
-	public void setNormal(Vector normal) {
-		this.normal = normal;
-	}
-	
-	public Vector getNormal() {
-		return normal;
-	}
 
-	public static void calcNormals(Vertex[] vertices,
-			ArrayList<OBJIndex> indices) {
-		// += 3 because of triangles
-				for (int i = 0; i < indices.size(); i+= 3) {
-					
-					
-					int i0 = indices.get(i).normalIndex;
-					int i1 = indices.get(i + 1).normalIndex;
-					int i2 = indices.get(i + 2).normalIndex;
-					
-					// one line / direction of the triangle ( top to right-bottom)
-					Vector v1 = vertices[i1].getPosition().sub(vertices[i0].getPosition());
-					
-					// from top to left-bottom
-					Vector v2 = vertices[i2].getPosition().sub(vertices[i0].getPosition());
-					
-					Vector normal = v1.cross(v2).normalize();
-					
-					vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
-					vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
-					vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
-					
-					
-					
-				}
-				
-				// this will set the length and direction are gonna be correct for calculating
-				for (int i = 0; i < vertices.length; i++) {
-					vertices[i].setNormal(vertices[i].getNormal().normalize());
-					
-				}
-		
-	}
+//	public static void calcNormals(Vertex[] vertices,
+//			ArrayList<OBJIndex> indices) {
+//		// += 3 because of triangles
+//				for (int i = 0; i < indices.size(); i+= 3) {
+//					
+//					
+//					int i0 = indices.get(i).normalIndex;
+//					System.out.println("i0: "+i0);
+//					
+//					int i1 = indices.get(i + 1).normalIndex;
+//					int i2 = indices.get(i + 2).normalIndex;
+//					
+//					// one line / direction of the triangle ( top to right-bottom)
+//					Vector v1 = vertices[i1].getPosition().sub(vertices[i0].getPosition());
+//					
+//					// from top to left-bottom
+//					Vector v2 = vertices[i2].getPosition().sub(vertices[i0].getPosition());
+//					
+//					Vector normal = v1.cross(v2).normalize();
+//					
+//					vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
+//					vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
+//					vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
+//					
+//					
+//					
+//				}
+//				
+//				// this will set the length and direction are gonna be correct for calculating
+//				for (int i = 0; i < vertices.length; i++) {
+//					vertices[i].setNormal(vertices[i].getNormal().normalize());
+//					
+//				}
+//		
+//	}
 	
 	
 

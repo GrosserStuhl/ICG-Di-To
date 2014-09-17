@@ -132,9 +132,13 @@ public class Root extends Node implements App {
 		
 		
 		//Phong extra diffuse:
-		ArrayList<OBJIndex> cubeIndices = generateCubeIndices();
+//		ArrayList<OBJIndex> cubeIndices = generateCubeIndices();
 //		int[] indicesArray = cubeIndicesToIntArray(cubeIndices);
-		Vertex.calcNormals(vertices, cubeIndices);
+		Vertex.calcNormals(vertices, cubeIndices());
+		
+		for (int i = 0; i < vertices.length; i++) {
+			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
+		}
 		
 		
 		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
@@ -256,64 +260,80 @@ public class Root extends Node implements App {
 	}
 	
 	
-	
-	
-	
-	public ArrayList<OBJIndex> generateCubeIndices(){
-		ArrayList<OBJIndex> cubeIndices = new ArrayList<OBJIndex>();
+	public int[] cubeIndices(){
+		int[] res = new int[24];
 		
-		cubeIndices.add(cubeIndex(0));
-		cubeIndices.add(cubeIndex(1));
-		cubeIndices.add(cubeIndex(2));
-		cubeIndices.add(cubeIndex(3));
+		res[0] = 0; res[1] = 1; res[2] = 2; res[3] = 3;
 		
-		cubeIndices.add(cubeIndex(4));
-		cubeIndices.add(cubeIndex(5));
-		cubeIndices.add(cubeIndex(6));
-		cubeIndices.add(cubeIndex(7));
+		res[4] = 4; res[5] = 5; res[6] = 6; res[7] = 7;
 		
-		cubeIndices.add(cubeIndex(1));
-		cubeIndices.add(cubeIndex(4));
-		cubeIndices.add(cubeIndex(7));
-		cubeIndices.add(cubeIndex(2));
+		res[8] = 1; res[9] = 4; res[10] = 7; res[11] = 2;
 		
-		cubeIndices.add(cubeIndex(3));
-		cubeIndices.add(cubeIndex(2));
-		cubeIndices.add(cubeIndex(7));
-		cubeIndices.add(cubeIndex(6));
+		res[12] = 3; res[13] = 2; res[14] = 7; res[15] = 6;
 		
-		cubeIndices.add(cubeIndex(5));
-		cubeIndices.add(cubeIndex(0));
-		cubeIndices.add(cubeIndex(3));
-		cubeIndices.add(cubeIndex(6));
+		res[16] = 5; res[17] = 0; res[18] = 3; res[19] = 6;
 		
-		cubeIndices.add(cubeIndex(5));
-		cubeIndices.add(cubeIndex(4));
-		cubeIndices.add(cubeIndex(1));
-		cubeIndices.add(cubeIndex(0));
-		
-		
-		return cubeIndices;
-		
-	}
-	
-	private int[] cubeIndicesToIntArray(ArrayList<OBJIndex> cubeIndices) {
-
-		int[] res = new int[cubeIndices.size()];
-		
-		// hier egal man bekommt immer die gleichen int wert 
-		for (int i = 0; i < cubeIndices.size(); i++) {
-			res[i] = cubeIndices.get(i).vertexIndex;
-		}
+		res[20] = 5; res[21] = 4; res[22] = 1; res[23] = 0;
 		
 		return res;
-		
 	}
 	
-	public OBJIndex cubeIndex(int i){
-		
-		return new OBJIndex(i,i);
-		
-	}
+	
+//	public ArrayList<OBJIndex> generateCubeIndices(){
+//		ArrayList<OBJIndex> cubeIndices = new ArrayList<OBJIndex>();
+//		
+//		cubeIndices.add(cubeIndex(0));
+//		cubeIndices.add(cubeIndex(1));
+//		cubeIndices.add(cubeIndex(2));
+//		cubeIndices.add(cubeIndex(3));
+//		
+//		cubeIndices.add(cubeIndex(4));
+//		cubeIndices.add(cubeIndex(5));
+//		cubeIndices.add(cubeIndex(6));
+//		cubeIndices.add(cubeIndex(7));
+//		
+//		cubeIndices.add(cubeIndex(1));
+//		cubeIndices.add(cubeIndex(4));
+//		cubeIndices.add(cubeIndex(7));
+//		cubeIndices.add(cubeIndex(2));
+//		
+//		cubeIndices.add(cubeIndex(3));
+//		cubeIndices.add(cubeIndex(2));
+//		cubeIndices.add(cubeIndex(7));
+//		cubeIndices.add(cubeIndex(6));
+//		
+//		cubeIndices.add(cubeIndex(5));
+//		cubeIndices.add(cubeIndex(0));
+//		cubeIndices.add(cubeIndex(3));
+//		cubeIndices.add(cubeIndex(6));
+//		
+//		cubeIndices.add(cubeIndex(5));
+//		cubeIndices.add(cubeIndex(4));
+//		cubeIndices.add(cubeIndex(1));
+//		cubeIndices.add(cubeIndex(0));
+//		
+//		
+//		return cubeIndices;
+//		
+//	}
+//	
+//	private int[] cubeIndicesToIntArray(ArrayList<OBJIndex> cubeIndices) {
+//
+//		int[] res = new int[cubeIndices.size()];
+//		
+//		// hier egal man bekommt immer die gleichen int wert 
+//		for (int i = 0; i < cubeIndices.size(); i++) {
+//			res[i] = cubeIndices.get(i).vertexIndex;
+//		}
+//		
+//		return res;
+//		
+//	}
+	
+//	public OBJIndex cubeIndex(int i){
+//		
+//		return new OBJIndex(i,i);
+//		
+//	}
 
 }

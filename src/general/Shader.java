@@ -41,9 +41,6 @@ public class Shader extends Node {
 	public FloatUniform directionalLightIntensity;
 	public VectorUniform directionalLightDirection;
 
-	// public static int diffuseColorAttribIdx = 6;
-	// public static int diffuseIntensityAttribIdx = 7;
-	// public static int diffuseDirectionAttribIdx = 8;
 
 	public Shader() {
 

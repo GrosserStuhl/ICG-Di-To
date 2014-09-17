@@ -71,9 +71,6 @@ public class PhongShader {
 	
 	
 	
-	
-	
-
 	public static void setDirectionalLight(BaseLight baseLight,
 			Vector direction) {
 		PhongShader.directionalLight = new DirectionalLight(baseLight,
