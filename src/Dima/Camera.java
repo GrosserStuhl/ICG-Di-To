@@ -71,9 +71,9 @@ public class Camera {
 		// glCullFace(GL_BACK);
 		// glEnable(GL_CULL_FACE);
 
-//		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-//		glEnable(GL_BLEND);
-//		glDisable(GL_DEPTH_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glEnable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 	}
 
 	public void useView() {

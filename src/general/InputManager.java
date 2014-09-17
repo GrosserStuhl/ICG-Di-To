@@ -1,5 +1,7 @@
 package general;
 
+import static ogl.vecmathimp.FactoryDefault.vecmath;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +11,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import ogl.app.Input;
+import ogl.vecmath.Vector;
 
 public class InputManager {
 
@@ -20,6 +23,10 @@ public class InputManager {
 	private Set<Integer> keysUp = new HashSet<Integer>();
 	private boolean modeChanged;
 	private Node selectedNode;
+
+	private Vector horizontal;
+	private Vector vertical;
+	private Ray pickingRay;
 
 	public InputManager(Camera cam, ArrayList<Node> children) {
 		this.cam = cam;
@@ -98,10 +105,10 @@ public class InputManager {
 					&& !Keyboard.isKeyDown(Keyboard.KEY_W))
 				keysUp.add(Keyboard.KEY_W);
 			if (input.isKeyDown(Keyboard.KEY_S)) {
-				if (rowIndex>0) {
+				if (rowIndex > 0) {
 					rowIndex--;
 					selectionIndex = previousSelIndex;
-					nodes.get(rowIndex+1).getChildNodes().clear();
+					nodes.get(rowIndex + 1).getChildNodes().clear();
 					cam.moveRowBack();
 					setSelection();
 				}
@@ -129,6 +136,30 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
+
+			if (Mouse.isButtonDown(0)) {
+				// look direction
+				Vector viewDir = vecmath.vector(cam.getCenter().x()
+						- cam.getEye().x(), cam.getCenter().y()
+						- cam.getEye().y(), cam.getCenter().z()
+						- cam.getEye().z());
+				viewDir = viewDir.normalize();
+
+				// screenX
+				horizontal = viewDir.cross(cam.getUp()).normalize();
+
+				// screenY
+				vertical = horizontal.cross(viewDir).normalize();
+
+				final float radians = (float) (60f * Math.PI / 180f);
+				float halfHeight = (float) (Math.tan(radians / 2) * 0.1f);
+				float halfScaledAspectRatio = halfHeight * (600 / 600);
+
+				vertical = vertical.mult(halfHeight);
+				horizontal = horizontal.mult(halfScaledAspectRatio);
+				pickingRay = new Ray();
+				picking(Mouse.getX(), Mouse.getY(), viewDir, pickingRay);
+			}
 		}
 	}
 
@@ -139,5 +170,34 @@ public class InputManager {
 		System.out.println("selection: " + selectionIndex);
 		selectedNode = nodes.get(rowIndex).getChildNodes().get(selectionIndex);
 		selectedNode.setSelected();
+	}
+
+	public void picking(float screenX, float screenY, Vector direction,
+			Ray pickingRay) {
+		int viewportHeight = 600;
+		int viewportWidth = 600;
+
+		pickingRay.setClickPosInWorld(cam.getEye());
+		pickingRay.getClickPosInWorld().add(direction);
+
+		screenX -= (float) viewportWidth / 2f;
+		screenY -= (float) viewportHeight / 2f;
+
+		// normalize to 1
+		screenX /= ((float) viewportWidth / 2f);
+		screenY /= ((float) viewportHeight / 2f);
+
+		pickingRay.getClickPosInWorld().add(
+				vecmath.vector(horizontal.x() * screenX + vertical.x()
+						* screenY, 0, 0));
+		pickingRay.getClickPosInWorld().add(
+				vecmath.vector(0, horizontal.y() * screenX + vertical.y()
+						* screenY, 0));
+		pickingRay.getClickPosInWorld().add(
+				vecmath.vector(0, 0, horizontal.z() * screenX + vertical.z()
+						* screenY));
+
+		pickingRay.setDirection(pickingRay.getClickPosInWorld());
+		pickingRay.getDirection().sub(cam.getEye());
 	}
 }
