@@ -26,9 +26,20 @@ public class Cube extends ShapeNode implements App {
 		
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
+		
+		diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
+		diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length * 1);
+		diffuseDirection = BufferUtils.createFloatBuffer(vertices.length * 3);
+		finalizeDiffuseBuffer(diffuseColor, diffuseIntensity, diffuseDirection, vertices);
+		
+		
 	}
 	
 	FloatBuffer ambientData;
+	
+	FloatBuffer diffuseColor;
+	FloatBuffer diffuseIntensity;
+	FloatBuffer diffuseDirection;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -55,7 +66,7 @@ public class Cube extends ShapeNode implements App {
 //		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 		
 		
-		
+		// ambient Lightning
 		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0,
 				colorData);
 		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
@@ -63,6 +74,22 @@ public class Cube extends ShapeNode implements App {
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
 		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		
+		
+		glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
+				diffuseColor);
+		glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
+		
+		glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1, false, 0,
+				diffuseIntensity);
+		glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
+		
+		
+		glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3, false, 0,
+				diffuseDirection);
+		glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
+		
+		
 
 
 		// Draw the triangles that form the cube from the vertex data arrays.
@@ -78,6 +105,17 @@ public class Cube extends ShapeNode implements App {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
+	}
+	
+	protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer diffI, FloatBuffer diffD, Vertex[] vertices){
+		for (int i = 0; i<vertices.length;i++) {
+			diffC.put(PhongShader.diffuseColorToArray());
+			diffI.put(PhongShader.diffuseIntensityToArray());
+			diffD.put(PhongShader.diffuseDirectionToArray());
+		}
+		diffC.rewind();
+		diffI.rewind();
+		diffD.rewind();
 	}
 	
 	

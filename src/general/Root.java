@@ -3,8 +3,14 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
+
+import mathe.Vector3f;
+
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
+
+
+
 
 import ogl.app.App;
 import ogl.app.Input;
@@ -99,9 +105,11 @@ public class Root extends Node implements App {
 
 		
 		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
+		//first Vector3f is color and second the direction of the light
+		PhongShader.setDirectionalLight(new BaseLight(new Vector3f(1,1,1),0.8f),new Vector3f(1,1,1));
 		
 		shader = new Shader();
-		textureShader = new Shader("phongTVertex.vs", "phongTFragment.fs");
+		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
@@ -121,6 +129,13 @@ public class Root extends Node implements App {
 
 		verticesT = Vertex.triangleVertices(t, colorT);
 
+		
+		
+		//Phong extra diffuse:
+		ArrayList<OBJIndex> cubeIndices = generateCubeIndices();
+//		Vertex.calcNormals(vertices, cubeIndices);
+		
+		
 		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
 		row_one.addNode(cube);
 
@@ -237,6 +252,54 @@ public class Root extends Node implements App {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
+	}
+	
+	
+	
+	
+	
+	public ArrayList<OBJIndex> generateCubeIndices(){
+		ArrayList<OBJIndex> cubeIndices = new ArrayList<OBJIndex>();
+		
+		cubeIndices.add(cubeIndex(0));
+		cubeIndices.add(cubeIndex(1));
+		cubeIndices.add(cubeIndex(2));
+		cubeIndices.add(cubeIndex(3));
+		
+		cubeIndices.add(cubeIndex(4));
+		cubeIndices.add(cubeIndex(5));
+		cubeIndices.add(cubeIndex(6));
+		cubeIndices.add(cubeIndex(7));
+		
+		cubeIndices.add(cubeIndex(1));
+		cubeIndices.add(cubeIndex(4));
+		cubeIndices.add(cubeIndex(7));
+		cubeIndices.add(cubeIndex(2));
+		
+		cubeIndices.add(cubeIndex(3));
+		cubeIndices.add(cubeIndex(2));
+		cubeIndices.add(cubeIndex(7));
+		cubeIndices.add(cubeIndex(6));
+		
+		cubeIndices.add(cubeIndex(5));
+		cubeIndices.add(cubeIndex(0));
+		cubeIndices.add(cubeIndex(3));
+		cubeIndices.add(cubeIndex(6));
+		
+		cubeIndices.add(cubeIndex(5));
+		cubeIndices.add(cubeIndex(4));
+		cubeIndices.add(cubeIndex(1));
+		cubeIndices.add(cubeIndex(0));
+		
+		
+		return cubeIndices;
+		
+	}
+	
+	public OBJIndex cubeIndex(int i){
+		
+		return new OBJIndex(i,i);
+		
 	}
 
 }

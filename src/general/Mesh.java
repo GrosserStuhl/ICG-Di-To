@@ -1,5 +1,6 @@
 package general;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
@@ -33,7 +34,6 @@ public class Mesh {
 		this.vertices = vertices;
 		
 	}
-	
 	
 	
 	

@@ -3,6 +3,7 @@ package general;
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
+
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
@@ -11,10 +12,17 @@ public class Vertex {
 	Vector position;
 	Color color;
 	Vector2f textureCoord;
+	Vector normal;
 
 	Vertex(Vector p, Color c) {
 		position = p;
 		color = c;
+	}
+	
+	Vertex(Vector p, Color c, Vector n) {
+		position = p;
+		color = c;
+		normal = n;
 	}
 	
 	public Vertex(Vector p, Vector2f t) {
@@ -134,11 +142,55 @@ public class Vertex {
 		return vertices;
 		
 	}
+	
+	
+public static void calcNormals(Vertex[] vertices, int[] indices){
+		
+		// += 3 because of triangles
+		for (int i = 0; i < indices.length; i+= 3) {
+			
+			int i0 = indices[i];
+			int i1 = indices[i + 1];
+			int i2 = indices[i + 2];
+			
+			// one line / direction of the triangle ( top to right-bottom)
+			Vector v1 = vertices[i1].getPosition().sub(vertices[i0].getPosition());
+			
+			// from top to left-bottom
+			Vector v2 = vertices[i2].getPosition().sub(vertices[i0].getPosition());
+			
+			Vector normal = v1.cross(v2).normalize();
+			
+			vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
+			vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
+			vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
+			
+			
+			
+		}
+		
+		// this will set the length and direction are gonna be correct for calculating
+		for (int i = 0; i < vertices.length; i++) {
+			vertices[i].setNormal(vertices[i].getNormal().normalize());
+			
+		}
+		
+		
+	}
 
 	
 	public Vector2f getTextureCoord() {
 		return textureCoord;
 	}
+	
+	public void setNormal(Vector normal) {
+		this.normal = normal;
+	}
+	
+	public Vector getNormal() {
+		return normal;
+	}
+	
 	
 
 	

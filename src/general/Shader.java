@@ -35,6 +35,15 @@ public class Shader extends Node {
 	public static int baseAttribIdx = 3;
 	
 	public static int ambientAttribIdx = 4;
+	
+	
+	
+	public static int normalAttribIdx = 5;
+	
+	public static int diffuseColorAttribIdx = 6;
+	public static int diffuseIntensityAttribIdx = 7;
+	public static int diffuseDirectionAttribIdx = 8;
+	
 
 
 	
@@ -50,14 +59,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("phongVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("phongAmbDiffVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		//load fragmentShader
-		glShaderSource(fs,  ResourceLoader.loadShader("phongFragment.fs"));
+		glShaderSource(fs,  ResourceLoader.loadShader("phongAmbDiffFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -75,6 +84,13 @@ public class Shader extends Node {
 		glBindAttribLocation(program, baseAttribIdx, "baseColor");
 		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
+		
+		
+		glBindAttribLocation(program, normalAttribIdx, "normal");
+		
+		glBindAttribLocation(program, diffuseColorAttribIdx, "directionalLight.base.color");
+		glBindAttribLocation(program, diffuseIntensityAttribIdx, "directionalLight.base.intensity");
+		glBindAttribLocation(program, diffuseDirectionAttribIdx, "directionalLight.base.direction");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -189,6 +205,18 @@ public class Shader extends Node {
 	
 	public static int getAmbientAttribIdx() {
 		return ambientAttribIdx;
+	}
+	
+	public static int getDiffuseColorAttribIdx() {
+		return diffuseColorAttribIdx;
+	}
+	
+	public static int getDiffuseDirectionAttribIdx() {
+		return diffuseDirectionAttribIdx;
+	}
+	
+	public static int getDiffuseIntensityAttribIdx() {
+		return diffuseIntensityAttribIdx;
 	}
 	
 	
