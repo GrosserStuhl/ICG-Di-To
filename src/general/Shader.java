@@ -33,21 +33,18 @@ public class Shader extends Node {
 	public static int colorAttribIdx = 1;
 	public static int textureAttribIdx = 2;
 	public static int baseAttribIdx = 3;
-	
+
 	public static int ambientAttribIdx = 4;
-	
-	
-	
+
 	public static int normalAttribIdx = 5;
-	
-	public static int diffuseColorAttribIdx = 6;
-	public static int diffuseIntensityAttribIdx = 7;
-	public static int diffuseDirectionAttribIdx = 8;
-	
+	public MatrixUniform directionalLightColor;
+	public MatrixUniform directionalLightIntensity;
+	public MatrixUniform directionalLightDirection;
 
+	// public static int diffuseColorAttribIdx = 6;
+	// public static int diffuseIntensityAttribIdx = 7;
+	// public static int diffuseDirectionAttribIdx = 8;
 
-	
-	
 	public Shader() {
 
 		// Set background color to black.
@@ -59,14 +56,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("phongAmbDiffVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("phongAmbVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
-		//load fragmentShader
-		glShaderSource(fs,  ResourceLoader.loadShader("phongAmbDiffFragment.fs"));
+		// load fragmentShader
+		glShaderSource(fs, ResourceLoader.loadShader("phongAmbFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -84,13 +81,15 @@ public class Shader extends Node {
 		glBindAttribLocation(program, baseAttribIdx, "baseColor");
 		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
-		
-		
+
 		glBindAttribLocation(program, normalAttribIdx, "normal");
-		
-		glBindAttribLocation(program, diffuseColorAttribIdx, "directionalLight.base.color");
-		glBindAttribLocation(program, diffuseIntensityAttribIdx, "directionalLight.base.intensity");
-		glBindAttribLocation(program, diffuseDirectionAttribIdx, "directionalLight.base.direction");
+
+		// glBindAttribLocation(program, diffuseColorAttribIdx,
+		// "directionalLight.base.color");
+		// glBindAttribLocation(program, diffuseIntensityAttribIdx,
+		// "directionalLight.base.intensity");
+		// glBindAttribLocation(program, diffuseDirectionAttribIdx,
+		// "directionalLight.base.direction");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -102,21 +101,27 @@ public class Shader extends Node {
 		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
+
+		directionalLightColor = new MatrixUniform(program,
+				"directionalLight.base.color");
+		directionalLightIntensity = new MatrixUniform(program,
+				"directionalLight.base.intensity");
+		directionalLightDirection = new MatrixUniform(program,
+				"directionalLight.base.direction");
 	}
-	
+
 	public void activate() {
 		// Activate the shader program and set the transformation matricies to
 		// the
 		// uniform variables.
 		glUseProgram(program);
 	}
-	
+
 	public void deactivate() {
-		
+
 		glUseProgram(0);
 	}
-	
-	
+
 	public Shader(String fileNameVS, String fileNameFS) {
 
 		// Set background color to black.
@@ -134,8 +139,8 @@ public class Shader extends Node {
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
-		//load fragmentShader
-		glShaderSource(fs,  ResourceLoader.loadShader(fileNameFS));
+		// load fragmentShader
+		glShaderSource(fs, ResourceLoader.loadShader(fileNameFS));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -150,7 +155,7 @@ public class Shader extends Node {
 		// to
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
-//		glBindAttribLocation(program, colorAttribIdx, "color");
+		// glBindAttribLocation(program, colorAttribIdx, "color");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
 		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 
@@ -185,41 +190,68 @@ public class Shader extends Node {
 	public static int getColorAttribIdx() {
 		return colorAttribIdx;
 	}
-	
-	
+
 	public static int getTextureAttribIdx() {
 		return textureAttribIdx;
 	}
-	
+
 	public static void setTextureAttribIdx(int textureAttribIdx) {
 		Shader.textureAttribIdx = textureAttribIdx;
 	}
-	
+
 	public int getProgram() {
 		return program;
 	}
-	
+
 	public static int getBaseAttribIdx() {
 		return baseAttribIdx;
 	}
-	
+
 	public static int getAmbientAttribIdx() {
 		return ambientAttribIdx;
 	}
-	
-	public static int getDiffuseColorAttribIdx() {
-		return diffuseColorAttribIdx;
+
+	// public static int getDiffuseColorAttribIdx() {
+	// return diffuseColorAttribIdx;
+	// }
+	//
+	// public static int getDiffuseDirectionAttribIdx() {
+	// return diffuseDirectionAttribIdx;
+	// }
+	//
+	// public static int getDiffuseIntensityAttribIdx() {
+	// return diffuseIntensityAttribIdx;
+	// }
+
+	public static int getNormalAttribIdx() {
+		return normalAttribIdx;
 	}
-	
-	public static int getDiffuseDirectionAttribIdx() {
-		return diffuseDirectionAttribIdx;
+
+	public void setDirectionalLightColor(MatrixUniform directionalLightColor) {
+		this.directionalLightColor = directionalLightColor;
 	}
-	
-	public static int getDiffuseIntensityAttribIdx() {
-		return diffuseIntensityAttribIdx;
+
+	public void setDirectionalLightDirection(
+			MatrixUniform directionalLightDirection) {
+		this.directionalLightDirection = directionalLightDirection;
 	}
-	
-	
+
+	public void setDirectionalLightIntensity(
+			MatrixUniform directionalLightIntensity) {
+		this.directionalLightIntensity = directionalLightIntensity;
+	}
+
+	public MatrixUniform getDirectionalLightColor() {
+		return directionalLightColor;
+	}
+
+	public MatrixUniform getDirectionalLightDirection() {
+		return directionalLightDirection;
+	}
+
+	public MatrixUniform getDirectionalLightIntensity() {
+		return directionalLightIntensity;
+	}
 
 	@Override
 	public void init() {
@@ -243,35 +275,77 @@ public class Shader extends Node {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		
+
 		for (Node child : getChildNodes()) {
 			child.display(width, height, getTransformation());
 		}
 	}
 
-//	@Override
-//	public void init() {
-//		// TODO Auto-generated method stub
-//		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// @Override
+	// public void init() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void simulate(float elapsed, Input input) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void display(int width, int height) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	//
+	// @Override
+	// public void display(int width, int height, Matrix parentMatrix) {
+	//
+	//
+	// }
+
+	
+	
+	
+	
+	
+	
+	
+	
+//	public void SetUniformf(String uniformName, float value) {
+//		glUniform1f(m_resource.GetUniforms().get(uniformName), value);
 //	}
 //
-//	@Override
-//	public void simulate(float elapsed, Input input) {
-//		// TODO Auto-generated method stub
-//		
+//	public void SetUniform(String uniformName, Vector3f value) {
+//		glUniform3f(m_resource.GetUniforms().get(uniformName), value.GetX(),
+//				value.GetY(), value.GetZ());
 //	}
 //
-//	@Override
-//	public void display(int width, int height) {
-//		// TODO Auto-generated method stub
-//		
+//	public void SetUniform(String uniformName, Matrix4f value) {
+//		glUniformMatrix4(m_resource.GetUniforms().get(uniformName), true,
+//				Util.CreateFlippedBuffer(value));
 //	}
 //
+//	public void SetUniformBaseLight(String uniformName, BaseLight baseLight) {
+//		SetUniform(uniformName + ".color", baseLight.GetColor());
+//		SetUniformf(uniformName + ".intensity", baseLight.GetIntensity());
+//	}
 //
-//	@Override
-//	public void display(int width, int height, Matrix parentMatrix) {
-//		 
-//		
+//	public void SetUniformDirectionalLight(String uniformName,
+//			DirectionalLight directionalLight) {
+//		SetUniformBaseLight(uniformName + ".base", directionalLight);
+//		SetUniform(uniformName + ".direction", directionalLight.GetDirection());
 //	}
 
 }

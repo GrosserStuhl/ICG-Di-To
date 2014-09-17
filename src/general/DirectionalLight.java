@@ -1,15 +1,16 @@
 package general;
 
-import mathe.Vector3f;
+import ogl.vecmath.Vector;
+//import mathe.Vector3f;
 
 
 
 public class DirectionalLight {
 
 	private BaseLight base;
-	Vector3f direction;
+	Vector direction;
 	
-	public DirectionalLight(BaseLight base, Vector3f direction) {
+	public DirectionalLight(BaseLight base, Vector direction) {
 
 		this.base = base;
 		this.direction = direction.normalize();
@@ -19,7 +20,7 @@ public class DirectionalLight {
 		return base;
 	}
 	
-	public Vector3f getDirection() {
+	public Vector getDirection() {
 		return direction;
 	}
 	
@@ -27,7 +28,7 @@ public class DirectionalLight {
 		this.base = base;
 	}
 	
-	public void setDirection(Vector3f direction) {
+	public void setDirection(Vector direction) {
 		this.direction = direction;
 	}
 	

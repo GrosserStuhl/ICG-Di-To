@@ -1,5 +1,7 @@
 package general;
 
+import static ogl.vecmathimp.FactoryDefault.vecmath;
+
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -17,13 +19,16 @@ public class Vertex {
 	Vertex(Vector p, Color c) {
 		position = p;
 		color = c;
+		
+		// muss gemacht werden, damit es nicht null ist -> sau hässlich 
+		normal = vecmath.vector(0f, 0f, 0f);
 	}
 	
-	Vertex(Vector p, Color c, Vector n) {
-		position = p;
-		color = c;
-		normal = n;
-	}
+//	Vertex(Vector p, Color c, Vector n) {
+//		position = p;
+//		color = c;
+//		normal = n;
+//	}
 	
 	public Vertex(Vector p, Vector2f t) {
 		position = p;
@@ -144,7 +149,7 @@ public class Vertex {
 	}
 	
 	
-public static void calcNormals(Vertex[] vertices, int[] indices){
+	public static void calcNormals(Vertex[] vertices, int[] indices){
 		
 		// += 3 because of triangles
 		for (int i = 0; i < indices.length; i+= 3) {
@@ -162,8 +167,8 @@ public static void calcNormals(Vertex[] vertices, int[] indices){
 			Vector normal = v1.cross(v2).normalize();
 			
 			vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
-			vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
-			vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
+			vertices[i1].setNormal(vertices[i1].getNormal().add(normal));
+			vertices[i2].setNormal(vertices[i2].getNormal().add(normal));
 			
 			
 			
@@ -177,6 +182,11 @@ public static void calcNormals(Vertex[] vertices, int[] indices){
 		
 		
 	}
+	
+	
+
+
+
 
 	
 	public Vector2f getTextureCoord() {
@@ -189,6 +199,40 @@ public static void calcNormals(Vertex[] vertices, int[] indices){
 	
 	public Vector getNormal() {
 		return normal;
+	}
+
+	public static void calcNormals(Vertex[] vertices,
+			ArrayList<OBJIndex> indices) {
+		// += 3 because of triangles
+				for (int i = 0; i < indices.size(); i+= 3) {
+					
+					
+					int i0 = indices.get(i).normalIndex;
+					int i1 = indices.get(i + 1).normalIndex;
+					int i2 = indices.get(i + 2).normalIndex;
+					
+					// one line / direction of the triangle ( top to right-bottom)
+					Vector v1 = vertices[i1].getPosition().sub(vertices[i0].getPosition());
+					
+					// from top to left-bottom
+					Vector v2 = vertices[i2].getPosition().sub(vertices[i0].getPosition());
+					
+					Vector normal = v1.cross(v2).normalize();
+					
+					vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
+					vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
+					vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
+					
+					
+					
+				}
+				
+				// this will set the length and direction are gonna be correct for calculating
+				for (int i = 0; i < vertices.length; i++) {
+					vertices[i].setNormal(vertices[i].getNormal().normalize());
+					
+				}
+		
 	}
 	
 	

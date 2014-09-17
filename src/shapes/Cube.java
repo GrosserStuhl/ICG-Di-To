@@ -27,19 +27,26 @@ public class Cube extends ShapeNode implements App {
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
 		
-		diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
-		diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length * 1);
-		diffuseDirection = BufferUtils.createFloatBuffer(vertices.length * 3);
-		finalizeDiffuseBuffer(diffuseColor, diffuseIntensity, diffuseDirection, vertices);
+		
+		normalData = BufferUtils.createFloatBuffer(vertices.length * 3);
+		finalizeNormalBuffer(normalData, vertices);
+		
+//		diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
+//		diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length * 1);
+//		diffuseDirection = BufferUtils.createFloatBuffer(vertices.length * 3);
+//		finalizeDiffuseBuffer(diffuseColor, diffuseIntensity, diffuseDirection, vertices);
 		
 		
 	}
 	
 	FloatBuffer ambientData;
 	
-	FloatBuffer diffuseColor;
-	FloatBuffer diffuseIntensity;
-	FloatBuffer diffuseDirection;
+	
+	FloatBuffer normalData;
+	
+//	FloatBuffer diffuseColor;
+//	FloatBuffer diffuseIntensity;
+//	FloatBuffer diffuseDirection;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -54,6 +61,11 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 
+//		getShader().getDirectionalLightColor().set();
+		
+		
+		
+		
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
 
@@ -75,19 +87,25 @@ public class Cube extends ShapeNode implements App {
 				ambientData);
 		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
 		
-		
-		glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
-				diffuseColor);
-		glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
-		
-		glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1, false, 0,
-				diffuseIntensity);
-		glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
+		// vectornormalData
+		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
+				normalData);
+		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
 		
 		
-		glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3, false, 0,
-				diffuseDirection);
-		glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
+		
+//		glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
+//				diffuseColor);
+//		glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
+//		
+//		glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1, false, 0,
+//				diffuseIntensity);
+//		glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
+//		
+//		
+//		glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3, false, 0,
+//				diffuseDirection);
+//		glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
 		
 		
 
@@ -107,16 +125,24 @@ public class Cube extends ShapeNode implements App {
 		a.rewind();
 	}
 	
-	protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer diffI, FloatBuffer diffD, Vertex[] vertices){
-		for (int i = 0; i<vertices.length;i++) {
-			diffC.put(PhongShader.diffuseColorToArray());
-			diffI.put(PhongShader.diffuseIntensityToArray());
-			diffD.put(PhongShader.diffuseDirectionToArray());
+	
+	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices){
+		for (Vertex v : vertices) {
+			n.put(v.getNormal().asArray());
 		}
-		diffC.rewind();
-		diffI.rewind();
-		diffD.rewind();
+		n.rewind();
 	}
+	
+//	protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer diffI, FloatBuffer diffD, Vertex[] vertices){
+//		for (int i = 0; i<vertices.length;i++) {
+//			diffC.put(PhongShader.diffuseColorToArray());
+//			diffI.put(PhongShader.diffuseIntensityToArray());
+//			diffD.put(PhongShader.diffuseDirectionToArray());
+//		}
+//		diffC.rewind();
+//		diffI.rewind();
+//		diffD.rewind();
+//	}
 	
 	
 	

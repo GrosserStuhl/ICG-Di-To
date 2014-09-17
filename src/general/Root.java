@@ -106,7 +106,7 @@ public class Root extends Node implements App {
 		
 		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
 		//first Vector3f is color and second the direction of the light
-		PhongShader.setDirectionalLight(new BaseLight(new Vector3f(1,1,1),0.8f),new Vector3f(1,1,1));
+		PhongShader.setDirectionalLight(new BaseLight(new Vector3f(1,1,1),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
@@ -133,7 +133,8 @@ public class Root extends Node implements App {
 		
 		//Phong extra diffuse:
 		ArrayList<OBJIndex> cubeIndices = generateCubeIndices();
-//		Vertex.calcNormals(vertices, cubeIndices);
+//		int[] indicesArray = cubeIndicesToIntArray(cubeIndices);
+		Vertex.calcNormals(vertices, cubeIndices);
 		
 		
 		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
@@ -293,6 +294,19 @@ public class Root extends Node implements App {
 		
 		
 		return cubeIndices;
+		
+	}
+	
+	private int[] cubeIndicesToIntArray(ArrayList<OBJIndex> cubeIndices) {
+
+		int[] res = new int[cubeIndices.size()];
+		
+		// hier egal man bekommt immer die gleichen int wert 
+		for (int i = 0; i < cubeIndices.size(); i++) {
+			res[i] = cubeIndices.get(i).vertexIndex;
+		}
+		
+		return res;
 		
 	}
 	

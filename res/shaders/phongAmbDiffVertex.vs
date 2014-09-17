@@ -15,9 +15,10 @@ varying vec3 fnormal;
 
 void main() {
 
+	
 	fambientLight = ambientLight;
 	fbaseColor = baseColor;
-	fnormal = normal;
+	fnormal = (modelMatrix * vec4(normal,0.0)).xyz;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
 			
 			
