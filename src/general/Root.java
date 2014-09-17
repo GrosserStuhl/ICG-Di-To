@@ -212,6 +212,7 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
+		System.out.println("projection \n"+projectionMatrix);
 
 		Matrix viewMatrix = cam.getTransformation();
 
