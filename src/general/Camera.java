@@ -42,14 +42,14 @@ public class Camera extends Node {
 			if (center.z() < animationStartZ - 20) {
 				animationFor = false;
 			} else {
-				center = center.sub(vecmath.vector(0, 0, 0.02f));
+				center = center.sub(vecmath.vector(0, 0, elapsed*20f));
 				eye = center.add(vecmath.vector(0, 0, 10f));
 			}
 		} else if (animationBack) {
 			if (center.z() > animationStartZ + 20) {
 				animationBack = false;
 			} else {
-				center = center.add(vecmath.vector(0, 0, 0.02f));
+				center = center.add(vecmath.vector(0, 0, elapsed*20f));
 				eye = center.add(vecmath.vector(0, 0, 10f));
 			}
 		}
@@ -85,15 +85,13 @@ public class Camera extends Node {
 	}
 
 	public void moveOnZ(float moveSpeed) {
-		Vector temp = vecmath.vector(center.x() - eye.x(),
-				center.y() - eye.y(), center.z() - eye.z());
+		Vector temp = getLookDirection();
 		center = center.add(temp.normalize().mult(moveSpeed));
 		eye = eye.add(temp.normalize().mult(moveSpeed));
 	}
 
 	public void moveOnX(float moveSpeed) {
-		Vector temp = vecmath.vector(center.x() - eye.x(),
-				center.y() - eye.y(), center.z() - eye.z());
+		Vector temp = getLookDirection();
 		Vector right = temp.cross(up);
 
 		center = center.add(right.normalize().mult(moveSpeed));
@@ -123,6 +121,12 @@ public class Camera extends Node {
 		center = eye.add(vecmath.vector(vecX, vecY, vecZ));
 	}
 
+	public Vector getLookDirection() {
+		Vector temp = vecmath.vector(center.x() - eye.x(),
+				center.y() - eye.y(), center.z() - eye.z());
+		return temp;
+	}
+
 	public void moveRowForward() {
 		animationFor = true;
 		animationStartZ = center.z();
@@ -142,5 +146,17 @@ public class Camera extends Node {
 				vecmath.rotationMatrix(vecmath.vector(0, 0, 1), roll)));
 		setTransformation(getTransformation().mult(
 				vecmath.translationMatrix(vecmath.vector(x, y, z))));
+	}
+	
+	public Vector getEye() {
+		return eye;
+	}
+	
+	public Vector getCenter() {
+		return center;
+	}
+	
+	public Vector getUp() {
+		return up;
 	}
 }
