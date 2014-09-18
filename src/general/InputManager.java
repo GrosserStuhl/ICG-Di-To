@@ -54,7 +54,7 @@ public class InputManager {
 			if (modeChanged == false) {
 				cam.changeMode();
 				modeChanged = true;
-				Mouse.setGrabbed(true);
+//				Mouse.setGrabbed(true);
 			}
 
 			float moveSpeed = elapsed * 10;
@@ -142,11 +142,25 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_A);
 
 			if (Mouse.isButtonDown(0)) {
-				clickAction();
-				System.out.println("Mouse X: " + Mouse.getX() + "  Y: "
-						+ (600 - Mouse.getY()));
+//				clickAction();
+				Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
+				Vector[] vertices = new Vector[4];
+				vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
+				vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
+				vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
+				vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
+				boolean inters = ray.intersects(vertices);
+				System.out.println(inters);
 			}
 		}
+		Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
+		Vector[] vertices = new Vector[4];
+		vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
+		vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
+		vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
+		vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
+		boolean inters = ray.intersects(vertices);
+		System.out.println(inters);
 	}
 
 	private void setSelection() {

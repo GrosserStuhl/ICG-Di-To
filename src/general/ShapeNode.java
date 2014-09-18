@@ -70,6 +70,7 @@ public abstract class ShapeNode extends Node {
 		return colorData;
 	}
 
+	@Override
 	public Vertex[] getVertices() {
 		return vertices;
 	}
