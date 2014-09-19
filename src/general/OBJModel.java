@@ -36,14 +36,14 @@ public class OBJModel extends ShapeNode implements App {
 
 		// t = ResourceLoader.loadTexture("MoonMap2.jpg");
 
-		positionData = positionBuffer(vertices.length);
+		positionData = positionBuffer(vertices.length * 3);
 		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
 
 		finalizeTextured(positionData, textureData, vertices);
 		
 		
-		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
-		finalizeAmbientBuffer(ambientData, vertices);
+//		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
+//		finalizeAmbientBuffer(ambientData, vertices);
 
 	}
 
@@ -90,9 +90,9 @@ public class OBJModel extends ShapeNode implements App {
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 		
 		
-		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-				ambientData);
-		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+//		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+//				ambientData);
+//		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
 		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
@@ -114,13 +114,8 @@ public class OBJModel extends ShapeNode implements App {
 	private void finalizeTextured(FloatBuffer positionData,
 			FloatBuffer textureData, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-
-			if (v.getPosition() != null)
 				positionData.put(v.getPosition().asArray());
-
-			if (v.getTextureCoord() != null)
 				textureData.put(asArray(v.getTextureCoord()));
-
 		}
 		positionData.rewind();
 		textureData.rewind();

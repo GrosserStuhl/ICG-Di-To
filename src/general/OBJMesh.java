@@ -30,9 +30,6 @@ public class OBJMesh extends ShapeNode implements App {
 	public void init() {
 
 		// t = ResourceLoader.loadTexture("superman.png");
-		positionData = positionBuffer(vertices.length);
-		colorData = colorBuffer(vertices.length);
-		finalizeBuffer(positionData, colorData, vertices);
 
 	}
 

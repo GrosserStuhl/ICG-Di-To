@@ -26,7 +26,7 @@ uniform DirectionalLight directionalLight;
 
 vec4 calcLight(BaseLight base, vec3 direction, vec3 normal)
 {
-	float diffuseFactor = dot(normal, normalize(-direction));
+	float diffuseFactor = dot(normal, direction);
 	
 	// colorOutput 
 	vec4 diffuseColor = vec4(0,0,0,0);
@@ -43,19 +43,21 @@ vec4 calcLight(BaseLight base, vec3 direction, vec3 normal)
 
 vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal)
 {
-	return calcLight(directionalLight.base, -directionalLight.direction,normal);
+	return calcLight(directionalLight.base, directionalLight.direction,normal);
 }
 
 void main() {
 
-vec4 totalLight = vec4(fambientLight,1);
-vec4 colorLight = vec4(fbaseColor,1 );
+//vec4 totalLight = vec4(fambientLight,1);
+//vec4 colorLight = vec4(fbaseColor,1 );
 
-vec3 normal = normalize(fnormal);
-totalLight += calcDirectionalLight(directionalLight, normal);
+//vec3 normal = normalize(fnormal);
+//totalLight += calcDirectionalLight(directionalLight, normal);
 
 
-gl_FragColor = colorLight * totalLight;
+//gl_FragColor = colorLight * totalLight;
+
+gl_FragColor = vec4(fbaseColor,1.0);
 
 
 

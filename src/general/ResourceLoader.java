@@ -214,6 +214,123 @@ public class ResourceLoader {
 	}
 	
 	
+	public static Mesh loadOBJMesh(String fileName){
+		
+
+		Mesh m = null;
+		
+		
+		BufferedReader meshReader = null;
+		
+		ArrayList<Vector> vData = new ArrayList<Vector>();
+		ArrayList<Vector> nData = new ArrayList<Vector>();
+		ArrayList<Integer>  fData = new ArrayList<Integer>();
+		
+		
+		String line;
+		
+		try{
+			meshReader = new BufferedReader(new FileReader("./res/models/"+ fileName));
+			
+			
+			while((line = meshReader.readLine()) != null){
+				if (line.startsWith("v ")){
+					// extracts vertex info
+					vData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					
+				} else if(line.startsWith("vn ")){
+					// extracts Vectornormal info
+					
+					nData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					
+				} else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/{1}\\d+") ){
+					
+					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Texturinfos. Hier fehlen die Vektornormalen. Das Format z.B.  
+					// f  1/2  7/2  5/2
+					// f  1/2  7/2  5/2 ...
+					
+					//    Bsp. 7/2 : hier wäre die erste Zahl(7) die vertex koordinate und die zweite Zahl (2) die Texturkoordinate
+					//    			  wegen Einfachheit wurde hier erstmal auf Texturkoordinaten verzichtet und jedesmal nur die Vertexkoordinate extrahiert
+
+					
+					
+				for (int j = 0; j < line.split("\\s+").length; j++) {
+					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) - 1);
+					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) - 1);
+					
+					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) - 1);
+					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) - 1);
+					
+					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) - 1);
+					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) - 1);
+				}
+					
+		
+			}else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/\\d+\\/\\d+") ){
+					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Textur und Vektornormaleninfos. Das Format z.B.  
+					// f  1/3/2  1/7/2  9/5/2
+					// f  1/2/5  7/2/6  5/2/3 ...
+					
+					//    Bsp. 7/2/6 : hier wäre die erste Zahl(7) die vertex koordinate, die zweite Zahl (2) die Texturkoordinate, die dritte Zahl (6) die Vektornormale
+
+						for (int j = 0; j < line.split("\\s+").length; j++) {
+							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[2]) - 1);
+							
+							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[2]) - 1);
+							
+							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) - 1);
+							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[2]) - 1);
+						}
+				
+					
+				
+				
+				}
+		
+			}
+			meshReader.close();
+			
+			
+			Vector[] positionData = createMeshVertexData(vData);
+			Color[] col = null;
+			
+			
+			
+			//create arrays
+			int[] faces = toIntArray(fData);
+//			
+			Vertex[] vertices = null;
+
+
+				col = createWhiteColor(vData.size());
+				vertices = Vertex.meshVertices(positionData,col, faces);
+				return m = new Mesh(positionData,col,vertices);
+
+//			col = createWhiteColor(vData.size());
+			
+			
+			
+
+			
+			
+		} catch(Exception e){
+			
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return null;
+		
+		
+		
+	}
+	
+	
 	public static Vector2f[] toVector2fArray(ArrayList<Vector2f> data) {
 		Vector2f[] result = new Vector2f[data.size()];
 		
@@ -291,7 +408,7 @@ public class ResourceLoader {
 		Color[] c = new Color[length];
 		
 		for (int i = 0; i < c.length; i++) {
-			c[i] = vecmath.color(1, 0, 0);
+			c[i] = vecmath.color(255f, 255f, 255f);
 		}
 		
 		return c;

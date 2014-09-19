@@ -12,14 +12,15 @@ varying vec3 fambientLight;
 attribute vec3 normal;
 varying vec3 fnormal;
 
+uniform mat4 transformMatrix;
 
 void main() {
 
 	
 	fambientLight = ambientLight;
 	fbaseColor = baseColor;
-	fnormal = (modelMatrix * vec4(normal,0.0)).xyz;
+	//fnormal = (projectionMatrix * transformMatrix *  vec4(normal,1.0)).xyz;
+	fnormal = (projectionMatrix * transformMatrix *  vec4(normal,0.0)).xyz;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
-			
 			
 }

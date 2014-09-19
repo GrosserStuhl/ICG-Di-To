@@ -105,11 +105,12 @@ public class Root extends Node implements App {
 
 		
 		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
-		//first Vector3f is color and second the direction of the light
+		
+		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
 		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(1,1,1),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
-		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
+		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
@@ -132,13 +133,11 @@ public class Root extends Node implements App {
 		
 		
 		//Phong extra diffuse:
-//		ArrayList<OBJIndex> cubeIndices = generateCubeIndices();
-//		int[] indicesArray = cubeIndicesToIntArray(cubeIndices);
 		Vertex.calcNormals(vertices, cubeIndices());
 		
-		for (int i = 0; i < vertices.length; i++) {
-			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
-		}
+//		for (int i = 0; i < vertices.length; i++) {
+//			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
+//		}
 		
 		
 		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
@@ -159,7 +158,7 @@ public class Root extends Node implements App {
 
 		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
 		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
+		OBJMesh crate = new OBJMesh(m2.getVertices(), shader,
 				vecmath.vector(0, 0, 0));
 		cube3.addNode(crate);
 
@@ -214,6 +213,8 @@ public class Root extends Node implements App {
 				100f);
 
 		Matrix viewMatrix = cam.getTransformation();
+		
+		
 
 		// The inverse camera transformation. World space to camera
 		// space.
@@ -228,7 +229,11 @@ public class Root extends Node implements App {
 		shader.activate();
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		shader.getViewMatrixUniform().set(viewMatrix);
+		
 
+
+		
+		
 		// getChildNodes().get(0).display(width, height, getTransformation());
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null && child.getShader().equals(shader))

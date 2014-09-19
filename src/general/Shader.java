@@ -40,6 +40,10 @@ public class Shader extends Node {
 	public ColorUniform directionalLightColor;
 	public FloatUniform directionalLightIntensity;
 	public VectorUniform directionalLightDirection;
+	private MatrixUniform rotationMatrixUniform;
+	
+	private MatrixUniform transformMatrixUniform;
+	
 
 
 	public Shader() {
@@ -105,6 +109,8 @@ public class Shader extends Node {
 				"directionalLight.base.intensity");
 		directionalLightDirection = new VectorUniform(program,
 				"directionalLight.direction");
+		
+		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
 	}
 
 	public void activate() {
@@ -166,6 +172,16 @@ public class Shader extends Node {
 		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
+		
+		
+		directionalLightColor = new ColorUniform(program,
+				"directionalLight.base.color");
+		directionalLightIntensity = new FloatUniform(program,
+				"directionalLight.base.intensity");
+		directionalLightDirection = new VectorUniform(program,
+				"directionalLight.direction");
+		
+		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
 	}
 
 	public static int getVertexAttribIdx() {
@@ -249,6 +265,18 @@ public class Shader extends Node {
 	public FloatUniform getDirectionalLightIntensity() {
 		return directionalLightIntensity;
 	}
+	
+	public MatrixUniform getmRotationMatrixUniform() {
+		return rotationMatrixUniform;
+	}
+	
+	public MatrixUniform getTransformMatrixUniform() {
+		return transformMatrixUniform;
+	}
+	
+
+	
+	
 
 	@Override
 	public void init() {

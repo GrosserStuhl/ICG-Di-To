@@ -43,6 +43,20 @@ public class Pyramid extends ShapeNode {
 		// uniform variables.
 //		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
+		
+		
+		Matrix m = modelMatrix.invertRigid().transpose();
+		
+		
+		getShader().getTransformMatrixUniform().set(m);
+		
+		
+
+		
+		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
+		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
+		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
+		
 
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.

@@ -41,35 +41,6 @@ public class PhongShader {
 		return directionalLight;
 	}
 	
-//	public static float[] diffuseColorToArray() {
-//
-//		float[] res = new float[3];
-//		res[0] = directionalLight.getBase().getColor().getX();
-//		res[1] = directionalLight.getBase().getColor().getY();
-//		res[2] = directionalLight.getBase().getColor().getZ();
-//
-//		return res;
-//	}
-//
-//	public static float[] diffuseIntensityToArray() {
-//
-//		float[] res = new float[1];
-//		res[0] = directionalLight.getBase().getIntensity();
-//
-//		return res;
-//	}
-//	
-//	public static float[] diffuseDirectionToArray() {
-//
-//		float[] res = new float[3];
-//		res[0] = directionalLight.getDirection().getX();
-//		res[1] = directionalLight.getDirection().getY();
-//		res[2] = directionalLight.getDirection().getZ();
-//
-//		return res;
-//	}
-	
-	
 	
 	public static void setDirectionalLight(BaseLight baseLight,
 			Vector direction) {
