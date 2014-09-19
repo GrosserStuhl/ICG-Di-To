@@ -84,7 +84,7 @@ public class InputManager {
 			}
 			cam.rotateY((float) -Mouse.getDX() / 500);
 			cam.rotateX((float) Mouse.getDY() / 500);
-		} else {
+		} else if(!cam.isAnimationActive()){
 			if (modeChanged == true) {
 				cam.changeMode();
 				modeChanged = false;
@@ -139,10 +139,10 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
-
 		}
 		if (Mouse.isButtonDown(0)) {
 			executeRayCalculation();
+			System.out.println(nodes.get(0).getChildNodes().get(1).getTransformation().getPosition());
 		}
 		// Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection(),
 		// Mouse.getX(),

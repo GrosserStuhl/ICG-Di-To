@@ -81,8 +81,8 @@ public class Cube extends ShapeNode implements App {
 		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		// ambient Lightning
-		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0, colorData);
-		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
@@ -114,10 +114,6 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getBaseAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
-
-		for (Node child : getChildNodes()) {
-			child.display(width, height, getTransformation());
-		}
 	}
 
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices) {

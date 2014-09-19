@@ -30,29 +30,29 @@ public class Ray2 {
 		view = view.invertRigid();
 
 //		mouseY = height - mouseY;
-		FloatBuffer worldPos = getMousePosition(mouseX, mouseY);
-		direction = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
-//		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
+//		FloatBuffer worldPos = getMousePosition(mouseX, mouseY, proj, view);
+//		direction = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
+		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
 		
 		
-		float tempX = proj.get(0, 0) * direction.x() + proj.get(1, 0) * direction.y()
-				+ proj.get(2, 0) * direction.z();
-		float tempY = proj.get(0, 1) * direction.x() + proj.get(1, 1) * direction.y()
-				+ proj.get(2, 1) * direction.z();
-		float tempZ = proj.get(0, 2) * direction.x() + proj.get(1, 2) * direction.y()
-				+ proj.get(2, 2) * direction.z();
-		
-		direction = vecmath.vector(tempX, tempY, tempZ);
-		
-		tempX = view.get(0, 0) * direction.x() + view.get(1, 0) * direction.y()
-				+ view.get(2, 0) * direction.z();
-		tempY = view.get(0, 1) * direction.x() + view.get(1, 1) * direction.y()
-				+ view.get(2, 1) * direction.z();
-		tempZ = view.get(0, 2) * direction.x() + view.get(1, 2) * direction.y()
-				+ view.get(2, 2) * direction.z();
-		
-		direction = vecmath.vector(tempX, tempY, tempZ);
-		direction = direction.normalize();
+//		float tempX = proj.get(0, 0) * direction.x() + proj.get(1, 0) * direction.y()
+//				+ proj.get(2, 0) * direction.z();
+//		float tempY = proj.get(0, 1) * direction.x() + proj.get(1, 1) * direction.y()
+//				+ proj.get(2, 1) * direction.z();
+//		float tempZ = proj.get(0, 2) * direction.x() + proj.get(1, 2) * direction.y()
+//				+ proj.get(2, 2) * direction.z();
+//		
+//		direction = vecmath.vector(tempX, tempY, tempZ);
+//		
+//		tempX = view.get(0, 0) * direction.x() + view.get(1, 0) * direction.y()
+//				+ view.get(2, 0) * direction.z();
+//		tempY = view.get(0, 1) * direction.x() + view.get(1, 1) * direction.y()
+//				+ view.get(2, 1) * direction.z();
+//		tempZ = view.get(0, 2) * direction.x() + view.get(1, 2) * direction.y()
+//				+ view.get(2, 2) * direction.z();
+//		
+//		direction = vecmath.vector(tempX, tempY, tempZ);
+//		direction = direction.normalize();
 		
 		direction = vecmath.vector(direction.x()-origin.x(), direction.y()-origin.y(), direction.z()-origin.z());
 		
@@ -92,18 +92,22 @@ public class Ray2 {
 //		direction = ray_wor;
 	}
 
-	static public FloatBuffer getMousePosition(float mouseX, float mouseY) {
+	static public FloatBuffer getMousePosition(float mouseX, float mouseY, Matrix proj, Matrix view) {
 		IntBuffer viewport = BufferUtils.createIntBuffer(16);
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
+		modelview.put(view.asArray());
+		modelview.rewind();
 		FloatBuffer projection = BufferUtils.createFloatBuffer(16);
+		projection.put(proj.asArray());
+		projection.rewind();
 		FloatBuffer winZ = BufferUtils.createFloatBuffer(1);
 		float winX, winY;
 		FloatBuffer position = BufferUtils.createFloatBuffer(3);
-		glGetFloat(GL_MODELVIEW_MATRIX, modelview);
-		glGetFloat(GL_PROJECTION_MATRIX, projection);
+//		glGetFloat(GL_MODELVIEW_MATRIX, modelview);
+//		glGetFloat(GL_PROJECTION_MATRIX, projection);
 		glGetInteger(GL_VIEWPORT, viewport);
 		winX = mouseX;
-		winY = (float) viewport.get(3) - mouseY;
+		winY = mouseY;
 		glReadPixels((int) mouseX, (int) winY, 1, 1, GL_DEPTH_COMPONENT,
 				GL_FLOAT, winZ);
 		gluUnProject(winX, winY, winZ.get(), modelview, projection,
@@ -114,9 +118,16 @@ public class Ray2 {
 	private void calcMouseInWorldPosition(float mouseX, float mouseY, Matrix proj, Matrix view) {
 	    Vector start = vecmath.vector(0, 0, 0);
 	    Vector end = vecmath.vector(0, 0, 0);
-
+	    
 	    FloatBuffer modelBuffer = BufferUtils.createFloatBuffer(16);
-	    FloatBuffer projBuffer = BufferUtils.createFloatBuffer(16);
+		modelBuffer.put(view.asArray());
+		modelBuffer.rewind();
+		FloatBuffer projBuffer = BufferUtils.createFloatBuffer(16);
+		projBuffer.put(proj.asArray());
+		projBuffer.rewind();
+
+//	    FloatBuffer modelBuffer = BufferUtils.createFloatBuffer(16);
+//	    FloatBuffer projBuffer = BufferUtils.createFloatBuffer(16);
 	    FloatBuffer startBuffer = BufferUtils.createFloatBuffer(16);
 	    FloatBuffer endBuffer = BufferUtils.createFloatBuffer(16);
 	    IntBuffer viewBuffer = BufferUtils.createIntBuffer(16);
@@ -124,6 +135,8 @@ public class Ray2 {
 	    glGetFloat(GL_MODELVIEW_MATRIX, modelBuffer);
 	    glGetFloat(GL_PROJECTION_MATRIX, projBuffer);
 	    glGetInteger(GL_VIEWPORT, viewBuffer);
+	    
+	    mouseY = 600 - mouseY;
 
 	    gluUnProject(mouseX, mouseY, 0.0f, modelBuffer, projBuffer, viewBuffer, startBuffer);
 	    gluUnProject(mouseX, mouseY, 1.0f, modelBuffer, projBuffer, viewBuffer, endBuffer);

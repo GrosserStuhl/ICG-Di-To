@@ -173,7 +173,7 @@ public class Root extends Node implements App {
 
 		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
 		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-		OBJMesh crate = new OBJMesh(m2.getVertices(), shader,
+		OBJModel crate = new OBJModel(m2.getVertices(), shader, t2,
 				vecmath.vector(0, 0, 0));
 		cube3.addNode(crate);
 
@@ -226,7 +226,6 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
-
 		Matrix viewMatrix = cam.getTransformation();
 		
 		// The inverse camera transformation. World space to camera

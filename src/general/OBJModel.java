@@ -102,10 +102,6 @@ public class OBJModel extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 
 		// getShader().deactivate();
-		
-		for (Node child : getChildNodes()) {
-			child.display(width, height, getTransformation());
-		}
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
