@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL20;
 
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+import general.Node;
 import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;
@@ -77,6 +78,10 @@ public class Pyramid extends ShapeNode {
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
+		
+		for (Node child : getChildNodes()) {
+			child.display(width, height, getTransformation());
+		}
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){

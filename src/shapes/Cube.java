@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
+import general.Node;
 import general.PhongShader;
 import general.Shader;
 import general.ShapeNode;
@@ -23,30 +24,30 @@ public class Cube extends ShapeNode implements App {
 
 	public Cube(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader, translation);
-		
+
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
-		
-		
+
 		normalData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeNormalBuffer(normalData, vertices);
-		
-//		diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
-//		diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length * 1);
-//		diffuseDirection = BufferUtils.createFloatBuffer(vertices.length * 3);
-//		finalizeDiffuseBuffer(diffuseColor, diffuseIntensity, diffuseDirection, vertices);
-		
-		
+
+		// diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
+		// diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length *
+		// 1);
+		// diffuseDirection = BufferUtils.createFloatBuffer(vertices.length *
+		// 3);
+		// finalizeDiffuseBuffer(diffuseColor, diffuseIntensity,
+		// diffuseDirection, vertices);
+
 	}
-	
+
 	FloatBuffer ambientData;
-	
-	
+
 	FloatBuffer normalData;
-	
-//	FloatBuffer diffuseColor;
-//	FloatBuffer diffuseIntensity;
-//	FloatBuffer diffuseDirection;
+
+	// FloatBuffer diffuseColor;
+	// FloatBuffer diffuseIntensity;
+	// FloatBuffer diffuseDirection;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -61,12 +62,13 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 
-		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
-		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
-		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
-		
-		
-		
+		getShader().getDirectionalLightIntensity().set(
+				PhongShader.getDirectionalLight().getBase().getIntensity());
+		getShader().getDirectionalLightColor().set(
+				PhongShader.getDirectionalLight().getBase().getColor());
+		getShader().getDirectionalLightDirection().set(
+				PhongShader.getDirectionalLight().getDirection());
+
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
 
@@ -74,42 +76,37 @@ public class Cube extends ShapeNode implements App {
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
 
-//		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
-//				colorData);
-//		glEnableVertexAttribArray(Shader.getColorAttribIdx());
-		
-		
+		// glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+		// colorData);
+		// glEnableVertexAttribArray(Shader.getColorAttribIdx());
+
 		// ambient Lightning
-		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0,
-				colorData);
+		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0, colorData);
 		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
-		
+
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
 		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
-		
+
 		// vectornormalData
 		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
 				normalData);
 		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
-		
-		
-		
-//		glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
-//				diffuseColor);
-//		glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
-//		
-//		glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1, false, 0,
-//				diffuseIntensity);
-//		glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
-//		
-//		
-//		glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3, false, 0,
-//				diffuseDirection);
-//		glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
-		
-		
 
+		// glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
+		// diffuseColor);
+		// glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
+		//
+		// glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1,
+		// false, 0,
+		// diffuseIntensity);
+		// glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
+		//
+		//
+		// glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3,
+		// false, 0,
+		// diffuseDirection);
+		// glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
@@ -117,34 +114,36 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getBaseAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
+
+		for (Node child : getChildNodes()) {
+			child.display(width, height, getTransformation());
+		}
 	}
-	
-	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
-		for (int i = 0; i<vertices.length;i++) {
+
+	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices) {
+		for (int i = 0; i < vertices.length; i++) {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
 	}
-	
-	
-	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices){
+
+	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
 		for (Vertex v : vertices) {
 			n.put(v.getNormal().asArray());
 		}
 		n.rewind();
 	}
-	
-//	protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer diffI, FloatBuffer diffD, Vertex[] vertices){
-//		for (int i = 0; i<vertices.length;i++) {
-//			diffC.put(PhongShader.diffuseColorToArray());
-//			diffI.put(PhongShader.diffuseIntensityToArray());
-//			diffD.put(PhongShader.diffuseDirectionToArray());
-//		}
-//		diffC.rewind();
-//		diffI.rewind();
-//		diffD.rewind();
-//	}
-	
-	
-	
+
+	// protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer
+	// diffI, FloatBuffer diffD, Vertex[] vertices){
+	// for (int i = 0; i<vertices.length;i++) {
+	// diffC.put(PhongShader.diffuseColorToArray());
+	// diffI.put(PhongShader.diffuseIntensityToArray());
+	// diffD.put(PhongShader.diffuseDirectionToArray());
+	// }
+	// diffC.rewind();
+	// diffI.rewind();
+	// diffD.rewind();
+	// }
+
 }
