@@ -15,6 +15,8 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.input.Keyboard;
 
+import shader.Shader;
+
 public class OBJMesh extends ShapeNode implements App {
 
 	private Texture t;

@@ -1,5 +1,9 @@
-package general;
+package util;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+import general.Mesh;
+import general.OBJIndex;
+import general.Vertex;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package general;
+package shader;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -10,6 +10,11 @@ import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
+import general.Node;
+import mathe.ColorUniform;
+import mathe.FloatUniform;
+import mathe.MatrixUniform3f;
+import mathe.VectorUniform;
 import ogl.app.Input;
 import ogl.app.MatrixUniform;
 import ogl.app.Util;
@@ -17,6 +22,8 @@ import ogl.vecmath.Matrix;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+
+import util.ResourceLoader;
 
 public class Shader extends Node {
 
@@ -43,9 +50,8 @@ public class Shader extends Node {
 	private MatrixUniform rotationMatrixUniform;
 	
 	private MatrixUniform transformMatrixUniform;
+
 	
-
-
 	public Shader() {
 
 		// Set background color to black.
@@ -236,6 +242,9 @@ public class Shader extends Node {
 	// return diffuseIntensityAttribIdx;
 	// }
 
+	
+
+	
 	public static int getNormalAttribIdx() {
 		return normalAttribIdx;
 	}

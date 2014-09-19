@@ -9,6 +9,8 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 
+import shader.Shader;
+
 public abstract class ShapeNode extends Node {
 
 	protected FloatBuffer positionData;

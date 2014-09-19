@@ -1,4 +1,4 @@
-package general;
+package mathe;
 
 import ogl.app.Uniform;
 

@@ -1,4 +1,4 @@
-package general;
+package shader;
 
 
 import mathe.Vector3f;

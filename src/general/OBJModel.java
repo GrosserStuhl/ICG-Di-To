@@ -16,6 +16,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
+import shader.PhongShader;
+import shader.Shader;
+
 public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
@@ -75,6 +78,8 @@ public class OBJModel extends ShapeNode implements App {
 		Matrix modelMatrix = parentMatrix.mult(vecmath
 				.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
+		modelMatrix = modelMatrix.mult(vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
+		
 		setTransformation(modelMatrix);
 
 		getShader().activate();

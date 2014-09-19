@@ -2,22 +2,27 @@ package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
+import static org.lwjgl.opengl.GL11.glGetFloat;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
-import general.PhongShader;
-import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 import ogl.app.App;
+import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix3f;
+
+import shader.PhongShader;
+import shader.Shader;
 
 public class Cube extends ShapeNode implements App {
 
@@ -31,6 +36,11 @@ public class Cube extends ShapeNode implements App {
 		normalData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeNormalBuffer(normalData, vertices);
 		
+		modelViewBuffer = BufferUtils.createFloatBuffer(16);
+		matModelView = new float[16];
+		modelViewBuffer.put(matModelView);
+		modelViewBuffer.rewind();
+		
 //		diffuseColor = BufferUtils.createFloatBuffer(vertices.length * 3);
 //		diffuseIntensity = BufferUtils.createFloatBuffer(vertices.length * 1);
 //		diffuseDirection = BufferUtils.createFloatBuffer(vertices.length * 3);
@@ -41,6 +51,9 @@ public class Cube extends ShapeNode implements App {
 	
 	FloatBuffer ambientData;
 	
+	
+	FloatBuffer modelViewBuffer;
+	float [] matModelView;
 	
 	FloatBuffer normalData;
 	
@@ -60,6 +73,35 @@ public class Cube extends ShapeNode implements App {
 		// the
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
+		
+		
+		
+		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
+		
+		float[] elements = new float[16];
+		
+		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
+			elements[i] = viewEncoder.getBuffer().get(i);
+		}
+		
+		Matrix m = vecmath.matrix(elements);
+		System.out.println(m);
+		
+		Matrix modelView4f = modelMatrix.mult(m);
+
+		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
+		Matrix3f modelView3f = toMatrix3f(modelView4f);
+
+		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
+		
+		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
+		modelViewMatrix.store(modelViewBuffer);
+		modelViewBuffer.rewind();
+		
+		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
+		//getShader().getTransformMatrixUniform().set(modelViewBuffer);
+		
+		
 
 		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
 		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
@@ -77,6 +119,10 @@ public class Cube extends ShapeNode implements App {
 //		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
 //				colorData);
 //		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		
+		
+		
+
 		
 		
 		// ambient Lightning
@@ -134,16 +180,23 @@ public class Cube extends ShapeNode implements App {
 		n.rewind();
 	}
 	
-//	protected void finalizeDiffuseBuffer(FloatBuffer diffC, FloatBuffer diffI, FloatBuffer diffD, Vertex[] vertices){
-//		for (int i = 0; i<vertices.length;i++) {
-//			diffC.put(PhongShader.diffuseColorToArray());
-//			diffI.put(PhongShader.diffuseIntensityToArray());
-//			diffD.put(PhongShader.diffuseDirectionToArray());
-//		}
-//		diffC.rewind();
-//		diffI.rewind();
-//		diffD.rewind();
-//	}
+	
+	public Matrix3f toMatrix3f(Matrix o){
+		
+		Matrix3f m = new Matrix3f();
+		
+		float[] m4f = new float[16];
+		m4f = o.asArray();
+		
+		
+		
+		m.m00 = m4f[0];	m.m10 = m4f[4];	m.m20 = m4f[8];	
+		m.m01 = m4f[1];	m.m11 = m4f[5];	m.m21 = m4f[9];	
+		m.m02 = m4f[2];	m.m12 = m4f[6];	m.m22 = m4f[10];	
+	
+		return m;
+	}
+
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ogl.app.App;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+import shader.Shader;
 
 public abstract class Node implements App {
 

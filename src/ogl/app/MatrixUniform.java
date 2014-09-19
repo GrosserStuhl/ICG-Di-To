@@ -57,5 +57,10 @@ public class MatrixUniform extends Uniform {
     glUniformMatrix4(location, false, buffer);
   }
   
+  public FloatBuffer getBuffer() {
+	return buffer;
+  }
+  
+  
   
 }

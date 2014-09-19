@@ -12,6 +12,10 @@ import org.lwjgl.util.vector.Vector2f;
 
 
 
+
+
+
+
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
@@ -19,8 +23,12 @@ import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+import shader.BaseLight;
+import shader.PhongShader;
+import shader.Shader;
 import shapes.Cube;
 import shapes.Pyramid;
+import util.ResourceLoader;
 
 public class Root extends Node implements App {
 
@@ -154,19 +162,19 @@ public class Root extends Node implements App {
 		Cube cube3 = new Cube(vertices, shader, vecmath.vector(3, 0, 0));
 		row_one.addNode(cube3);
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
-		cube.addNode(pyr);
+		//cube.addNode(pyr);
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
 				vecmath.vector(0, 0, 0));
-		cube2.addNode(moon);
+		cube.addNode(moon);
 
-		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
-		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-		OBJMesh crate = new OBJMesh(m2.getVertices(), shader,
-				vecmath.vector(0, 0, 0));
-		cube3.addNode(crate);
+//		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
+//		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
+//		OBJMesh crate = new OBJMesh(m2.getVertices(), shader,
+//				vecmath.vector(0, 0, 0));
+//		cube3.addNode(crate);
 
 		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
@@ -182,7 +190,7 @@ public class Root extends Node implements App {
 		cube3.setName("Cube3");
 		pyr.setName("Pyramid");
 		moon.setName("Moon");
-		crate.setName("Crate");
+//		crate.setName("Crate");
 		
 		manager = new InputManager(cam, getChildNodes());
 		
@@ -235,7 +243,6 @@ public class Root extends Node implements App {
 		shader.activate();
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		shader.getViewMatrixUniform().set(viewMatrix);
-		
 
 
 		

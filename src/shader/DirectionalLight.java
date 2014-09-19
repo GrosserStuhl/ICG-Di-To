@@ -1,4 +1,4 @@
-package general;
+package shader;
 
 import ogl.vecmath.Vector;
 //import mathe.Vector3f;

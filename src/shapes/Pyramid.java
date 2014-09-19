@@ -9,11 +9,13 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix3f;
 
+import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
-import general.PhongShader;
-import general.Shader;
+import shader.PhongShader;
+import shader.Shader;
 import general.ShapeNode;
 import general.Vertex;
 
@@ -45,10 +47,29 @@ public class Pyramid extends ShapeNode {
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
 		
-		Matrix m = modelMatrix.invertRigid().transpose();
+MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
 		
+		float[] elements = new float[16];
 		
-		getShader().getTransformMatrixUniform().set(m);
+		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
+			elements[i] = viewEncoder.getBuffer().get(i);
+		}
+		
+		Matrix m = vecmath.matrix(elements);
+		System.out.println(m);
+		
+		Matrix modelView4f = modelMatrix.mult(m);
+
+		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
+		Matrix3f modelView3f = toMatrix3f(modelView4f);
+
+		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
+		
+		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
+		modelViewMatrix.store(modelViewBuffer);
+		modelViewBuffer.rewind();
+		
+		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		
 		
 
@@ -84,6 +105,22 @@ public class Pyramid extends ShapeNode {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
+	}
+	
+	public Matrix3f toMatrix3f(Matrix o){
+		
+		Matrix3f m = new Matrix3f();
+		
+		float[] m4f = new float[16];
+		m4f = o.asArray();
+		
+		
+		
+		m.m00 = m4f[0];	m.m10 = m4f[4];	m.m20 = m4f[8];	
+		m.m01 = m4f[1];	m.m11 = m4f[5];	m.m21 = m4f[9];	
+		m.m02 = m4f[2];	m.m12 = m4f[6];	m.m22 = m4f[10];	
+	
+		return m;
 	}
 
 }
