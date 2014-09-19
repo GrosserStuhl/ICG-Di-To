@@ -59,8 +59,8 @@ public class Camera extends Node {
 	public void display(int width, int height, Matrix parentMatrix) {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 		// System.out.println(getTransformation());
-		// System.out.println("center: " + center);
-		// System.out.println("eye: " + eye);
+//		 System.out.println("center: " + center);
+//		 System.out.println("eye: " + eye);
 		// System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
 	}
 
@@ -81,17 +81,19 @@ public class Camera extends Node {
 	}
 
 	public boolean isAnimationActive() {
-		return animationFor;
+		if(animationFor || animationBack)
+			return true;
+		else return false;
 	}
 
 	public void moveOnZ(float moveSpeed) {
-		Vector temp = getLookDirection();
+		Vector temp = getDirection();
 		center = center.add(temp.normalize().mult(moveSpeed));
 		eye = eye.add(temp.normalize().mult(moveSpeed));
 	}
 
 	public void moveOnX(float moveSpeed) {
-		Vector temp = getLookDirection();
+		Vector temp = getDirection();
 		Vector right = temp.cross(up);
 
 		center = center.add(right.normalize().mult(moveSpeed));
@@ -121,18 +123,20 @@ public class Camera extends Node {
 		center = eye.add(vecmath.vector(vecX, vecY, vecZ));
 	}
 
-	public Vector getLookDirection() {
+	public Vector getDirection() {
 		Vector temp = vecmath.vector(center.x() - eye.x(),
 				center.y() - eye.y(), center.z() - eye.z());
 		return temp;
 	}
 
 	public void moveRowForward() {
+		animationBack = false;
 		animationFor = true;
 		animationStartZ = center.z();
 	}
 
 	public void moveRowBack() {
+		animationFor = false;
 		animationBack = true;
 		animationStartZ = center.z();
 	}

@@ -50,19 +50,33 @@ public abstract class Node implements App {
 
 	public void setSelected() {
 	}
-	
+
 	public void deselect() {
 	}
-	
+
 	public Vertex[] getVertices() {
 		return null;
 	}
-	
+
 	public Shader getShader() {
 		return null;
 	}
-	
+
 	public void setTranslation(Vector translation) {
+	}
+
+	public float getHeight() {
+		return 0;
+	}
+
+	public float getWidth() {
+		return 0;
+	}
+	
+	public void setHeight(float height) {
+	}
+	
+	public void setWidth(float width) {
 	}
 
 }

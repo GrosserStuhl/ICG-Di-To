@@ -31,7 +31,7 @@ public class OBJModel extends ShapeNode implements App {
 
 	FloatBuffer positionData;
 	FloatBuffer textureData;
-	FloatBuffer ambientData;
+//	FloatBuffer ambientData;
 	
 
 	@Override

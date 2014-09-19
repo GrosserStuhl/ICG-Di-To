@@ -12,7 +12,6 @@ import org.lwjgl.opengl.Display;
 
 import ogl.app.Input;
 import ogl.vecmath.Vector;
-import tom.bennybox.Vector3f;
 
 public class InputManager {
 
@@ -54,7 +53,7 @@ public class InputManager {
 			if (modeChanged == false) {
 				cam.changeMode();
 				modeChanged = true;
-//				Mouse.setGrabbed(true);
+				// Mouse.setGrabbed(true);
 			}
 
 			float moveSpeed = elapsed * 10;
@@ -85,7 +84,7 @@ public class InputManager {
 			}
 			cam.rotateY((float) -Mouse.getDX() / 500);
 			cam.rotateX((float) Mouse.getDY() / 500);
-		} else {
+		} else if(!cam.isAnimationActive()){
 			if (modeChanged == true) {
 				cam.changeMode();
 				modeChanged = false;
@@ -140,27 +139,41 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
-
-			if (Mouse.isButtonDown(0)) {
-//				clickAction();
-				Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
-				Vector[] vertices = new Vector[4];
-				vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
-				vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
-				vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
-				vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
-				boolean inters = ray.intersects(vertices);
-				System.out.println(inters);
-			}
 		}
-		Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
-		Vector[] vertices = new Vector[4];
-		vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
-		vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
-		vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
-		vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
-		boolean inters = ray.intersects(vertices);
-		System.out.println(inters);
+		if (Mouse.isButtonDown(0)) {
+			executeRayCalculation();
+			System.out.println(nodes.get(0).getChildNodes().get(1).getTransformation().getPosition());
+		}
+		// Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection(),
+		// Mouse.getX(),
+		// viewportHeight - Mouse.getY());
+		// Ray2 ray = new Ray2(cam, Mouse.getX(), Mouse.getY());
+		// Vector position;
+		// if (nodes.get(0).getChildNodes().get(0).getTransformation() != null)
+		// {
+		// for (Node child : nodes.get(rowIndex).getChildNodes()) {
+		// position = child.getTransformation().getPosition();
+		// Vector[] vertices = new Vector[4];
+		// vertices[0] = position.sub(vecmath.vector(
+		// child.getWidth() / 2 + 0.25f,
+		// child.getHeight() / 2 + 0.25f, 0));
+		// vertices[1] = position.sub(vecmath.vector(
+		// child.getWidth() / 2 + 0.25f,
+		// -child.getHeight() / 2 + 0.25f, 0));
+		// vertices[2] = position.add(vecmath.vector(
+		// child.getWidth() / 2 + 0.25f,
+		// child.getHeight() / 2 + 0.25f, 0));
+		// vertices[3] = position.add(vecmath.vector(
+		// child.getWidth() / 2 + 0.25f,
+		// -child.getHeight() / 2 + 0.25f, 0));
+		// boolean inters = ray.intersects(vertices);
+		// if (inters == true && !selectedNode.equals(child)) {
+		// selectedNode.deselect();
+		// selectedNode = child;
+		// selectedNode.setSelected();
+		// break;
+		// }
+		// }
 	}
 
 	private void setSelection() {
@@ -170,6 +183,40 @@ public class InputManager {
 		System.out.println("selection: " + selectionIndex);
 		selectedNode = nodes.get(rowIndex).getChildNodes().get(selectionIndex);
 		selectedNode.setSelected();
+	}
+
+	private void executeRayCalculation() {
+		// Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection(),
+		// Mouse.getX(), viewportHeight - Mouse.getY());
+		Ray2 ray = new Ray2(cam, Mouse.getX(), Mouse.getY());
+		// Ray ray = new Ray(cam, Mouse.getX(), viewportHeight - Mouse.getY());
+		Vector position;
+		if (nodes.get(0).getChildNodes().get(0).getTransformation() != null) {
+			for (Node child : nodes.get(rowIndex).getChildNodes()) {
+				position = child.getTransformation().getPosition();
+				Vector[] vertices = new Vector[4];
+				vertices[0] = position.sub(vecmath.vector(
+						child.getWidth() / 2 + 0.25f,
+						child.getHeight() / 2 + 0.25f, 0));
+				vertices[1] = position.sub(vecmath.vector(
+						child.getWidth() / 2 + 0.25f,
+						-child.getHeight() / 2 + 0.25f, 0));
+				vertices[2] = position.add(vecmath.vector(
+						child.getWidth() / 2 + 0.25f,
+						child.getHeight() / 2 + 0.25f, 0));
+				vertices[3] = position.add(vecmath.vector(
+						child.getWidth() / 2 + 0.25f,
+						-child.getHeight() / 2 + 0.25f, 0));
+				boolean inters = ray.intersects(vertices);
+				if (inters == true && !selectedNode.equals(child)) {
+					selectedNode.deselect();
+					selectedNode = child;
+					selectedNode.setSelected();
+					System.out.println("SELECTED");
+					break;
+				}
+			}
+		}
 	}
 
 	private void clickAction() {
@@ -192,7 +239,7 @@ public class InputManager {
 
 		vertical = vertical.mult(halfHeight);
 		horizontal = horizontal.mult(halfScaledAspectRatio);
-		pickingRay = new Ray();
+		pickingRay = new Ray(cam, halfScaledAspectRatio, halfScaledAspectRatio);
 		picking(Mouse.getX(), viewportHeight - Mouse.getY(), viewDir,
 				pickingRay);
 	}
@@ -200,8 +247,8 @@ public class InputManager {
 	private void picking(float screenX, float screenY, Vector direction,
 			Ray pickingRay) {
 
-		pickingRay.setRayOrigin(cam.getEye());
-		pickingRay.getRayOrigin().add(direction);
+		pickingRay.setOrigin(cam.getEye());
+		pickingRay.getOrigin().add(direction);
 
 		screenX -= (float) viewportWidth / 2f;
 		screenY -= (float) viewportHeight / 2f;
@@ -210,22 +257,21 @@ public class InputManager {
 		screenX /= ((float) viewportWidth / 2f);
 		screenY /= ((float) viewportHeight / 2f);
 
-		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
+		pickingRay.setOrigin(pickingRay.getOrigin().add(
 				vecmath.vector(horizontal.x() * screenX + vertical.x()
 						* screenY, 0, 0)));
 		System.out.println(horizontal);
 		System.out.println(vertical);
-		System.out.println("PIEEP:   " + (horizontal.y() * screenX + vertical.y()
-						* screenY));
-		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
+		System.out.println("PIEEP:   "
+				+ (horizontal.y() * screenX + vertical.y() * screenY));
+		pickingRay.setOrigin(pickingRay.getOrigin().add(
 				vecmath.vector(0, horizontal.y() * screenX + vertical.y()
 						* screenY, 0)));
-		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
+		pickingRay.setOrigin(pickingRay.getOrigin().add(
 				vecmath.vector(0, 0, horizontal.z() * screenX + vertical.z()
 						* screenY)));
 
-		pickingRay.setDirection(pickingRay.getRayOrigin().sub(cam.getEye()));
-		checkForIntersection(pickingRay);
+		pickingRay.setDirection(pickingRay.getOrigin().sub(cam.getEye()));
 	}
 
 	private void checkForIntersection(Ray ray) {
@@ -233,26 +279,26 @@ public class InputManager {
 		Vector planeDist = vecmath.vector(0, 0, 5);
 		float distance = 5;
 
-		System.out.println("origin " + ray.getRayOrigin());
+		System.out.println("origin " + ray.getOrigin());
 		System.out.println("direction: " + ray.getDirection());
 		System.out.println("eye " + cam.getEye());
-		
-		Vector top = ray.getRayOrigin().mult(planeN);
+
+		Vector top = ray.getOrigin().mult(planeN);
 		float topF = top.x() + top.y() + top.z() + distance;
 		Vector bot = ray.getDirection().mult(planeN);
 		float botF = bot.x() + bot.y() + bot.z();
 		Vector divided = vecmath.vector(top.x() / bot.x(), top.y() / bot.y(),
 				top.z() / bot.z());
-		
-		System.out.println("top:"  + top);
 
-		float t = -(topF/botF);
+		System.out.println("top:" + top);
+
+		float t = -(topF / botF);
 		System.out.println(t);
 		if (t <= 0)
 			System.out.println("missed");
 		else {
 			System.out.println("hit");
-			System.out.println(ray.getRayOrigin().add(ray.getDirection().mult(t)));
+			System.out.println(ray.getOrigin().add(ray.getDirection().mult(t)));
 		}
 	}
 }

@@ -10,6 +10,9 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
+import general.Node;
+import general.PhongShader;
+import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 import ogl.app.App;
@@ -28,11 +31,10 @@ public class Cube extends ShapeNode implements App {
 
 	public Cube(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader, translation);
-		
+
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
-		
-		
+
 		normalData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeNormalBuffer(normalData, vertices);
 		
@@ -48,7 +50,7 @@ public class Cube extends ShapeNode implements App {
 		
 		
 	}
-	
+
 	FloatBuffer ambientData;
 	
 	
@@ -56,10 +58,10 @@ public class Cube extends ShapeNode implements App {
 	float [] matModelView;
 	
 	FloatBuffer normalData;
-	
-//	FloatBuffer diffuseColor;
-//	FloatBuffer diffuseIntensity;
-//	FloatBuffer diffuseDirection;
+
+	// FloatBuffer diffuseColor;
+	// FloatBuffer diffuseIntensity;
+	// FloatBuffer diffuseDirection;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -103,12 +105,13 @@ public class Cube extends ShapeNode implements App {
 		
 		
 
-		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
-		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
-		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
-		
-		
-		
+		getShader().getDirectionalLightIntensity().set(
+				PhongShader.getDirectionalLight().getBase().getIntensity());
+		getShader().getDirectionalLightColor().set(
+				PhongShader.getDirectionalLight().getBase().getColor());
+		getShader().getDirectionalLightDirection().set(
+				PhongShader.getDirectionalLight().getDirection());
+
 		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
 		// position and a vertex color.
 
@@ -126,36 +129,32 @@ public class Cube extends ShapeNode implements App {
 		
 		
 		// ambient Lightning
-		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0,
-				colorData);
-		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
-		
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
 		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
-		
+
 		// vectornormalData
 		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
 				normalData);
 		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
-		
-		
-		
-//		glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
-//				diffuseColor);
-//		glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
-//		
-//		glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1, false, 0,
-//				diffuseIntensity);
-//		glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
-//		
-//		
-//		glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3, false, 0,
-//				diffuseDirection);
-//		glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
-		
-		
 
+		// glVertexAttribPointer(Shader.getDiffuseColorAttribIdx(), 3, false, 0,
+		// diffuseColor);
+		// glEnableVertexAttribArray(Shader.getDiffuseColorAttribIdx());
+		//
+		// glVertexAttribPointer(Shader.getDiffuseIntensityAttribIdx(), 1,
+		// false, 0,
+		// diffuseIntensity);
+		// glEnableVertexAttribArray(Shader.getDiffuseIntensityAttribIdx());
+		//
+		//
+		// glVertexAttribPointer(Shader.getDiffuseDirectionAttribIdx(), 3,
+		// false, 0,
+		// diffuseDirection);
+		// glEnableVertexAttribArray(Shader.getDiffuseDirectionAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
@@ -164,16 +163,15 @@ public class Cube extends ShapeNode implements App {
 		GL20.glDisableVertexAttribArray(Shader.getBaseAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 	}
-	
-	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
-		for (int i = 0; i<vertices.length;i++) {
+
+	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices) {
+		for (int i = 0; i < vertices.length; i++) {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
 	}
-	
-	
-	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices){
+
+	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
 		for (Vertex v : vertices) {
 			n.put(v.getNormal().asArray());
 		}

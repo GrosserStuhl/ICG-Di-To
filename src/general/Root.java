@@ -3,13 +3,9 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
 
-import java.util.ArrayList;
-
 import mathe.Vector3f;
 
 import org.lwjgl.util.vector.Vector2f;
-
-
 
 
 
@@ -154,27 +150,36 @@ public class Root extends Node implements App {
 //		}
 		
 		
-		Cube cube = new Cube(vertices, shader, vecmath.vector(-3, 0f, 0f));
+		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
 		row_one.addNode(cube);
 
 		Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
 		row_one.addNode(cube2);
-		Cube cube3 = new Cube(vertices, shader, vecmath.vector(3, 0, 0));
+		Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
 		row_one.addNode(cube3);
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
-		//cube.addNode(pyr);
+		cube.addNode(pyr);
+		
+		float cubeWidth = 1;
+		float cubeHeight = 1;
+		cube.setHeight(cubeHeight);
+		cube.setWidth(cubeWidth);
+		cube2.setHeight(cubeHeight);
+		cube2.setWidth(cubeWidth);
+		cube3.setHeight(cubeHeight);
+		cube3.setWidth(cubeWidth);
 
 		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
 				vecmath.vector(0, 0, 0));
-		cube.addNode(moon);
+		cube2.addNode(moon);
 
-//		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
-//		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-//		OBJMesh crate = new OBJMesh(m2.getVertices(), shader,
-//				vecmath.vector(0, 0, 0));
-//		cube3.addNode(crate);
+		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
+		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
+		OBJModel crate = new OBJModel(m2.getVertices(), shader, t2,
+				vecmath.vector(0, 0, 0));
+		cube3.addNode(crate);
 
 		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
@@ -225,11 +230,8 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
-
 		Matrix viewMatrix = cam.getTransformation();
 		
-		
-
 		// The inverse camera transformation. World space to camera
 		// space.
 		// Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
@@ -244,9 +246,6 @@ public class Root extends Node implements App {
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		shader.getViewMatrixUniform().set(viewMatrix);
 
-
-		
-		
 		// getChildNodes().get(0).display(width, height, getTransformation());
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null && child.getShader().equals(shader))

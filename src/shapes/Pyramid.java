@@ -14,8 +14,9 @@ import org.lwjgl.util.vector.Matrix3f;
 import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
-import shader.PhongShader;
-import shader.Shader;
+import general.Node;
+import general.PhongShader;
+import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 
@@ -98,6 +99,7 @@ MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
+		
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
