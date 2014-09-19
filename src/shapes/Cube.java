@@ -11,8 +11,6 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.nio.FloatBuffer;
 
 import general.Node;
-import general.PhongShader;
-import general.Shader;
 import general.ShapeNode;
 import general.Vertex;
 import ogl.app.App;
