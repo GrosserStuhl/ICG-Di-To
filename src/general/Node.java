@@ -53,6 +53,10 @@ public abstract class Node implements App {
 	public void deselect() {
 	}
 	
+	public Vertex[] getVertices() {
+		return null;
+	}
+	
 	public Shader getShader() {
 		return null;
 	}

@@ -5,7 +5,7 @@ import ogl.vecmath.Vector;
 
 public class Ray {
 
-	private Vector clickPosInWorld = vecmath.vector(0, 0, 0);
+	private Vector rayOrigin = vecmath.vector(0, 0, 0);
 	private Vector direction = vecmath.vector(0, 0, 0);
 
 	public Ray() {
@@ -17,22 +17,22 @@ public class Ray {
 	 * and writes it back to the provided vector.
 	 */
 	public void intersectionWithXyPlane(float[] worldPos) {
-		float s = -clickPosInWorld.z() / direction.z();
-		worldPos[0] = clickPosInWorld.x() + direction.x() * s;
-		worldPos[1] = clickPosInWorld.y() + direction.y() * s;
+		float s = -rayOrigin.z() / direction.z();
+		worldPos[0] = rayOrigin.x() + direction.x() * s;
+		worldPos[1] = rayOrigin.y() + direction.y() * s;
 		worldPos[2] = 0;
 	}
 
-	public Vector getClickPosInWorld() {
-		return clickPosInWorld;
+	public Vector getRayOrigin() {
+		return rayOrigin;
 	}
 
 	public Vector getDirection() {
 		return direction;
 	}
 	
-	public void setClickPosInWorld(Vector clickPosInWorld) {
-		this.clickPosInWorld = clickPosInWorld;
+	public void setRayOrigin(Vector rayOrigin) {
+		this.rayOrigin = rayOrigin;
 	}
 	
 	public void setDirection(Vector direction) {

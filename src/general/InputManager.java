@@ -12,6 +12,7 @@ import org.lwjgl.opengl.Display;
 
 import ogl.app.Input;
 import ogl.vecmath.Vector;
+import tom.bennybox.Vector3f;
 
 public class InputManager {
 
@@ -27,6 +28,8 @@ public class InputManager {
 	private Vector horizontal;
 	private Vector vertical;
 	private Ray pickingRay;
+	int viewportHeight = 600;
+	int viewportWidth = 600;
 
 	public InputManager(Camera cam, ArrayList<Node> children) {
 		this.cam = cam;
@@ -51,7 +54,7 @@ public class InputManager {
 			if (modeChanged == false) {
 				cam.changeMode();
 				modeChanged = true;
-				Mouse.setGrabbed(true);
+//				Mouse.setGrabbed(true);
 			}
 
 			float moveSpeed = elapsed * 10;
@@ -86,6 +89,7 @@ public class InputManager {
 			if (modeChanged == true) {
 				cam.changeMode();
 				modeChanged = false;
+				Mouse.setGrabbed(false);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
@@ -138,29 +142,25 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_A);
 
 			if (Mouse.isButtonDown(0)) {
-				// look direction
-				Vector viewDir = vecmath.vector(cam.getCenter().x()
-						- cam.getEye().x(), cam.getCenter().y()
-						- cam.getEye().y(), cam.getCenter().z()
-						- cam.getEye().z());
-				viewDir = viewDir.normalize();
-
-				// screenX
-				horizontal = viewDir.cross(cam.getUp()).normalize();
-
-				// screenY
-				vertical = horizontal.cross(viewDir).normalize();
-
-				final float radians = (float) (60f * Math.PI / 180f);
-				float halfHeight = (float) (Math.tan(radians / 2) * 0.1f);
-				float halfScaledAspectRatio = halfHeight * (600 / 600);
-
-				vertical = vertical.mult(halfHeight);
-				horizontal = horizontal.mult(halfScaledAspectRatio);
-				pickingRay = new Ray();
-				picking(Mouse.getX(), Mouse.getY(), viewDir, pickingRay);
+//				clickAction();
+				Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
+				Vector[] vertices = new Vector[4];
+				vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
+				vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
+				vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
+				vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
+				boolean inters = ray.intersects(vertices);
+				System.out.println(inters);
 			}
 		}
+		Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection());
+		Vector[] vertices = new Vector[4];
+		vertices[0] = nodes.get(0).getChildNodes().get(0).getVertices()[5].getPosition();
+		vertices[1] = nodes.get(0).getChildNodes().get(0).getVertices()[6].getPosition();
+		vertices[2] = nodes.get(0).getChildNodes().get(0).getVertices()[7].getPosition();
+		vertices[3] = nodes.get(0).getChildNodes().get(0).getVertices()[4].getPosition();
+		boolean inters = ray.intersects(vertices);
+		System.out.println(inters);
 	}
 
 	private void setSelection() {
@@ -172,13 +172,36 @@ public class InputManager {
 		selectedNode.setSelected();
 	}
 
-	public void picking(float screenX, float screenY, Vector direction,
-			Ray pickingRay) {
-		int viewportHeight = 600;
-		int viewportWidth = 600;
+	private void clickAction() {
+		// look direction
+		Vector viewDir = vecmath.vector(cam.getCenter().x() - cam.getEye().x(),
+				cam.getCenter().y() - cam.getEye().y(), cam.getCenter().z()
+						- cam.getEye().z());
+		viewDir = viewDir.normalize();
 
-		pickingRay.setClickPosInWorld(cam.getEye());
-		pickingRay.getClickPosInWorld().add(direction);
+		// screenX
+		horizontal = viewDir.cross(cam.getUp()).normalize();
+
+		// screenY
+		vertical = horizontal.cross(viewDir).normalize();
+
+		final float radians = (float) (60f * Math.PI / 180f);
+		float halfHeight = (float) (Math.tan(radians / 2) * 0.1f);
+		float halfScaledAspectRatio = halfHeight
+				* (viewportWidth / viewportHeight);
+
+		vertical = vertical.mult(halfHeight);
+		horizontal = horizontal.mult(halfScaledAspectRatio);
+		pickingRay = new Ray();
+		picking(Mouse.getX(), viewportHeight - Mouse.getY(), viewDir,
+				pickingRay);
+	}
+
+	private void picking(float screenX, float screenY, Vector direction,
+			Ray pickingRay) {
+
+		pickingRay.setRayOrigin(cam.getEye());
+		pickingRay.getRayOrigin().add(direction);
 
 		screenX -= (float) viewportWidth / 2f;
 		screenY -= (float) viewportHeight / 2f;
@@ -187,17 +210,49 @@ public class InputManager {
 		screenX /= ((float) viewportWidth / 2f);
 		screenY /= ((float) viewportHeight / 2f);
 
-		pickingRay.getClickPosInWorld().add(
+		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
 				vecmath.vector(horizontal.x() * screenX + vertical.x()
-						* screenY, 0, 0));
-		pickingRay.getClickPosInWorld().add(
-				vecmath.vector(0, horizontal.y() * screenX + vertical.y()
-						* screenY, 0));
-		pickingRay.getClickPosInWorld().add(
-				vecmath.vector(0, 0, horizontal.z() * screenX + vertical.z()
+						* screenY, 0, 0)));
+		System.out.println(horizontal);
+		System.out.println(vertical);
+		System.out.println("PIEEP:   " + (horizontal.y() * screenX + vertical.y()
 						* screenY));
+		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
+				vecmath.vector(0, horizontal.y() * screenX + vertical.y()
+						* screenY, 0)));
+		pickingRay.setRayOrigin(pickingRay.getRayOrigin().add(
+				vecmath.vector(0, 0, horizontal.z() * screenX + vertical.z()
+						* screenY)));
 
-		pickingRay.setDirection(pickingRay.getClickPosInWorld());
-		pickingRay.getDirection().sub(cam.getEye());
+		pickingRay.setDirection(pickingRay.getRayOrigin().sub(cam.getEye()));
+		checkForIntersection(pickingRay);
+	}
+
+	private void checkForIntersection(Ray ray) {
+		Vector planeN = vecmath.vector(0, 0, 1);
+		Vector planeDist = vecmath.vector(0, 0, 5);
+		float distance = 5;
+
+		System.out.println("origin " + ray.getRayOrigin());
+		System.out.println("direction: " + ray.getDirection());
+		System.out.println("eye " + cam.getEye());
+		
+		Vector top = ray.getRayOrigin().mult(planeN);
+		float topF = top.x() + top.y() + top.z() + distance;
+		Vector bot = ray.getDirection().mult(planeN);
+		float botF = bot.x() + bot.y() + bot.z();
+		Vector divided = vecmath.vector(top.x() / bot.x(), top.y() / bot.y(),
+				top.z() / bot.z());
+		
+		System.out.println("top:"  + top);
+
+		float t = -(topF/botF);
+		System.out.println(t);
+		if (t <= 0)
+			System.out.println("missed");
+		else {
+			System.out.println("hit");
+			System.out.println(ray.getRayOrigin().add(ray.getDirection().mult(t)));
+		}
 	}
 }

@@ -66,9 +66,15 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
-			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
-			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
+	private Vector[] p = { 
+			vec(-w2, -h2, -d2), 
+			vec(w2, -h2, -d2),
+			vec(w2, h2, -d2), 
+			vec(-w2, h2, -d2), 
+			vec(w2, -h2, d2),
+			vec(-w2, -h2, d2), 
+			vec(-w2, h2, d2), 
+			vec(w2, h2, d2) };
 
 	// The colors of the cube vertices.
 	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
@@ -240,13 +246,11 @@ public class Root extends Node implements App {
 				child.display(width, height, getTransformation());
 			else child.display(width, height, getTransformation());
 		}
-
+		
 		textureShader.activate();
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 		textureShader.getViewMatrixUniform().set(viewMatrix);
 
-		// getChildNodes().get(1).display(width, height, getTransformation());
-		// getChildNodes().get(2).display(width, height, getTransformation());
 
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null
@@ -254,10 +258,6 @@ public class Root extends Node implements App {
 				child.display(width, height, getTransformation());
 			else child.display(width, height, getTransformation());
 		}
-
-		// for (Node child : getChildNodes()) {
-		// child.display(width, height, getTransformation());
-		// }
 	}
 
 	@Override
