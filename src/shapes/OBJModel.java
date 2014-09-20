@@ -66,8 +66,7 @@ public class OBJModel extends ShapeNode implements App {
 
 		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
-
-
+		
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
@@ -76,7 +75,6 @@ public class OBJModel extends ShapeNode implements App {
 		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
 				textureData);
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
-		
 		
 //		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 //				ambientData);

@@ -168,6 +168,10 @@ public class Root extends Node implements App {
 		cube2.setWidth(cubeWidth);
 		cube3.setHeight(cubeHeight);
 		cube3.setWidth(cubeWidth);
+		
+		String no = "#bob\"mop";
+		String[] lo = no.split("\"");
+		System.out.println(lo[0]);
 
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
@@ -181,7 +185,8 @@ public class Root extends Node implements App {
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
-		cube2.addNode(crate);
+		moon.addNode(crate);
+		row_three.addNode(crate);
 
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
 		crate.addNode(moon);
@@ -219,12 +224,12 @@ public class Root extends Node implements App {
 		row_two.setName("Row Two");
 		row_three.setName("Row Three");
 		cam.setName("Camera");
-		cube.setName("Cube1");
-		cube2.setName("Cube2");
-		cube3.setName("Cube3");
-		pyr.setName("Pyramid");
+//		cube.setName("Cube1");
+//		cube2.setName("Cube2");
+//		cube3.setName("Cube3");
+//		pyr.setName("Pyramid");
 		moon.setName("Moon");
-//		crate.setName("Crate");
+		crate.setName("Crate");
 		
 		manager = new InputManager(cam, getChildNodes());
 		

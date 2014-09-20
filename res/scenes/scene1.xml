@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scene>
+<shape #planet="Cube" #scale=3>
+	<shape #planet="Pyramid" #scale=3>
+	<shape #planet="Jupiter"></shape>
+	</shape>
+</shape>
+<shape #planet="Pyramid" #scale=3>
+	<shape #planet="Moon" #scale=1></shape>
+	<shape #planet="Crate" #scale=3></shape>
+</shape>
+
+
+
+
+</scene>
