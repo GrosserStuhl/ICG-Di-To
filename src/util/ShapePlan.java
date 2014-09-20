@@ -5,24 +5,24 @@ import java.util.ArrayList;
 public class ShapePlan {
 	
 	private String planet;
-	private ArrayList<String> children;
+	private ArrayList<ShapePlan> children;
 	private float scale;
 	
-	public ShapePlan(String type, ArrayList<String> children, float scale) {
+	public ShapePlan(String type, ArrayList<ShapePlan> children, float scale) {
 		this.planet = type;
 		this.children = children;
-		this.scale = scale;
+		this.setScale(scale);
 	}
 	
 	public ShapePlan(String type, float scale) {
 		this.planet = type;
-		this.scale = scale;
+		this.setScale(scale);
 	}
 	
 	public ShapePlan(String type) {
 		this.planet = type;
 		this.children = null;
-		scale = 1;
+		setScale(1);
 	}
 
 	public String getName() {
@@ -33,12 +33,20 @@ public class ShapePlan {
 		this.planet = name;
 	}
 
-	public ArrayList<String> getChildren() {
+	public ArrayList<ShapePlan> getChildren() {
 		return children;
 	}
 
-	public void setChildren(ArrayList<String> children) {
+	public void setChildren(ArrayList<ShapePlan> children) {
 		this.children = children;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
 	}
 	
 }
