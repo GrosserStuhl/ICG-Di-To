@@ -19,7 +19,8 @@ public class InputManager {
 	private ArrayList<Node> nodes;
 	private int rowIndex = 0;
 	private int selectionIndex = 0;
-	private int previousSelIndex = 0;
+	private int rowOneSelection = 0;
+	private int rowTwoSelection = 0;
 	private Set<Integer> keysUp = new HashSet<Integer>();
 	private boolean modeChanged;
 	private Node selectedNode;
@@ -94,8 +95,11 @@ public class InputManager {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
 					if (!selectedNode.getChildNodes().isEmpty()) {
+						if(rowIndex==0)
+							rowOneSelection = selectionIndex;
+						else if(rowIndex==1)
+							rowTwoSelection = selectionIndex;
 						rowIndex++;
-						previousSelIndex = selectionIndex;
 						selectionIndex = 0;
 						nodes.get(rowIndex).getChildNodes().clear();
 						for (Node child : selectedNode.getChildNodes())
@@ -109,8 +113,11 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_W);
 			if (input.isKeyDown(Keyboard.KEY_S)) {
 				if (rowIndex > 0) {
+					if(rowIndex==2)
+						selectionIndex = rowTwoSelection;
+					else if(rowIndex==1)
+						selectionIndex = rowOneSelection;
 					rowIndex--;
-					selectionIndex = previousSelIndex;
 					nodes.get(rowIndex + 1).getChildNodes().clear();
 					cam.moveRowBack();
 					setSelection();
@@ -142,7 +149,6 @@ public class InputManager {
 		}
 		if (Mouse.isButtonDown(0)) {
 			executeRayCalculation();
-			System.out.println(nodes.get(0).getChildNodes().get(1).getTransformation().getPosition());
 		}
 		// Ray2 ray = new Ray2(cam.getEye(), cam.getLookDirection(),
 		// Mouse.getX(),
