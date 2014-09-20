@@ -1,9 +1,11 @@
-package general;
+package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.*;
+import general.ShapeNode;
+import general.Vertex;
 
 import java.nio.FloatBuffer;
 
@@ -37,8 +39,6 @@ public class OBJModel extends ShapeNode implements App {
 	@Override
 	public void init() {
 
-		// t = ResourceLoader.loadTexture("MoonMap2.jpg");
-
 		positionData = createFloatBuffer(vertices.length * 3);
 		textureData = createFloatBuffer(vertices.length * 2);
 
@@ -49,28 +49,10 @@ public class OBJModel extends ShapeNode implements App {
 //		finalizeAmbientBuffer(ambientData, vertices);
 
 	}
-
-	// Buffers mit TextureInfo (wurden schon in Texture gemacht)
-//	public void finalizeBuffer(FloatBuffer positionData, FloatBuffer colorData,
-//			Vertex[] vertices) {
-//		for (Vertex v : vertices) {
-//			positionData.put(v.position.asArray());
-//			colorData.put(v.color.asArray());
-//		}
-//		positionData.rewind();
-//		colorData.rewind();
-//	}
+	
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		// The modeling transformation. Object space to world space.
-		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-		// GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		// int location = GL20.glGetUniformLocation(s.getProgram(), "img");
-		// GL20.glUniform1i(location, 0);
-		// // 0 because it is to use texture unit 0
-		//
 
 		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
@@ -105,8 +87,6 @@ public class OBJModel extends ShapeNode implements App {
 		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
-
-		// getShader().deactivate();
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){

@@ -1,7 +1,6 @@
 package util;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import general.Mesh;
-import general.OBJIndex;
 import general.Vertex;
 
 import java.io.BufferedReader;
@@ -14,6 +13,8 @@ import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.util.vector.Vector2f;
+
+import shapes.OBJIndex;
 
 public class ResourceLoader {
 

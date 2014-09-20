@@ -1,4 +1,4 @@
-package general;
+package shapes;
 
 public class OBJIndex {
 

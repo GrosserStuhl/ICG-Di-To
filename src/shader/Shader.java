@@ -39,7 +39,6 @@ public class Shader extends Node {
 	public static int vertexAttribIdx = 0;
 	public static int colorAttribIdx = 1;
 	public static int textureAttribIdx = 2;
-	public static int baseAttribIdx = 3;
 
 	public static int ambientAttribIdx = 4;
 
@@ -81,29 +80,20 @@ public class Shader extends Node {
 		glAttachShader(program, fs);
 
 		// Bind the vertex attribute data locations for this shader program. The
-		// shader expects to get vertex and color data from the mesh. This needs
-		// to
+		// shader expects to get vertex and color data from the mesh. This needs to
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
-		glBindAttribLocation(program, baseAttribIdx, "baseColor");
+		glBindAttribLocation(program, colorAttribIdx, "color");
 		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
-
 		glBindAttribLocation(program, normalAttribIdx, "normal");
-
-		// glBindAttribLocation(program, diffuseColorAttribIdx,
-		// "directionalLight.base.color");
-		// glBindAttribLocation(program, diffuseIntensityAttribIdx,
-		// "directionalLight.base.intensity");
-		// glBindAttribLocation(program, diffuseDirectionAttribIdx,
-		// "directionalLight.base.direction");
-
+		
+		
 		// Link the shader program.
 		glLinkProgram(program);
 		Util.checkLinkage(program);
 
-		// Bind the matrix uniforms to locations on this shader program. This
-		// needs
+		// Bind the matrix uniforms to locations on this shader program. This needs
 		// to be done *after* linking the program.
 		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
@@ -160,8 +150,7 @@ public class Shader extends Node {
 		glAttachShader(program, fs);
 
 		// Bind the vertex attribute data locations for this shader program. The
-		// shader expects to get vertex and color data from the mesh. This needs
-		// to
+		// shader expects to get vertex and color data from the mesh. This needs to
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		// glBindAttribLocation(program, colorAttribIdx, "color");
@@ -172,8 +161,7 @@ public class Shader extends Node {
 		glLinkProgram(program);
 		Util.checkLinkage(program);
 
-		// Bind the matrix uniforms to locations on this shader program. This
-		// needs
+		// Bind the matrix uniforms to locations on this shader program. This needs
 		// to be done *after* linking the program.
 		modelMatrixUniform = new MatrixUniform(program, "modelMatrix");
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
@@ -222,28 +210,11 @@ public class Shader extends Node {
 		return program;
 	}
 
-	public static int getBaseAttribIdx() {
-		return baseAttribIdx;
-	}
+
 
 	public static int getAmbientAttribIdx() {
 		return ambientAttribIdx;
 	}
-
-	// public static int getDiffuseColorAttribIdx() {
-	// return diffuseColorAttribIdx;
-	// }
-	//
-	// public static int getDiffuseDirectionAttribIdx() {
-	// return diffuseDirectionAttribIdx;
-	// }
-	//
-	// public static int getDiffuseIntensityAttribIdx() {
-	// return diffuseIntensityAttribIdx;
-	// }
-
-	
-
 	
 	public static int getNormalAttribIdx() {
 		return normalAttribIdx;
@@ -314,72 +285,5 @@ public class Shader extends Node {
 			child.display(width, height, getTransformation());
 		}
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// @Override
-	// public void init() {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void simulate(float elapsed, Input input) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void display(int width, int height) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	//
-	// @Override
-	// public void display(int width, int height, Matrix parentMatrix) {
-	//
-	//
-	// }
-
-	
-	
-	
-	
-	
-	
-	
-	
-//	public void SetUniformf(String uniformName, float value) {
-//		glUniform1f(m_resource.GetUniforms().get(uniformName), value);
-//	}
-//
-//	public void SetUniform(String uniformName, Vector3f value) {
-//		glUniform3f(m_resource.GetUniforms().get(uniformName), value.GetX(),
-//				value.GetY(), value.GetZ());
-//	}
-//
-//	public void SetUniform(String uniformName, Matrix4f value) {
-//		glUniformMatrix4(m_resource.GetUniforms().get(uniformName), true,
-//				Util.CreateFlippedBuffer(value));
-//	}
-//
-//	public void SetUniformBaseLight(String uniformName, BaseLight baseLight) {
-//		SetUniform(uniformName + ".color", baseLight.GetColor());
-//		SetUniformf(uniformName + ".intensity", baseLight.GetIntensity());
-//	}
-//
-//	public void SetUniformDirectionalLight(String uniformName,
-//			DirectionalLight directionalLight) {
-//		SetUniformBaseLight(uniformName + ".base", directionalLight);
-//		SetUniform(uniformName + ".direction", directionalLight.GetDirection());
-//	}
 
 }

@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
+import shapes.OBJIndex;
 
 public class Vertex {
 
@@ -25,12 +26,7 @@ public class Vertex {
 	}
 	
 	
-//	Vertex(Vector p, Color c, Vector n) {
-//		position = p;
-//		color = c;
-//		normal = n;
-//	}
-	
+
 	public Vertex(Vector p, Vector2f t) {
 		position = p;
 		textureCoord = t;
@@ -117,52 +113,30 @@ public class Vertex {
 	
 	
 	public static Vertex[] meshVertices(Vector[] p, Color[] c, int[] faces) {
-
 		Vertex[] vertices = new Vertex[faces.length];
-
-//		System.out.println(p.length);
-
 		for (int i = 0; i < vertices.length; i++) {
 			vertices[i] = v(p[faces[i]], c[faces[i]]);
 		}
-
 		return vertices;
 	}
 	
-	
 	public static Vertex[] meshVertices(Vector[] p, Vector2f[] t, ArrayList<OBJIndex> indices) {
-
 		Vertex[] vertices = new Vertex[indices.size()];
-		
-		
 		for (int i = 0; i < vertices.length; i++) {
-			
 			OBJIndex temp = indices.get(i);
-			
 			vertices[i] = vt(p[temp.vertexIndex],t[temp.texCoordIndex]);
 		}
-
 		return vertices;
-		
 	}
 	
 	public static Vertex[] fakeColor(Vector[] p, Color[] c,  ArrayList<OBJIndex> indices){
-		
 		Vertex[] vertices = new Vertex[indices.size()];
-
-//		System.out.println(p.length);
-
 		for (int i = 0; i < vertices.length; i++) {
-			
 			OBJIndex temp = indices.get(i);
-			
 			vertices[i] = v(p[temp.vertexIndex], c[temp.vertexIndex]);
 		}
-		
 		return vertices;
-		
 	}
-	
 	
 	public static void calcNormals(Vertex[] vertices, int[] indices){
 		
@@ -184,68 +158,14 @@ public class Vertex {
 			vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
 			vertices[i1].setNormal(vertices[i1].getNormal().add(normal));
 			vertices[i2].setNormal(vertices[i2].getNormal().add(normal));
-			
-			
-			
 		}
 		
 		// this will set the length and direction are gonna be correct for calculating
-		for (int i = 0; i < vertices.length; i++) {
+		for (int i = 0; i < vertices.length; i++) 
 			vertices[i].setNormal(vertices[i].getNormal().normalize());
-			
-		}
-		
-		
+	
+	
 	}
-	
-	
-
-
-
-
-	
-	
-
-//	public static void calcNormals(Vertex[] vertices,
-//			ArrayList<OBJIndex> indices) {
-//		// += 3 because of triangles
-//				for (int i = 0; i < indices.size(); i+= 3) {
-//					
-//					
-//					int i0 = indices.get(i).normalIndex;
-//					System.out.println("i0: "+i0);
-//					
-//					int i1 = indices.get(i + 1).normalIndex;
-//					int i2 = indices.get(i + 2).normalIndex;
-//					
-//					// one line / direction of the triangle ( top to right-bottom)
-//					Vector v1 = vertices[i1].getPosition().sub(vertices[i0].getPosition());
-//					
-//					// from top to left-bottom
-//					Vector v2 = vertices[i2].getPosition().sub(vertices[i0].getPosition());
-//					
-//					Vector normal = v1.cross(v2).normalize();
-//					
-//					vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
-//					vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
-//					vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
-//					
-//					
-//					
-//				}
-//				
-//				// this will set the length and direction are gonna be correct for calculating
-//				for (int i = 0; i < vertices.length; i++) {
-//					vertices[i].setNormal(vertices[i].getNormal().normalize());
-//					
-//				}
-//		
-//	}
-	
-	
-
-	
-
 	
 
 }

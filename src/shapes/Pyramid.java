@@ -35,62 +35,50 @@ public class Pyramid extends ShapeNode {
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
-		// Matrix modelMatrix = vecmath.rotationMatrix(vecmath.vector(1, 0, 1),
-		// angle);
 		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
 		setTransformation(modelMatrix);
 
-		// Activate the shader program and set the transformation matricies to
-		// the
+		// Activate the shader program and set the transformation matricies to the
 		// uniform variables.
-//		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
 		
-MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
-		
-		float[] elements = new float[16];
-		
-		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
-			elements[i] = viewEncoder.getBuffer().get(i);
-		}
-		
-		Matrix m = vecmath.matrix(elements);
-		System.out.println(m);
-		
-		Matrix modelView4f = modelMatrix.mult(m);
-
-		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
-		Matrix3f modelView3f = toMatrix3f(modelView4f);
-
-		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
-		
-		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
-		modelViewMatrix.store(modelViewBuffer);
-		modelViewBuffer.rewind();
+//		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
+//		float[] elements = new float[16];
+//		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
+//			elements[i] = viewEncoder.getBuffer().get(i);
+//		}
+//		Matrix m = vecmath.matrix(elements);
+//		System.out.println(m);
+//		Matrix modelView4f = modelMatrix.mult(m);
+//		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
+//		Matrix3f modelView3f = toMatrix3f(modelView4f);
+//		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
+//		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
+//		modelViewMatrix.store(modelViewBuffer);
+//		modelViewBuffer.rewind();
 		
 		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		
-		
-
 		
 		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
 		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
 		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
 		
 
-		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
-		// position and a vertex color.
+		// vertex position of the pyramid
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0,
+		
+		// color Data of the pyramid
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
 				colorData);
-		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 		
 		
-		
+		// ambient light
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
 		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
@@ -99,6 +87,7 @@ MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
 		
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
+		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 		
 	}
 	
