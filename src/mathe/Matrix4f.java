@@ -205,13 +205,9 @@ public class Matrix4f {
 			for (int j = 0; j < 4; j++) 
 				m[i][j] = res[i][j];
 		
-		
 		return this;
     }
     
-    
-	
-	
 	public Matrix4f mul(Matrix4f r){
 		Matrix4f res = new Matrix4f();
 		

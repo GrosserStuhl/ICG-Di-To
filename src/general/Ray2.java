@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import javax.vecmath.Vector4f;
+import mathe.Vector3f;
 
 import org.lwjgl.BufferUtils;
 
@@ -22,7 +22,7 @@ public class Ray2 {
 	public Ray2(Camera cam, float mouseX, float mouseY) {
 //		origin = cam.getEye();
 		direction = cam.getDirection();
-//		direction = direction.normalize();
+		direction = direction.normalize();
 		float height = 600;
 		float width = 600;
 		float aspect = (float) width / (float) height;
@@ -31,12 +31,18 @@ public class Ray2 {
 		Matrix view = cam.getTransformation();
 		view = view.invertRigid();
 
+//		Vector3f vector = new Vector3f(0.89f, 0.1f, 0.0001f);
+//		System.out.println("old " + vecmath.vector(0.89f, 0.1f, 0.0001f).dot(vecmath.vector(0.5f, 0.5f, 1f)));
+//		System.out.println("before: "+ vector);
+////		vector = vector.cross(new Vector3f(0.5f, 0.5f, 1f));
+//		System.out.println("after: "  + vector.dot(new Vector3f(0.5f, 0.5f, 1f)));
+		
 		mouseY = height - mouseY - 1;
-		FloatBuffer worldPos = getMousePosition(mouseX, mouseY, proj, view);
-		origin = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
-		System.out.println(direction);
-		System.out.println(cam.getTransformation());
-//		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
+//		FloatBuffer worldPos = getMousePosition(mouseX, mouseY, proj, view);
+//		origin = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
+//		System.out.println(direction);
+//		System.out.println(cam.getTransformation());
+		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
 		
 		
 //		float tempX = proj.get(0, 0) * direction.x() + proj.get(1, 0) * direction.y()
@@ -116,8 +122,8 @@ public class Ray2 {
 		float winX, winY;
 		FloatBuffer position = BufferUtils.createFloatBuffer(3);
 		
-//		glGetFloat(GL_MODELVIEW_MATRIX, modelview);
-//		glGetFloat(GL_PROJECTION_MATRIX, projection);
+		glGetFloat(GL_MODELVIEW_MATRIX, modelview);
+		glGetFloat(GL_PROJECTION_MATRIX, projection);
 		glGetInteger(GL_VIEWPORT, viewport);
 		
 		winX = mouseX;
@@ -146,19 +152,18 @@ public class Ray2 {
 	    FloatBuffer endBuffer = BufferUtils.createFloatBuffer(16);
 	    IntBuffer viewBuffer = BufferUtils.createIntBuffer(16);
 
-//	    glGetFloat(GL_MODELVIEW_MATRIX, modelBuffer);
-//	    glGetFloat(GL_PROJECTION_MATRIX, projBuffer);
+	    glGetFloat(GL_MODELVIEW_MATRIX, modelBuffer);
+	    glGetFloat(GL_PROJECTION_MATRIX, projBuffer);
 	    glGetInteger(GL_VIEWPORT, viewBuffer);
 	    
-	    mouseY = 600 - mouseY;
-
 	    gluUnProject(mouseX, mouseY, 0.0f, modelBuffer, projBuffer, viewBuffer, startBuffer);
 	    gluUnProject(mouseX, mouseY, 1.0f, modelBuffer, projBuffer, viewBuffer, endBuffer);
 
 	    start = vecmath.vector(startBuffer.get(0), startBuffer.get(1), startBuffer.get(2));
 	    end = vecmath.vector(endBuffer.get(0), endBuffer.get(1), endBuffer.get(2));
 
-	    direction = vecmath.vector(end.x()-start.x(), end.y()-start.y(), end.z()-start.z());
+	    origin = vecmath.vector(end.x()-start.x(), end.y()-start.y(), end.z()-start.z());
+	    System.out.println("FRESH ORIGIN: " + origin);
 
 	    System.out.println("Mouse Coords: " + mouseX + ", " + mouseY);
 	    System.out.println("start: " + start);
