@@ -169,10 +169,6 @@ public class Root extends Node implements App {
 		cube3.setHeight(cubeHeight);
 		cube3.setWidth(cubeWidth);
 		
-		String no = "#bob\"mop";
-		String[] lo = no.split("\"");
-		System.out.println(lo[0]);
-
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
@@ -185,8 +181,8 @@ public class Root extends Node implements App {
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
-		moon.addNode(crate);
 		row_three.addNode(crate);
+		cube2.addNode(crate);
 
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
 		crate.addNode(moon);

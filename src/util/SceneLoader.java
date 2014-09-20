@@ -46,9 +46,7 @@ public class SceneLoader {
 						scale = Float.parseFloat(scale3);
 					} 
 					
-					if (reader.readLine().equals("</shape>")) {
-						shape = new ShapePlan(planet[1]);
-					} else {
+					if (!reader.readLine().equals("</shape>")) {
 						rowCount++;
 						reader.setLineNumber(reader.getLineNumber() - 1);
 						line = reader.readLine();
@@ -75,6 +73,7 @@ public class SceneLoader {
 								}
 							}
 						}
+						shape = new ShapePlan(planet[1], scale);
 					}
 					shapes.add(shape);
 				}
