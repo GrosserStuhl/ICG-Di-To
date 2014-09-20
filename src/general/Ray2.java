@@ -20,7 +20,9 @@ public class Ray2 {
 	private Vector direction;
 
 	public Ray2(Camera cam, float mouseX, float mouseY) {
-		origin = cam.getEye();
+//		origin = cam.getEye();
+		direction = cam.getDirection();
+//		direction = direction.normalize();
 		float height = 600;
 		float width = 600;
 		float aspect = (float) width / (float) height;
@@ -29,10 +31,12 @@ public class Ray2 {
 		Matrix view = cam.getTransformation();
 		view = view.invertRigid();
 
-//		mouseY = height - mouseY;
-//		FloatBuffer worldPos = getMousePosition(mouseX, mouseY, proj, view);
-//		direction = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
-		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
+		mouseY = height - mouseY - 1;
+		FloatBuffer worldPos = getMousePosition(mouseX, mouseY, proj, view);
+		origin = vecmath.vector(worldPos.get(0), worldPos.get(1), worldPos.get(2));
+		System.out.println(direction);
+		System.out.println(cam.getTransformation());
+//		calcMouseInWorldPosition(mouseX, mouseY, proj, view);
 		
 		
 //		float tempX = proj.get(0, 0) * direction.x() + proj.get(1, 0) * direction.y()
@@ -54,9 +58,17 @@ public class Ray2 {
 //		direction = vecmath.vector(tempX, tempY, tempZ);
 //		direction = direction.normalize();
 		
-		direction = vecmath.vector(direction.x()-origin.x(), direction.y()-origin.y(), direction.z()-origin.z());
+//		float tempX = view.get(0, 0) * mouseX + view.get(1, 0) * mouseY;
+//		float tempY = view.get(0, 1) * mouseX + view.get(1, 1) * mouseY;
+//		float tempZ = view.get(0, 2) * mouseX + view.get(1, 2) * mouseY;
+//		
+//		origin = vecmath.vector(tempX, tempY, tempZ);
+//		direction = cam.getDirection();
 		
-		System.out.println(direction); 
+//		direction = vecmath.vector(direction.x()-origin.x(), direction.y()-origin.y(), direction.z()-origin.z());
+		
+		System.out.println("origin: " + direction); 
+		System.out.println("direction: " + direction); 
 		
 //		float x = (2.0f * mouseX) / width - 1.0f;
 //		float y = 1.0f - (2.0f * mouseX) / height;
@@ -92,7 +104,7 @@ public class Ray2 {
 //		direction = ray_wor;
 	}
 
-	static public FloatBuffer getMousePosition(float mouseX, float mouseY, Matrix proj, Matrix view) {
+	public FloatBuffer getMousePosition(float mouseX, float mouseY, Matrix proj, Matrix view) {
 		IntBuffer viewport = BufferUtils.createIntBuffer(16);
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
 		modelview.put(view.asArray());
@@ -103,9 +115,11 @@ public class Ray2 {
 		FloatBuffer winZ = BufferUtils.createFloatBuffer(1);
 		float winX, winY;
 		FloatBuffer position = BufferUtils.createFloatBuffer(3);
+		
 //		glGetFloat(GL_MODELVIEW_MATRIX, modelview);
 //		glGetFloat(GL_PROJECTION_MATRIX, projection);
 		glGetInteger(GL_VIEWPORT, viewport);
+		
 		winX = mouseX;
 		winY = mouseY;
 		glReadPixels((int) mouseX, (int) winY, 1, 1, GL_DEPTH_COMPONENT,
@@ -132,8 +146,8 @@ public class Ray2 {
 	    FloatBuffer endBuffer = BufferUtils.createFloatBuffer(16);
 	    IntBuffer viewBuffer = BufferUtils.createIntBuffer(16);
 
-	    glGetFloat(GL_MODELVIEW_MATRIX, modelBuffer);
-	    glGetFloat(GL_PROJECTION_MATRIX, projBuffer);
+//	    glGetFloat(GL_MODELVIEW_MATRIX, modelBuffer);
+//	    glGetFloat(GL_PROJECTION_MATRIX, projBuffer);
 	    glGetInteger(GL_VIEWPORT, viewBuffer);
 	    
 	    mouseY = 600 - mouseY;
@@ -147,8 +161,8 @@ public class Ray2 {
 	    direction = vecmath.vector(end.x()-start.x(), end.y()-start.y(), end.z()-start.z());
 
 	    System.out.println("Mouse Coords: " + mouseX + ", " + mouseY);
-	    System.out.println("Near Plane: " + start);
-	    System.out.println("Far Plane: " + end);
+	    System.out.println("start: " + start);
+	    System.out.println("end: " + end);
 	}
 
 	public Vector getDirection() {

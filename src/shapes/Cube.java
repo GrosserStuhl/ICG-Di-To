@@ -128,8 +128,8 @@ public class Cube extends ShapeNode implements App {
 		
 		
 		// ambient Lightning
-		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0, colorData);
-		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
