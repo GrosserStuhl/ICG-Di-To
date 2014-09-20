@@ -176,9 +176,9 @@ public class Root extends Node implements App {
 				vecmath.vector(0, 0, 0));
 		cube2.addNode(moon);
 
-		Mesh m2 = ResourceLoader.loadOBJModel("ownCrate.obj");
-		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
-		OBJModel crate = new OBJModel(m2.getVertices(), shader, t2,
+		Mesh m2 = ResourceLoader.loadOBJModel("start.obj");
+		Texture t2 = ResourceLoader.loadTexture("landscapehd.jpg");
+		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
 		cube2.addNode(crate);
 
