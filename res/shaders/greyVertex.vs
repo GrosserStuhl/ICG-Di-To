@@ -15,8 +15,6 @@ varying float fboolFloat;
 void main() {
 
 	fcolor = color;
-	fboolFloat = boolFloat;
-	
 	ftextureCoord = textureCoord;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
 			

@@ -123,7 +123,7 @@ public class Root extends Node implements App {
 		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(1,1,1),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
-		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
+		textureShader = new Shader("greyVertex.vs", "greyFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 
 		RowNode row_one = new RowNode(0);
