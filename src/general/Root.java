@@ -158,8 +158,7 @@ public class Root extends Node implements App {
 		row_one.addNode(cube2);
 		Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
 		row_one.addNode(cube3);
-		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
-		cube.addNode(pyr);
+		
 		
 		float cubeWidth = 1;
 		float cubeHeight = 1;
@@ -170,18 +169,47 @@ public class Root extends Node implements App {
 		cube3.setHeight(cubeHeight);
 		cube3.setWidth(cubeWidth);
 
-		Mesh m = ResourceLoader.loadOBJModel("testMoon.obj");
+		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
 				vecmath.vector(0, 0, 0));
-		cube2.addNode(moon);
+		
+		
+		
 
 		Mesh m2 = ResourceLoader.loadOBJModel("start.obj");
-		Texture t2 = ResourceLoader.loadTexture("landscapehd.jpg");
+		Texture t2 = ResourceLoader.loadTexture("stark.png");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
 		cube2.addNode(crate);
 
+		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		crate.addNode(moon);
+		row_three.addNode(moon);
+		
+		Mesh m5 = ResourceLoader.loadOBJModel("jupiter.obj");
+		Texture t5 = ResourceLoader.loadTexture("jupiter.jpg");
+		OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,
+				vecmath.vector(0, 0, 0));
+		crate.addNode(jupiter);
+		row_three.addNode(jupiter);
+		
+		
+		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
+		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
+		OBJModel plane = new OBJModel(m3.getVertices(), textureShader, t3,
+				vecmath.vector(0, 0, -5));
+		addNode(plane);
+		
+
+		OBJModel plane2 = new OBJModel(m3.getVertices(), textureShader, t3,
+				vecmath.vector(0, 0, -25));
+		addNode(plane2);
+		
+		OBJModel plane3 = new OBJModel(m3.getVertices(), textureShader, t3,
+				vecmath.vector(0, 0, -45));
+		addNode(plane3);
+		
 		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
 		// OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);

@@ -35,6 +35,8 @@ public class Pyramid extends ShapeNode {
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
+		
+		getShader().activate();
 		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
 		setTransformation(modelMatrix);

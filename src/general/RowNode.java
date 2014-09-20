@@ -17,7 +17,7 @@ public class RowNode extends Node {
 	public void addNode(Node node) {
 		node.setTranslation(vecmath.vector(newNodePosition, 0, 0));
 		newNodePosition += 3;
-		getChildNodes().add(node);
+		super.addNode(node);
 	}
 
 	@Override

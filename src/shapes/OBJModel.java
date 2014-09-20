@@ -60,12 +60,13 @@ public class OBJModel extends ShapeNode implements App {
 		Matrix modelMatrix = parentMatrix.mult(vecmath
 				.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
-		modelMatrix = modelMatrix.mult(vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
+//		modelMatrix = modelMatrix.mult(vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		
 		setTransformation(modelMatrix);
 
 		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
+
 
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
@@ -99,7 +100,9 @@ public class OBJModel extends ShapeNode implements App {
 	private void finalizeTextured(FloatBuffer positionData,
 			FloatBuffer textureData, Vertex[] vertices) {
 		for (Vertex v : vertices) {
+			if(v.getPosition() != null)
 				positionData.put(v.getPosition().asArray());
+			if(v.getTextureCoord() != null)
 				textureData.put(asArray(v.getTextureCoord()));
 		}
 		positionData.rewind();
