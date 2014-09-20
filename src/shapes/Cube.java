@@ -13,6 +13,7 @@ import java.nio.FloatBuffer;
 import general.Node;
 import general.ShapeNode;
 import general.Vertex;
+import mathe.Matrix4f;
 import ogl.app.App;
 import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
@@ -76,33 +77,33 @@ public class Cube extends ShapeNode implements App {
 		
 		
 		
-		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
-		
-		float[] elements = new float[16];
-		
-		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
-			elements[i] = viewEncoder.getBuffer().get(i);
-		}
-		
-		Matrix m = vecmath.matrix(elements);
-		System.out.println(m);
-		
-		Matrix modelView4f = modelMatrix.mult(m);
-
-		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
-		Matrix3f modelView3f = toMatrix3f(modelView4f);
-
-		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
-		
-		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
-		modelViewMatrix.store(modelViewBuffer);
-		modelViewBuffer.rewind();
+//		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
+//		
+//		float[] elements = new float[16];
+//		
+//		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
+//			elements[i] = viewEncoder.getBuffer().get(i);
+//		}
+//		
+//		Matrix m = vecmath.matrix(elements);
+//		Matrix modelView4f = modelMatrix.mult(m);
+//		
+//		Matrix3f modelView3f = toMatrix3f(modelView4f);
+//
+//		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
+//		
+//		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
+//		modelViewMatrix.store(modelViewBuffer);
+//		modelViewBuffer.rewind();
 		
 		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		//getShader().getTransformMatrixUniform().set(modelViewBuffer);
 		
 		
-
+		
+		
+		
+		
 		getShader().getDirectionalLightIntensity().set(
 				PhongShader.getDirectionalLight().getBase().getIntensity());
 		getShader().getDirectionalLightColor().set(
@@ -127,8 +128,8 @@ public class Cube extends ShapeNode implements App {
 		
 		
 		// ambient Lightning
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		glVertexAttribPointer(Shader.getBaseAttribIdx(), 3, false, 0, colorData);
+		glEnableVertexAttribArray(Shader.getBaseAttribIdx());
 
 		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
 				ambientData);
@@ -191,6 +192,28 @@ public class Cube extends ShapeNode implements App {
 		m.m02 = m4f[2];	m.m12 = m4f[6];	m.m22 = m4f[10];	
 	
 		return m;
+	}
+	
+	
+	/**
+	 * Transforms a float array of length 16 to a two dimensional
+	 * float array of new float[4][4]
+	 * 
+	 * @param f
+	 * @return
+	 */
+	
+	private float[][] toTwoDimensionalFloat(float[] f){
+		
+		float[][] res = new float[4][4];
+		
+		res[0][0] = f[0];  res[0][1] = f[1];  res[0][2] = f[2];  res[0][3] = f[3];
+		res[1][0] = f[4];  res[1][1] = f[5];  res[1][2] = f[6];  res[1][3] = f[7];
+		res[2][0] = f[8];  res[2][1] = f[9];  res[2][2] = f[10];  res[2][3] = f[11];
+		res[3][0] = f[12];  res[3][1] = f[13];  res[3][2] = f[14];  res[3][3] = f[15];
+		
+		return res;
+		
 	}
 
 	
