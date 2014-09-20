@@ -9,7 +9,7 @@ void main() {
 
 vec4 color = vec4(125,125,125,1);
 
-	gl_FragColor = endColor;
+	gl_FragColor = color;
 
 }
 
