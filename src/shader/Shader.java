@@ -20,8 +20,8 @@ import ogl.app.MatrixUniform;
 import ogl.app.Util;
 import ogl.vecmath.Matrix;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import util.ResourceLoader;
 
@@ -57,17 +57,17 @@ public class Shader extends Node {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		// Enable depth testing.
-		glEnable(GL11.GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 
 		// Create and compile the vertex shader.
-		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
+		int vs = glCreateShader(GL_VERTEX_SHADER);
 		// load vertexShader
 		glShaderSource(vs, ResourceLoader.loadShader("testVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
-		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
+		int fs = glCreateShader(GL_FRAGMENT_SHADER);
 		// load fragmentShader
 		glShaderSource(fs, ResourceLoader.loadShader("testFragment.fs"));
 		glCompileShader(fs);
@@ -127,17 +127,23 @@ public class Shader extends Node {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		// Enable depth testing.
-		glEnable(GL11.GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
+		
+		//cull faces (back), clockwise
+//		glFrontFace(GL_CCW);
+//		glCullFace(GL_FRONT);
+//		glEnable(GL_CULL_FACE);
+		
 
 		// Create and compile the vertex shader.
-		int vs = glCreateShader(GL20.GL_VERTEX_SHADER);
+		int vs = glCreateShader(GL_VERTEX_SHADER);
 		// load vertexShader
 		glShaderSource(vs, ResourceLoader.loadShader(fileNameVS));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
-		int fs = glCreateShader(GL20.GL_FRAGMENT_SHADER);
+		int fs = glCreateShader(GL_FRAGMENT_SHADER);
 		// load fragmentShader
 		glShaderSource(fs, ResourceLoader.loadShader(fileNameFS));
 		glCompileShader(fs);

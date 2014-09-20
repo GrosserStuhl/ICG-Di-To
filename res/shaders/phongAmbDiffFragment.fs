@@ -16,7 +16,7 @@ struct DirectionalLight
 };
 
 
-varying vec3 fbaseColor;
+varying vec3 fcolor;
 varying vec3 fambientLight;
 varying vec3 fnormal;
 
@@ -49,7 +49,7 @@ vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal)
 void main() {
 
 vec4 totalLight = vec4(fambientLight,1);
-vec4 colorLight = vec4(fbaseColor,1 );
+vec4 colorLight = vec4(fcolor,1 );
 
 vec3 normal = normalize(fnormal);
 totalLight += calcDirectionalLight(directionalLight, normal);
