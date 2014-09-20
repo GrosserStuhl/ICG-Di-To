@@ -179,7 +179,7 @@ public class Root extends Node implements App {
 		Texture t2 = ResourceLoader.loadTexture("crate.jpg");
 		OBJModel crate = new OBJModel(m2.getVertices(), shader, t2,
 				vecmath.vector(0, 0, 0));
-		cube3.addNode(crate);
+		cube2.addNode(crate);
 
 		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
 		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
