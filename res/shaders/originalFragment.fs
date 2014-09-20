@@ -1,7 +1,7 @@
 
 uniform sampler2D img;
 
-varying vec3 fcolor;
+//varying vec3 fcolor;
 varying vec2 ftextureCoord;
 
 void main() {

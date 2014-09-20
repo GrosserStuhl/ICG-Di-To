@@ -56,7 +56,8 @@ totalLight += calcDirectionalLight(directionalLight, normal);
 
 
 gl_FragColor = colorLight * totalLight;
-
+// nur die normalen:
+//gl_FragColor = vec4 (normal * vec3(0.5) +vec3(0.5),0);
 
 
 }

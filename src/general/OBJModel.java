@@ -39,8 +39,8 @@ public class OBJModel extends ShapeNode implements App {
 
 		// t = ResourceLoader.loadTexture("MoonMap2.jpg");
 
-		positionData = positionBuffer(vertices.length * 3);
-		textureData = BufferUtils.createFloatBuffer(vertices.length * 2);
+		positionData = createFloatBuffer(vertices.length * 3);
+		textureData = createFloatBuffer(vertices.length * 2);
 
 		finalizeTextured(positionData, textureData, vertices);
 		
@@ -51,15 +51,15 @@ public class OBJModel extends ShapeNode implements App {
 	}
 
 	// Buffers mit TextureInfo (wurden schon in Texture gemacht)
-	public void finalizeBuffer(FloatBuffer positionData, FloatBuffer colorData,
-			Vertex[] vertices) {
-		for (Vertex v : vertices) {
-			positionData.put(v.position.asArray());
-			colorData.put(v.color.asArray());
-		}
-		positionData.rewind();
-		colorData.rewind();
-	}
+//	public void finalizeBuffer(FloatBuffer positionData, FloatBuffer colorData,
+//			Vertex[] vertices) {
+//		for (Vertex v : vertices) {
+//			positionData.put(v.position.asArray());
+//			colorData.put(v.color.asArray());
+//		}
+//		positionData.rewind();
+//		colorData.rewind();
+//	}
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
