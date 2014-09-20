@@ -35,7 +35,6 @@ public class SceneLoader {
 				if (line.contains("<shape")) {
 					lineNumber = reader.getLineNumber();
 					ShapePlan shape = null;
-					ArrayList<ShapePlan> children = new ArrayList<>();
 					String[] attributes = line.split("#");
 					String[] planet = attributes[1].split("\"");
 					float scale = 0;
@@ -47,34 +46,34 @@ public class SceneLoader {
 					} 
 					
 					if (!reader.readLine().equals("</shape>")) {
+						ArrayList<ShapePlan> children = new ArrayList<>();
 						rowCount++;
 						reader.setLineNumber(reader.getLineNumber() - 1);
 						line = reader.readLine();
+						ShapePlan child = null;
 						while(!line.equals("</shape>")) {
-							ShapePlan child = null;
 							ArrayList<ShapePlan> children2 = new ArrayList<>();
 							String[] attributes2 = line.split("#");
 							String[] planet2 = attributes[1].split("\"");
+							float scaleTwo = 0;
 							if (attributes.length > 2) {
 								String[] scale1 = attributes[2].split("=");
 								String[] scale2 = scale1[1].split(">");
 								String scale3 = scale2[0];
-								float scaleTwo = Float.parseFloat(scale3);
-
-								shape = new ShapePlan(planet[1], scale);
+								scaleTwo = Float.parseFloat(scale3);
 							} 
-							if (reader.readLine().equals("</shape>")) {
-								shape = new ShapePlan(planet[1]);
-							} else {
+							if (!reader.readLine().equals("</shape>")) {
 								reader.setLineNumber(reader.getLineNumber() - 1);
 								line = reader.readLine();
 								while(!line.equals("</shape>")) {
 									
 								}
-							}
+							} else child = new ShapePlan(planet2[1], scaleTwo);
+							children.add(child);
 						}
+						shape = new ShapePlan(planet[1], children,scale);
+					} else 
 						shape = new ShapePlan(planet[1], scale);
-					}
 					shapes.add(shape);
 				}
 			}
