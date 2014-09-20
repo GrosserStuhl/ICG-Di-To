@@ -35,6 +35,8 @@ public class Root extends Node implements App {
 
 	private Shader shader;
 	private Shader textureShader;
+	private Shader planeShader;
+	
 	private Camera cam;
 	private InputManager manager;
 
@@ -115,13 +117,14 @@ public class Root extends Node implements App {
 	public void init() {
 
 		
-		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
+		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
 		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(1,1,1),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
-		textureShader = new Shader("originalVertex.vs", "originalFragment.fs");
+		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
+		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
@@ -198,16 +201,16 @@ public class Root extends Node implements App {
 		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane = new OBJModel(m3.getVertices(), textureShader, t3,
+		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,
 				vecmath.vector(0, 0, -5));
 		addNode(plane);
 		
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), textureShader, t3,
+		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
 				vecmath.vector(0, 0, -25));
 		addNode(plane2);
 		
-		OBJModel plane3 = new OBJModel(m3.getVertices(), textureShader, t3,
+		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
 				vecmath.vector(0, 0, -45));
 		addNode(plane3);
 		
@@ -291,6 +294,19 @@ public class Root extends Node implements App {
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null
 					&& child.getShader().equals(textureShader))
+				child.display(width, height, getTransformation());
+			else child.display(width, height, getTransformation());
+		}
+		
+		
+		planeShader.activate();
+		planeShader.getProjectionMatrixUniform().set(projectionMatrix);
+		planeShader.getViewMatrixUniform().set(viewMatrix);
+
+
+		for (Node child : getChildNodes()) {
+			if (child.getShader() != null
+					&& child.getShader().equals(planeShader))
 				child.display(width, height, getTransformation());
 			else child.display(width, height, getTransformation());
 		}

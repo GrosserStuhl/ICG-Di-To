@@ -33,7 +33,7 @@ public class OBJModel extends ShapeNode implements App {
 
 	FloatBuffer positionData;
 	FloatBuffer textureData;
-//	FloatBuffer ambientData;
+	FloatBuffer ambientData;
 	
 
 	@Override
@@ -45,8 +45,8 @@ public class OBJModel extends ShapeNode implements App {
 		finalizeTextured(positionData, textureData, vertices);
 		
 		
-//		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
-//		finalizeAmbientBuffer(ambientData, vertices);
+		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
+		finalizeAmbientBuffer(ambientData, vertices);
 
 	}
 	
@@ -76,9 +76,9 @@ public class OBJModel extends ShapeNode implements App {
 				textureData);
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 		
-//		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-//				ambientData);
-//		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+				ambientData);
+		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
 		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);

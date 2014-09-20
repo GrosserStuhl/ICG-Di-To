@@ -9,6 +9,8 @@ varying vec3 fcolor;
 attribute vec3 ambientLight;
 varying vec3 fambientLight;
 
+uniform vec3 lightPosition;
+
 void main() {
 
 	fambientLight = ambientLight;
