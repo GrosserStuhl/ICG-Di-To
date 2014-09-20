@@ -62,14 +62,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("testVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("phongAmbVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL_FRAGMENT_SHADER);
 		// load fragmentShader
-		glShaderSource(fs, ResourceLoader.loadShader("testFragment.fs"));
+		glShaderSource(fs, ResourceLoader.loadShader("phongAmbFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
