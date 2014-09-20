@@ -168,6 +168,10 @@ public class Root extends Node implements App {
 		cube2.setWidth(cubeWidth);
 		cube3.setHeight(cubeHeight);
 		cube3.setWidth(cubeWidth);
+		
+		String no = "#bob\"mop";
+		String[] lo = no.split("\"");
+		System.out.println(lo[0]);
 
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
