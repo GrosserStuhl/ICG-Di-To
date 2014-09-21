@@ -129,7 +129,8 @@ public class Root extends Node implements App {
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
 		Scene scene = SceneLoader.loadScene("scene1.xml");
-
+		
+		
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
 		RowNode row_three = new RowNode(2);

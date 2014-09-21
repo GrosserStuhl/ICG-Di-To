@@ -5,7 +5,7 @@
 	     <shape #planet="Jupiter"></shape>
 	</shape>
 </shape>
-<shape #planet="Pyramid" #scale=3>
+<shape #planet="Mars" #scale=3>
 	<shape #planet="Moon" #scale=1></shape>
 	<shape #planet="Crate" #scale=3></shape>
 </shape>

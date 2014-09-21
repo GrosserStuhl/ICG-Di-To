@@ -3,34 +3,35 @@ package util;
 import java.util.ArrayList;
 
 public class ShapePlan {
-	
-	private String planet;
+
+	private String name;
 	private ArrayList<ShapePlan> children;
 	private float scale;
-	
-	public ShapePlan(String type, ArrayList<ShapePlan> children, float scale) {
-		this.planet = type;
+
+	public ShapePlan(String name, ArrayList<ShapePlan> children, float scale) {
+		this.name = name;
 		this.children = children;
 		this.setScale(scale);
 	}
-	
-	public ShapePlan(String type, float scale) {
-		this.planet = type;
+
+	public ShapePlan(String name, float scale) {
+		this.name = name;
+		this.children = null;
 		this.setScale(scale);
 	}
-	
-	public ShapePlan(String type) {
-		this.planet = type;
+
+	public ShapePlan(String name) {
+		this.name = name;
 		this.children = null;
 		setScale(1);
 	}
 
 	public String getName() {
-		return planet;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.planet = name;
+		this.name = name;
 	}
 
 	public ArrayList<ShapePlan> getChildren() {
@@ -48,5 +49,10 @@ public class ShapePlan {
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "name: " + name + ", scale: " + scale;
+	}
+
 }
