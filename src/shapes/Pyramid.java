@@ -7,6 +7,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.nio.FloatBuffer;
 
+import mathe.Vector3f;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix3f;
@@ -22,20 +24,21 @@ import general.Vertex;
 
 public class Pyramid extends ShapeNode {
 	
-	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
+	
+	
+	public Pyramid(Vertex[] vertices, Shader shader, Vector translation, Vector eye) {
 		super(vertices, shader, translation);
 		
+		this.eyePosition = eye;
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
-		finalizeBuffer(positionData, colorData, vertices);
-		
-		
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
-		finalizeAmbientBuffer(ambientData, vertices);
-		
 		normalData = createFloatBuffer(vertices.length * 3);
-		finalizeNormalBuffer(normalData,vertices);
+		
+		finalizePyramidBuffers(positionData, colorData, ambientData, normalData,vertices);
+		
+		
 	}
 	
 	FloatBuffer positionData;
@@ -43,6 +46,8 @@ public class Pyramid extends ShapeNode {
 	
 	FloatBuffer ambientData;
 	FloatBuffer normalData;
+	
+	Vector eyePosition;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -56,28 +61,27 @@ public class Pyramid extends ShapeNode {
 		// Activate the shader program and set the transformation matricies to the
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
-		
-		
-//		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
-//		float[] elements = new float[16];
-//		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
-//			elements[i] = viewEncoder.getBuffer().get(i);
-//		}
-//		Matrix m = vecmath.matrix(elements);
-//		System.out.println(m);
-//		Matrix modelView4f = modelMatrix.mult(m);
-//		// for normalMatrix: invertRigid(); transpose() (upper -left: mat3())
-//		Matrix3f modelView3f = toMatrix3f(modelView4f);
-//		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
-//		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
-//		modelViewMatrix.store(modelViewBuffer);
-//		modelViewBuffer.rewind();
-		
 		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		
 		
-		getShader().getLightPositionMatrixUniform().set(vecmath.vector(1, 0, 0));
-
+		////////// LIGHTNING SECTION ////////////////////
+		// ambient light
+		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+				ambientData);
+		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+				
+		// diffuse Lightning
+		getShader().getLightPositionVectorUniform().set(vecmath.vector(1, 1, 1));
+		
+		// specular Lightning
+		getShader().getSpecularIntensityFloatUniform().set(2);
+		getShader().getSpecularExponentFloatUniform().set(32);
+		getShader().getEyePositionVectorUniform().set(eyePosition);
+		////////////////////////////////////////////////
+		
+		
+		
+		
 		// vertex position of the pyramid
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
@@ -94,10 +98,7 @@ public class Pyramid extends ShapeNode {
 		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
 		
 		
-		// ambient light
-		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-				ambientData);
-		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 		
@@ -107,45 +108,17 @@ public class Pyramid extends ShapeNode {
 		
 	}
 	
-	private void finalizeBuffer(FloatBuffer p,FloatBuffer c, Vertex[] vertices){
+	private void finalizePyramidBuffers(FloatBuffer pos, FloatBuffer col, FloatBuffer amb, FloatBuffer norm, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			p.put(v.getPosition3f().asArray());
-			c.put(v.getColor().asArray());
+			pos.put(v.getPosition3f().asArray());
+			col.put(v.getColor().asArray());
+			amb.put(PhongShader.ambientToArray());
+			norm.put(v.getNormal3f().asArray());
 		}
-		p.rewind();
-		c.rewind();
-	}
-	
-	
-	
-	private void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
-		for (int i = 0; i<vertices.length;i++) {
-			a.put(PhongShader.ambientToArray());
-		}
-		a.rewind();
-	}
-	
-	private void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
-		for (Vertex v : vertices) {
-			n.put(v.getNormal3f().asArray());
-		}
-		n.rewind();
-	}
-	
-	public Matrix3f toMatrix3f(Matrix o){
-		
-		Matrix3f m = new Matrix3f();
-		
-		float[] m4f = new float[16];
-		m4f = o.asArray();
-		
-		
-		
-		m.m00 = m4f[0];	m.m10 = m4f[4];	m.m20 = m4f[8];	
-		m.m01 = m4f[1];	m.m11 = m4f[5];	m.m21 = m4f[9];	
-		m.m02 = m4f[2];	m.m12 = m4f[6];	m.m22 = m4f[10];	
-	
-		return m;
+		pos.rewind();
+		col.rewind();
+		amb.rewind();
+		norm.rewind();
 	}
 
 }
