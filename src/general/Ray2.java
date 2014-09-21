@@ -20,9 +20,9 @@ public class Ray2 {
 	private Vector direction;
 
 	public Ray2(Camera cam, float mouseX, float mouseY) {
-//		origin = cam.getEye();
+		origin = cam.getEye();
 		direction = cam.getDirection();
-		direction = direction.normalize();
+//		direction = direction.normalize();
 		float height = 600;
 		float width = 600;
 		float aspect = (float) width / (float) height;
@@ -162,9 +162,18 @@ public class Ray2 {
 	    start = vecmath.vector(startBuffer.get(0), startBuffer.get(1), startBuffer.get(2));
 	    end = vecmath.vector(endBuffer.get(0), endBuffer.get(1), endBuffer.get(2));
 
-	    origin = vecmath.vector(end.x()-start.x(), end.y()-start.y(), end.z()-start.z());
-	    System.out.println("FRESH ORIGIN: " + origin);
-
+//	    origin = vecmath.vector(end.x()-start.x(), end.y()-start.y(), end.z()-start.z());
+//	    System.out.println("FRESH ORIGIN: " + origin);
+	    
+	    Vector mouse = vecmath.vector(start.x(), start.y(), 0.1f);
+	    
+	    float tempX = view.get(0, 0) * mouse.x() + view.get(1, 0) * mouse.y() + view.get(2, 0) * mouse.z();
+		float tempY = view.get(0, 1) * mouse.x() + view.get(1, 1) * mouse.y() + view.get(2, 1) * mouse.z();
+		float tempZ = view.get(0, 2) * mouse.x() + view.get(1, 2) * mouse.y() + view.get(2, 2) * mouse.z();
+		
+		direction = vecmath.vector(tempX, tempY, tempZ);
+		System.out.println("NEW DIRECTION: " + direction);
+	    
 	    System.out.println("Mouse Coords: " + mouseX + ", " + mouseY);
 	    System.out.println("start: " + start);
 	    System.out.println("end: " + end);

@@ -19,10 +19,12 @@ public abstract class ShapeNode extends Node {
 	protected Vector translation;
 	private Shader shader;
 	private boolean selected;
-	private float height;
-	private float width;
-
-	// Initialize the rotation angle of the cube.
+	private boolean completed;
+	private float height = 1;
+	private float width = 1;
+	private float scale = MEDIUM;
+	
+	// Initialize the rotation angle
 	protected float angle = 0;
 
 	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation) {
@@ -90,15 +92,27 @@ public abstract class ShapeNode extends Node {
 
 	@Override
 	public void setSelected() {
-//		System.out.println(getName() + " got selected");
 		selected = true;
-		// Hier shader ändern um farbe zu ändern
 	}
 
 	@Override
 	public void deselect() {
 		selected = false;
 		angle = 0;
+	}
+
+	@Override
+	public void setCompleted() {
+		completed = true;
+	}
+
+	@Override
+	public void setUnCompleted() {
+		completed = false;
+	}
+	
+	public boolean isCompleted() {
+		return completed;
 	}
 
 	@Override
@@ -110,14 +124,23 @@ public abstract class ShapeNode extends Node {
 	public float getWidth() {
 		return width;
 	}
-	
+
 	@Override
 	public void setHeight(float height) {
 		this.height = height;
 	}
-	
+
 	@Override
 	public void setWidth(float width) {
 		this.width = width;
 	}
+	
+	@Override
+	public float getScale() {
+		return scale;
+	}
+
+	public static final float SMALL = 1;
+	public static final float MEDIUM = 2;
+	public static final float LARGE = 3;
 }
