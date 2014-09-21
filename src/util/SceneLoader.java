@@ -1,27 +1,20 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 
-import mathe.Color;
-import mathe.Vector3f;
 import general.Scene;
 
 public class SceneLoader {
 
-	public static Scene loadScene() {
+	public static Scene loadScene(String fileName) {
 		try {
-			// BufferedReader reader = null;
 			LineNumberReader reader = null;
 			try {
-				reader = new LineNumberReader(new FileReader(new File("")));
+				reader = new LineNumberReader(new FileReader("./res/scenes/"+ fileName));
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -29,11 +22,10 @@ public class SceneLoader {
 			ArrayList<ShapePlan> shapes = new ArrayList<>();
 
 			String line = "";
-			int lineNumber;
 			while (!line.equals("</scene>")) {
 				line = reader.readLine();
 				if (line.contains("<shape")) {
-					lineNumber = reader.getLineNumber();
+					System.out.println(line);
 					ShapePlan shape = null;
 					String[] attributes = line.split("#");
 					String[] planet = attributes[1].split("\"");
@@ -43,43 +35,60 @@ public class SceneLoader {
 						String[] scale2 = scale1[1].split(">");
 						String scale3 = scale2[0];
 						scale = Float.parseFloat(scale3);
-					} 
-					
-					if (!reader.readLine().equals("</shape>")) {
+					}
+
+					if (!reader.readLine().trim().equals("</shape>") && !line.endsWith("</shape>")) {
 						ArrayList<ShapePlan> children = new ArrayList<>();
 						rowCount++;
 						reader.setLineNumber(reader.getLineNumber() - 1);
-						line = reader.readLine();
 						ShapePlan child = null;
-						while(!line.equals("</shape>")) {
-							ArrayList<ShapePlan> children2 = new ArrayList<>();
+						while (!reader.readLine().trim().equals("</shape>")) {
+							System.out.println("zweite while: " + line);
 							String[] attributes2 = line.split("#");
 							String[] planet2 = attributes[1].split("\"");
 							float scaleTwo = 0;
-							if (attributes.length > 2) {
-								String[] scale1 = attributes[2].split("=");
+							if (attributes2.length > 2) {
+								String[] scale1 = attributes2[2].split("=");
 								String[] scale2 = scale1[1].split(">");
 								String scale3 = scale2[0];
 								scaleTwo = Float.parseFloat(scale3);
-							} 
-							if (!reader.readLine().equals("</shape>")) {
+							}
+							if (!reader.readLine().trim().equals("</shape>") && !line.endsWith("</shape>")) {
+								ArrayList<ShapePlan> children2 = new ArrayList<>();
+								rowCount++;
 								reader.setLineNumber(reader.getLineNumber() - 1);
-								line = reader.readLine();
-								while(!line.equals("</shape>")) {
-									
+								ShapePlan child2 = null;
+								while (!reader.readLine().equals("</shape>")) {
+									System.out.println("dritte while: "+line);
+									String[] attributes3 = line.split("#");
+									String[] planet3 = attributes[1]
+											.split("\"");
+									float scaleThree = 0;
+									if (attributes3.length > 2) {
+										String[] scale1 = attributes3[2]
+												.split("=");
+										String[] scale2 = scale1[1].split(">");
+										String scale3 = scale2[0];
+										scaleTwo = Float.parseFloat(scale3);
+									}
+									child2 = new ShapePlan(planet3[1],
+											scaleThree);
+									children2.add(child2);
 								}
-							} else child = new ShapePlan(planet2[1], scaleTwo);
+								child = new ShapePlan(planet2[1], children2,
+										scaleTwo);
+							} else
+								child = new ShapePlan(planet2[1], scaleTwo);
 							children.add(child);
 						}
-						shape = new ShapePlan(planet[1], children,scale);
-					} else 
+						shape = new ShapePlan(planet[1], children, scale);
+					} else
 						shape = new ShapePlan(planet[1], scale);
 					shapes.add(shape);
 				}
 			}
-
 			reader.close();
-			return new Scene();
+			return new Scene(shapes, rowCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

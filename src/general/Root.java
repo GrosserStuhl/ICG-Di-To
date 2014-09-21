@@ -12,6 +12,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 
 
+
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
@@ -26,6 +27,7 @@ import shapes.Cube;
 import shapes.OBJModel;
 import shapes.Pyramid;
 import util.ResourceLoader;
+import util.SceneLoader;
 
 public class Root extends Node implements App {
 
@@ -125,6 +127,8 @@ public class Root extends Node implements App {
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
+		
+		Scene scene = SceneLoader.loadScene("scene1.xml");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
