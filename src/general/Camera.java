@@ -7,14 +7,7 @@ import ogl.vecmath.Vector;
 
 public class Camera extends Node {
 
-	private float x = 0f;
-	private float y = 0f;
-	private float z = 0f;
-	private float roll = 0f;// The rotation along the z axis
-	private float pitch = 0f;// The rotation along the x axis
-	private float yaw = 0f;// The rotation along the y axis
 	private Vector eye, center, up;
-
 	private Vector oldEye;
 	private Vector oldCenter;
 	private boolean animationFor = false;
@@ -142,17 +135,6 @@ public class Camera extends Node {
 		animationFor = false;
 		animationBack = true;
 		animationStartZ = center.z();
-	}
-
-	private void updateCamera() {
-		setTransformation(getTransformation().mult(
-				vecmath.rotationMatrix(vecmath.vector(1, 0, 0), pitch)));
-		setTransformation(getTransformation().mult(
-				vecmath.rotationMatrix(vecmath.vector(0, 1, 0), yaw)));
-		setTransformation(getTransformation().mult(
-				vecmath.rotationMatrix(vecmath.vector(0, 0, 1), roll)));
-		setTransformation(getTransformation().mult(
-				vecmath.translationMatrix(vecmath.vector(x, y, z))));
 	}
 
 	public Vector getEye() {

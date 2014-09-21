@@ -5,14 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 import mathe.Vector3f;
 
 import org.lwjgl.util.vector.Vector2f;
-
-
-
-
-
-
-
-
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
