@@ -116,17 +116,17 @@ public class Root extends Node implements App {
 //		textureShader = new Shader("TAmbDiffSpecVertex.vs", "TAmbDiffSpecFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 
-		Scene scene = SceneLoader.createScene("scene1.xml", textureShader);
+//		Scene scene = SceneLoader.createScene("scene1.xml", textureShader);
 
-		// RowNode row_one = new RowNode(0);
-		// RowNode row_two = new RowNode(1);
-		// RowNode row_three = new RowNode(2);
-		// addNode(row_one);
-		// addNode(row_two);
-		// addNode(row_three);
+		 RowNode row_one = new RowNode(0);
+		 RowNode row_two = new RowNode(1);
+		 RowNode row_three = new RowNode(2);
+		 addNode(row_one);
+		 addNode(row_two);
+		 addNode(row_three);
 
-		for (RowNode row : scene.getNodes())
-			addNode(row);
+//		for (RowNode row : scene.getNodes())
+//			addNode(row);
 
 		setTransformation(vecmath.identityMatrix());
 		cam = new Camera(getTransformation());
@@ -140,58 +140,58 @@ public class Root extends Node implements App {
 		// ENd Phong diffuse component
 
 		Vector eyePosition = cam.getTransformation().getPosition();
-		// Pyramid pyr = new Pyramid(verticesT, shader, cam.getEye(),
-		// vecmath.vector(0, 0, 0));
-		// row_one.addNode(pyr);
-		//
-		// Pyramid pyr2 = new Pyramid(verticesT, shader, cam.getEye(),
-		// vecmath.vector(0, 0, 0));
-		// row_one.addNode(pyr2);
-		//
-		// Pyramid pyr3 = new Pyramid(verticesT, shader, cam.getEye(),
-		// vecmath.vector(0, 0, 0));
-		// row_one.addNode(pyr3);
-		//
-		// // Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f,
-		// 0f));
-		// // row_one.addNode(cube);
-		// //
-		// // Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
-		// // row_one.addNode(cube2);
-		// // Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
-		// // row_one.addNode(cube3);
-		//
-		//
-		// float cubeWidth = 1;
-		// float cubeHeight = 1;
-		// // cube.setHeight(cubeHeight);
-		// // cube.setWidth(cubeWidth);
-		// // cube2.setHeight(cubeHeight);
-		// // cube2.setWidth(cubeWidth);
-		// // cube3.setHeight(cubeHeight);
-		// // cube3.setWidth(cubeWidth);
-		//
-		// Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
-		// Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		// OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
-		// vecmath.vector(0, 0, 0));
-		//
-		// Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
-		// Texture t2 = ResourceLoader.loadTexture("stark.png");
-		// OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
-		// vecmath.vector(0, 0, 0));
-		// row_three.addNode(crate);
-		// pyr2.addNode(crate);
-		//
-		// // Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// 0));
-		// crate.addNode(moon);
-		// row_three.addNode(moon);
-		//
+		 Pyramid pyr = new Pyramid(verticesT, shader, cam.getEye(),
+		 vecmath.vector(0, 0, 0));
+		 row_one.addNode(pyr);
+		
+		 Pyramid pyr2 = new Pyramid(verticesT, shader, cam.getEye(),
+		 vecmath.vector(0, 0, 0));
+		 row_one.addNode(pyr2);
+		
+		 Pyramid pyr3 = new Pyramid(verticesT, shader, cam.getEye(),
+		 vecmath.vector(0, 0, 0));
+		 row_one.addNode(pyr3);
+		
+		 // Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f,
+//		 0f));
+		 // row_one.addNode(cube);
+		 //
+		 // Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
+		 // row_one.addNode(cube2);
+		 // Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
+		 // row_one.addNode(cube3);
+		
+		
+		 float cubeWidth = 1;
+		 float cubeHeight = 1;
+		 // cube.setHeight(cubeHeight);
+		 // cube.setWidth(cubeWidth);
+		 // cube2.setHeight(cubeHeight);
+		 // cube2.setWidth(cubeWidth);
+		 // cube3.setHeight(cubeHeight);
+		 // cube3.setWidth(cubeWidth);
+		
+//		 Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
+//		 Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
+//		 OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
+//		 vecmath.vector(0, 0, 0));
+//		
+//		 Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
+//		 Texture t2 = ResourceLoader.loadTexture("stark.png");
+//		 OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
+//		 vecmath.vector(0, 0, 0));
+//		 row_three.addNode(crate);
+//		 pyr2.addNode(crate);
+//		
+//		  Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
+//		 0));
+//		 crate.addNode(moon);
+//		 row_three.addNode(moon);
+//		
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,vecmath.vector(0, 0, 0), eyePosition);
-
+//
 		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,vecmath.vector(0, 0, 0), eyePosition);
@@ -224,9 +224,9 @@ public class Root extends Node implements App {
 		
 		
 
-		// row_one.setName("Row One");
-		// row_two.setName("Row Two");
-		// row_three.setName("Row Three");
+		 row_one.setName("Row One");
+		 row_two.setName("Row Two");
+		 row_three.setName("Row Three");
 		 cam.setName("Camera");
 		// cube.setName("Cube1");
 		// cube2.setName("Cube2");
