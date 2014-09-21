@@ -2,6 +2,7 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 
 import mathe.Vector3f;
@@ -214,95 +215,32 @@ public class Vertex {
 		}
 		return vertices;
 	}
-
-	
-
 	
 	
-	
-	
-	
-//	
-//	// wenn der pointer i auf 6 ist und um 3 erhöht wird, wird i plötzlich zur 1
-//	// ?????!!!! und nicht zur 9 so ein mega fetter fail
-//	public static void totalDummeNormalenScheisse(Vertex[] vertices,
-//			int[] indices) {
-//
-//		// += 3 because of triangles
-//		for (int i = 0; i < indices.length; i += 3) {
-//
-//			int i0 = indices[i];
-//			int i1 = indices[i + 1];
-//			int i2 = indices[i + 2];
-//
-//			// one line / direction of the triangle ( top to right-bottom)
-//			Vector3f v1 = vertices[i1].getPosition3f().sub(
-//					vertices[i0].getPosition3f());
-//
-//			// from top to left-bottom
-//			Vector3f v2 = vertices[i2].getPosition3f().sub(
-//					vertices[i0].getPosition3f());
-//
-//			Vector3f normal = v1.cross(v2).normalize();
-//
-//			// System.out.println("was ist denn an stelle 9? "+vertices[9].getNormal());
-//			//
-//			//
-//			// System.out.println("normales i0 "+i0);
-//
-//			// if(!vertices[i0].equals(vecmath.vector(0,0,0))){
-//
-//			// for (int j = 0; j < 3; j++) {
-//			// vertices[i0].setNormal3f(vertices[i0].getNormal3f().add(normal));
-//			// }
-//			vertices[i0].setNormal3f(vertices[i0].getNormal3f().add(normal));
-//			vertices[i + 1].setNormal3f(vertices[i + 1].getNormal3f().add(
-//					normal));
-//			vertices[i + 2].setNormal3f(vertices[i + 2].getNormal3f().add(
-//					normal));
-//			// }
-//
-//			System.out.println("i0 hat es sich erhöht? " + i0);
-//
-//			System.out.println("normal " + i0 + " " + vertices[i0].getNormal());
-//			System.out.println("normal " + i1 + " " + vertices[i1].getNormal());
-//			System.out.println("normal " + i2 + " " + vertices[i2].getNormal());
-//		}
-//
-//		System.out.println("ENDE ERSTES\n\n");
-//
-//		
-//		
-//
-//		// this will set the length and direction are gonna be correct for
-//		// calculating
-//
-//		// nur normalizen wenn überhaupt nötig
-//		// for (int i = 0; i < vertices.length; i++){
-//		//
-//		// if(!vertices[i].getNormal().equals(vecmath.vector(0,0,0)))
-//		// vertices[i].setNormal(vertices[i].getNormal().normalize());
-//		// }
-//
-//		// this will set the length and direction are gonna be correct for
-//		// calculating
-//		// for (int i = 0; i < vertices.length; i+=3){
-//		//
-//		// int i0 = indices[i];
-//		// int i1 = indices[i + 1];
-//		// int i2 = indices[i + 2];
-//		//
-//		// vertices[i0].setNormal(vertices[i].getNormal().normalize());
-//		// vertices[i1].setNormal(vertices[i].getNormal().normalize());
-//		// vertices[i2].setNormal(vertices[i].getNormal().normalize());
-//		//
-//		// }
-//		//
-//		//
-//		// for (int i = 0; i < vertices.length; i++) {
-//		// // System.out.println("Vertices"+i +"   "+vertices[i].getNormal());
-//		// }
-//
-//	}
+	public static void calcNormals(Vertex[] vertices, int[] indices) {
+		int pointer = 0;
+		
+		for (int i = 0; i < indices.length; i += 3) {
+			int i0 = indices[i];
+			int i1 = indices[i + 1];
+			int i2 = indices[i + 2];
+			
+			Vector3f v1 = vertices[i1].getPosition3f().sub(vertices[i0].getPosition3f());
+			Vector3f v2 = vertices[i2].getPosition3f().sub(vertices[i0].getPosition3f());
+			
+			Vector3f normal = v1.cross(v2).normalize();
+			
+			
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+		}
+		for (int i = 0; i < vertices.length; i++)
+			vertices[i].setNormal3f(vertices[i].getNormal3f().normalize());
+		
+	}
 
 }

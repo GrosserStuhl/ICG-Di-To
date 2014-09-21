@@ -100,7 +100,8 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+	private Color[] colorT = 
+		{ col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
 			col(1, 0, 0), col(0, 1, 0) };
 
 	public Root() {
@@ -147,10 +148,10 @@ public class Root extends Node implements App {
 //		Vertex.calcNormals(verticesT, pyramidIndices());
 		
 		//Phong extra diffuse:
-		Vector3f[] v3fArray = toV3f(p);
+		Vector3f[] v3fArray = toV3f(t);
 		
-		verticesT = Vertex.triangleVertices(v3fArray, c);
-		calcNormals(verticesT, pyramidIndices());
+		verticesT = Vertex.triangleVertices(v3fArray, colorT);
+		Vertex.calcNormals(verticesT, pyramidIndices());
 		
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
 		row_one.addNode(pyr);
@@ -365,33 +366,4 @@ public class Root extends Node implements App {
 		return res;
 	}
 	
-	
-	private void calcNormals(Vertex[] vertices, int[] indices) {
-		int pointer = 0;
-		
-		for (int i = 0; i < indices.length; i += 3) {
-			int i0 = indices[i];
-			int i1 = indices[i + 1];
-			int i2 = indices[i + 2];
-			
-			Vector3f v1 = vertices[i1].getPosition3f().sub(vertices[i0].getPosition3f());
-			Vector3f v2 = vertices[i2].getPosition3f().sub(vertices[i0].getPosition3f());
-			
-			Vector3f normal = v1.cross(v2).normalize();
-			
-			
-			vertices[pointer].setNormal3f(normal);
-			pointer++;
-			vertices[pointer].setNormal3f(normal);
-			pointer++;
-			vertices[pointer].setNormal3f(normal);
-			pointer++;
-		}
-		for (int i = 0; i < vertices.length; i++)
-			vertices[i].getNormal3f().normalize();
-		
-	}
-	
-
-
 }
