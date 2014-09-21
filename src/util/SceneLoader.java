@@ -5,18 +5,28 @@ import java.io.FileReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 
+import shader.Shader;
 import general.Scene;
 
 public class SceneLoader {
+	
+	public static Scene createScene(String fileName, Shader shader) {
+		Scene scene = loadScene(fileName);
+		scene.setShader(shader);
+		scene.createNodes();
+		
+		return scene;
+	}
 
-	public static Scene loadScene(String fileName) {
+	private static Scene loadScene(String fileName) {
 		try {
 			LineNumberReader reader = null;
 			try {
 				reader = new LineNumberReader(new FileReader("./res/scenes/"
 						+ fileName));
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				System.err.println("Angegebene Szene-Datei konnte nicht gefunden werden, Programm wird beendet");
+				System.exit(0);
 			}
 
 			int rowCount = 1;
@@ -92,8 +102,8 @@ public class SceneLoader {
 							children.add(child);
 							line = reader.readLine();
 						}
-						System.out.println("shape through if: " + shape);
 						shape = new ShapePlan(planet[1], children, scale);
+						System.out.println("shape through if: " + shape);
 					} else {
 						shape = new ShapePlan(planet[1], scale);
 						System.out.println("shape through else: " + shape);

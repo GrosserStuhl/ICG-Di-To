@@ -15,7 +15,7 @@ public class Camera extends Node {
 	private float totalPan = -3f;
 	private float totalTilt = 0;
 	private boolean freeMode;
-	private float animationStartZ = 0;
+	private Vector targetPos;
 
 	public Camera(Matrix parentMatrix) {
 		setTransformation(parentMatrix.mult(vecmath.translationMatrix(3, 0, 5)));
@@ -29,17 +29,36 @@ public class Camera extends Node {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
 
+//	@Override
+//	public void simulate(float elapsed, Input input) {
+//		if (animationFor) {
+//			if (center.z() < animationStartZ - 20) {
+//				animationFor = false;
+//			} else {
+//				center = center.sub(vecmath.vector(0, 0, elapsed * 20f));
+//				eye = center.add(vecmath.vector(0, 0, 10f));
+//			}
+//		} else if (animationBack) {
+//			if (center.z() > animationStartZ + 20) {
+//				animationBack = false;
+//			} else {
+//				center = center.add(vecmath.vector(0, 0, elapsed * 20f));
+//				eye = center.add(vecmath.vector(0, 0, 10f));
+//			}
+//		}
+//	}
+	
 	@Override
 	public void simulate(float elapsed, Input input) {
 		if (animationFor) {
-			if (center.z() < animationStartZ - 20) {
+			if (center.z() < targetPos.z()) {
 				animationFor = false;
 			} else {
 				center = center.sub(vecmath.vector(0, 0, elapsed * 20f));
 				eye = center.add(vecmath.vector(0, 0, 10f));
 			}
 		} else if (animationBack) {
-			if (center.z() > animationStartZ + 20) {
+			if (center.z() > targetPos.z()) {
 				animationBack = false;
 			} else {
 				center = center.add(vecmath.vector(0, 0, elapsed * 20f));
@@ -125,16 +144,16 @@ public class Camera extends Node {
 		return temp;
 	}
 
-	public void moveRowForward() {
+	public void moveRowForward(Vector pos) {
 		animationBack = false;
 		animationFor = true;
-		animationStartZ = center.z();
+		targetPos= pos.add(vecmath.vector(0, 0, 5));
 	}
 
-	public void moveRowBack() {
+	public void moveRowBack(Vector pos) {
 		animationFor = false;
 		animationBack = true;
-		animationStartZ = center.z();
+		targetPos = pos.add(vecmath.vector(0, 0, 5));
 	}
 
 	public Vector getEye() {

@@ -7,7 +7,8 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 public class RowNode extends Node {
 
 	private int rowIndex;
-	private float newNodePosition = 0;
+	private float newNodePositionX = -2;
+	private float newNodePositionY = 2;
 
 	public RowNode(int rowIndex) {
 		this.rowIndex = rowIndex;
@@ -15,8 +16,13 @@ public class RowNode extends Node {
 
 	@Override
 	public void addNode(Node node) {
-		node.setTranslation(vecmath.vector(newNodePosition, 0, 0));
-		newNodePosition += 3;
+		if (newNodePositionX == 13) {
+			newNodePositionY -= 4;
+			newNodePositionX = -2;
+		}
+		node.setTranslation(vecmath.vector(newNodePositionX, newNodePositionY,
+				0));
+		newNodePositionX += 5;
 		super.addNode(node);
 	}
 
@@ -31,7 +37,7 @@ public class RowNode extends Node {
 	@Override
 	public void simulate(float elapsed, Input input) {
 		if (getChildNodes().isEmpty())
-			newNodePosition = 0;
+			newNodePositionX = 0;
 
 		for (Node child : getChildNodes()) {
 			child.simulate(elapsed, input);
