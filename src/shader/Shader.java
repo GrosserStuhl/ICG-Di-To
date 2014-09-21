@@ -174,6 +174,7 @@ public class Shader extends Node {
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
 		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
+		glBindAttribLocation(program, normalAttribIdx, "normal");
 
 		// Link the shader program.
 		glLinkProgram(program);
@@ -192,6 +193,16 @@ public class Shader extends Node {
 				"directionalLight.base.intensity");
 		directionalLightDirection = new VectorUniform(program,
 				"directionalLight.direction");
+		
+		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
+		
+		lightPositionVectorUniform = new VectorUniform(program,
+				"lightPosition");
+		
+		specularIntensityFloatUniform = new FloatUniform(program,"specIntensity");
+		specularExponentFloatUniform = new FloatUniform(program, "specExponent");
+		eyePositionVectorUniform = new VectorUniform(program,"eyePosition");
+		
 		
 		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
 	}

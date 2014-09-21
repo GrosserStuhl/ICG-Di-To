@@ -1,5 +1,7 @@
+uniform sampler2D img;
 
-varying vec3 fcolor;
+
+varying vec2 ftextureCoord;
 varying vec3 fnormal;
 varying vec3 fambientLight;
 varying vec3 lightVector;
@@ -39,7 +41,7 @@ void main() {
 float diffuseFactor = max(dot(normalize(lightVector), normalize(fnormal)), 0.0);
 
 vec4 ambientLight = vec4(fambientLight,1);
-vec4 color = vec4(fcolor,1 );
+vec4 color = texture2D(img, ftextureCoord.st );
 vec4 specularColor = vec4(0,0,0,0);
 
 

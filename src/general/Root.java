@@ -119,6 +119,7 @@ public class Root extends Node implements App {
 		
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
+//		textureShader = new Shader("TAmbDiffSpecVertex.vs", "TAmbDiffSpecFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
 		Scene scene = SceneLoader.loadScene("scene1.xml");
@@ -144,13 +145,16 @@ public class Root extends Node implements App {
 		Vertex.calcNormals(verticesT, pyramidIndices());
 		// ENd Phong diffuse component
 		
-		Pyramid pyr = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
+		Vector eyePosition = cam.getTransformation().getPosition();
+		
+		
+		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0), eyePosition);
 		row_one.addNode(pyr);
 		
-		Pyramid pyr2 = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
+		Pyramid pyr2 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0), eyePosition);
 		row_one.addNode(pyr2);
 		
-		Pyramid pyr3 = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
+		Pyramid pyr3 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0), eyePosition);
 		row_one.addNode(pyr3);
 		
 //		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
@@ -173,13 +177,11 @@ public class Root extends Node implements App {
 		
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
-				vecmath.vector(0, 0, 0));
+		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,vecmath.vector(0, 0, 0), eyePosition);
 
 		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
-		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
-				vecmath.vector(0, 0, 0));
+		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,vecmath.vector(0, 0, 0), eyePosition);
 		row_three.addNode(crate);
 		pyr2.addNode(crate);
 
@@ -189,25 +191,21 @@ public class Root extends Node implements App {
 		
 		Mesh m5 = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t5 = ResourceLoader.loadTexture("jupiter.jpg");
-		OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,
-				vecmath.vector(0, 0, 0));
+		OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,vecmath.vector(0, 0, 0), eyePosition);
 		crate.addNode(jupiter);
 		row_three.addNode(jupiter);
 		
 		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,
-				vecmath.vector(0, 0, -5));
+		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -5), eyePosition);
 		addNode(plane);
 		
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
-				vecmath.vector(0, 0, -25));
+		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -25), eyePosition);
 		addNode(plane2);
 		
-		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
-				vecmath.vector(0, 0, -45));
+		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -45), eyePosition);
 		addNode(plane3);
 		
 

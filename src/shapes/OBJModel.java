@@ -9,6 +9,7 @@ import general.Vertex;
 
 import java.nio.FloatBuffer;
 
+import mathe.Vector3f;
 import ogl.app.App;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
@@ -25,33 +26,27 @@ public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,
-			Vector translation) {
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation,Vector eye) {
 		super(vertices, shader, translation);
+		
 		this.t = t;
+		this.eyePosition = eye;
+		
+		positionData = createFloatBuffer(vertices.length * 3);
+		textureData = createFloatBuffer(vertices.length * 2);
+		normalData = createFloatBuffer(vertices.length * 3);
+		ambientData = createFloatBuffer(vertices.length * 3);
+
+		finalizeBuffers(positionData, textureData, normalData, ambientData, vertices);
 	}
 
 	FloatBuffer positionData;
 	FloatBuffer textureData;
+	FloatBuffer normalData;
+	
 	FloatBuffer ambientData;
 	
-
-	@Override
-	public void init() {
-
-		if(vertices == null)
-		System.out.println("NULL");
-		
-		positionData = createFloatBuffer(vertices.length * 3);
-		textureData = createFloatBuffer(vertices.length * 2);
-
-		finalizeTextured(positionData, textureData, vertices);
-		
-		
-		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
-		finalizeAmbientBuffer(ambientData, vertices);
-
-	}
+	Vector eyePosition;
 	
 
 	@Override
@@ -71,7 +66,27 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
 //		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
-		getShader().getTransformMatrixUniform().set(modelMatrix.invertFull().transpose());
+		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
+		
+		
+		
+		//////////LIGHTNING SECTION ////////////////////
+		// ambient light
+		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
+				ambientData);
+		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+				
+		// diffuse Lightning
+		getShader().getLightPositionVectorUniform().set(vecmath.vector(1, 1, 1));
+		
+		// specular Lightning
+		getShader().getSpecularIntensityFloatUniform().set(2);
+		getShader().getSpecularExponentFloatUniform().set(32);
+		
+		
+		getShader().getEyePositionVectorUniform().set(eyePosition);
+		////////////////////////////////////////////////
+		
 		
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
@@ -82,9 +97,6 @@ public class OBJModel extends ShapeNode implements App {
 				textureData);
 		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
 		
-		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-				ambientData);
-		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
 		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
@@ -99,15 +111,21 @@ public class OBJModel extends ShapeNode implements App {
 		a.rewind();
 	}
 
-	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
+	private void finalizeBuffers(FloatBuffer p, FloatBuffer t,FloatBuffer n, FloatBuffer a, Vertex[] vertices) {
 		for (Vertex v : vertices) {
 			if(v.getPosition3f() != null)
-				positionData.put(v.getPosition3f().asArray());
+				p.put(v.getPosition3f().asArray());
 			if(v.getTextureCoord() != null)
-				textureData.put(asArray(v.getTextureCoord()));
+				t.put(asArray(v.getTextureCoord()));
+			if(v.getNormal3f() != null)
+				n.put(v.getNormal3f().asArray());
+			
+				a.put(PhongShader.ambientToArray());
 		}
-		positionData.rewind();
-		textureData.rewind();
+		p.rewind();
+		t.rewind();
+		n.rewind();
+		a.rewind();
 	}
 
 	public float[] asArray(Vector2f t) {

@@ -3,8 +3,8 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
 attribute vec3 vertex;
-attribute vec3 color;
-varying vec3 fcolor;
+attribute vec2 textureCoord;
+varying vec2 ftextureCoord;
 
 attribute vec3 ambientLight;
 varying vec3 fambientLight;
@@ -23,7 +23,7 @@ varying vec3 worldPosition;
 void main() {
 
 	fambientLight = ambientLight;
-	fcolor = color;
+	ftextureCoord = textureCoord;
 	fnormal = (vec4(normal,0) * transformMatrix).xyz;
 	
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
