@@ -71,6 +71,7 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
+		getShader().getLightVectorMatrixUniform().set(vecmath.vector(0, 0, 0));
 		
 		
 //		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();

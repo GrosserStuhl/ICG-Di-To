@@ -153,24 +153,32 @@ public class Root extends Node implements App {
 //			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
 //		}
 		
+		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		row_one.addNode(pyr);
 		
-		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
-		row_one.addNode(cube);
-
-		Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
-		row_one.addNode(cube2);
-		Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
-		row_one.addNode(cube3);
+		Pyramid pyr2 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		row_one.addNode(pyr2);
+		
+		Pyramid pyr3 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		row_one.addNode(pyr3);
+		
+//		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));
+//		row_one.addNode(cube);
+//
+//		Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
+//		row_one.addNode(cube2);
+//		Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
+//		row_one.addNode(cube3);
 		
 		
 		float cubeWidth = 1;
 		float cubeHeight = 1;
-		cube.setHeight(cubeHeight);
-		cube.setWidth(cubeWidth);
-		cube2.setHeight(cubeHeight);
-		cube2.setWidth(cubeWidth);
-		cube3.setHeight(cubeHeight);
-		cube3.setWidth(cubeWidth);
+//		cube.setHeight(cubeHeight);
+//		cube.setWidth(cubeWidth);
+//		cube2.setHeight(cubeHeight);
+//		cube2.setWidth(cubeWidth);
+//		cube3.setHeight(cubeHeight);
+//		cube3.setWidth(cubeWidth);
 		
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
@@ -185,9 +193,9 @@ public class Root extends Node implements App {
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
 		row_three.addNode(crate);
-		cube2.addNode(crate);
+		pyr2.addNode(crate);
 
-		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+//		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
 		crate.addNode(moon);
 		row_three.addNode(moon);
 		
@@ -335,62 +343,6 @@ public class Root extends Node implements App {
 		return res;
 	}
 	
-	
-//	public ArrayList<OBJIndex> generateCubeIndices(){
-//		ArrayList<OBJIndex> cubeIndices = new ArrayList<OBJIndex>();
-//		
-//		cubeIndices.add(cubeIndex(0));
-//		cubeIndices.add(cubeIndex(1));
-//		cubeIndices.add(cubeIndex(2));
-//		cubeIndices.add(cubeIndex(3));
-//		
-//		cubeIndices.add(cubeIndex(4));
-//		cubeIndices.add(cubeIndex(5));
-//		cubeIndices.add(cubeIndex(6));
-//		cubeIndices.add(cubeIndex(7));
-//		
-//		cubeIndices.add(cubeIndex(1));
-//		cubeIndices.add(cubeIndex(4));
-//		cubeIndices.add(cubeIndex(7));
-//		cubeIndices.add(cubeIndex(2));
-//		
-//		cubeIndices.add(cubeIndex(3));
-//		cubeIndices.add(cubeIndex(2));
-//		cubeIndices.add(cubeIndex(7));
-//		cubeIndices.add(cubeIndex(6));
-//		
-//		cubeIndices.add(cubeIndex(5));
-//		cubeIndices.add(cubeIndex(0));
-//		cubeIndices.add(cubeIndex(3));
-//		cubeIndices.add(cubeIndex(6));
-//		
-//		cubeIndices.add(cubeIndex(5));
-//		cubeIndices.add(cubeIndex(4));
-//		cubeIndices.add(cubeIndex(1));
-//		cubeIndices.add(cubeIndex(0));
-//		
-//		
-//		return cubeIndices;
-//		
-//	}
-//	
-//	private int[] cubeIndicesToIntArray(ArrayList<OBJIndex> cubeIndices) {
-//
-//		int[] res = new int[cubeIndices.size()];
-//		
-//		// hier egal man bekommt immer die gleichen int wert 
-//		for (int i = 0; i < cubeIndices.size(); i++) {
-//			res[i] = cubeIndices.get(i).vertexIndex;
-//		}
-//		
-//		return res;
-//		
-//	}
-	
-//	public OBJIndex cubeIndex(int i){
-//		
-//		return new OBJIndex(i,i);
-//		
-//	}
+
 
 }

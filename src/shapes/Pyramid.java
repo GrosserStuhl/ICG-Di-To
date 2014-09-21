@@ -28,9 +28,13 @@ public class Pyramid extends ShapeNode {
 		
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
+		
+		normalData = createFloatBuffer(vertices.length * 3);
+		finalizeNormalBuffer(normalData,vertices);
 	}
 	
 	FloatBuffer ambientData;
+	FloatBuffer normalData;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -64,10 +68,7 @@ public class Pyramid extends ShapeNode {
 		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		
 		
-		getShader().getDirectionalLightIntensity().set(PhongShader.getDirectionalLight().getBase().getIntensity());
-		getShader().getDirectionalLightColor().set(PhongShader.getDirectionalLight().getBase().getColor());
-		getShader().getDirectionalLightDirection().set(PhongShader.getDirectionalLight().getDirection());
-		
+		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
 
 		// vertex position of the pyramid
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
@@ -78,6 +79,11 @@ public class Pyramid extends ShapeNode {
 		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
 				colorData);
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
+		
+		// vertex position of the pyramid
+		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
+				normalData);
+		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
 		
 		
 		// ambient light
@@ -98,6 +104,13 @@ public class Pyramid extends ShapeNode {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
+	}
+	
+	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
+		for (Vertex v : vertices) {
+			n.put(v.getNormal().asArray());
+		}
+		n.rewind();
 	}
 	
 	public Matrix3f toMatrix3f(Matrix o){

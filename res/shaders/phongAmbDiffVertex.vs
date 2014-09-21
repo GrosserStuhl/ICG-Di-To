@@ -14,6 +14,8 @@ varying vec3 fnormal;
 
 uniform mat4 transformMatrix;
 
+uniform vec3 lightPosition;
+
 void main() {
 
 	

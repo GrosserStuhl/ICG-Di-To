@@ -175,37 +175,11 @@ public class ResourceLoader {
 			
 			
 			Vector[] positionData = createMeshVertexData(vData);
-//			Color[] col = null;
+			Vector2f[] textureCoord = toVector2fArray(texCoord);
 			
-			
-			
-			//create arrays
-//			int[] faces = toIntArray(fData);
-//			
-//			Vertex[] vertices = null;
-//			
-//			// if theres texture data available read it and hand it over, if not create white color
-//			if(!texCoord.isEmpty()){
-//				int[] texFaces = toIntArray(texFaceData);
-//				Vector2f[] texCoordArray = createTextureVertexData(texCoord);
-//				
-//				vertices = Vertex.meshVertices(positionData,texCoordArray, faces, texFaces);
-//				return new Mesh(positionData,texCoordArray,vertices);
-//			}else{
-//				col = createWhiteColor(vData.size());
-//				vertices = Vertex.meshVertices(positionData,col, faces);
-//				return m = new Mesh(positionData,col,vertices);
-//			}
-			
-			
-//			col = createWhiteColor(vData.size());
-			
-			
-			Vertex[] vertices = Vertex.meshVertices(positionData, toVector2fArray(texCoord), indices);
-			return new Mesh(positionData,toVector2fArray(texCoord),vertices);
-			
-//			Vertex[] vertices  = Vertex.fakeColor(positionData, col, indices);
-//			return new Mesh(positionData,col,vertices); 
+			Vertex[] vertices = Vertex.meshVertices(positionData, textureCoord, indices);
+			return new Mesh(positionData,textureCoord,vertices);
+
 			
 			
 		} catch(Exception e){

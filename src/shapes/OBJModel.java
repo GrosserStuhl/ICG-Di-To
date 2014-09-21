@@ -67,6 +67,9 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
+//		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
+		getShader().getTransformMatrixUniform().set(modelMatrix.invertFull().transpose());
+		
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
@@ -83,9 +86,7 @@ public class OBJModel extends ShapeNode implements App {
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
 
-		glDisableVertexAttribArray(Shader.getVertexAttribIdx());
-		glDisableVertexAttribArray(Shader.getTextureAttribIdx());
-		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
+		
 	}
 	
 	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
