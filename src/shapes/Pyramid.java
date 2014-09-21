@@ -55,7 +55,7 @@ public class Pyramid extends ShapeNode {
 		
 		getShader().activate();
 		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
-		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(0, 1, 0, angle));
 		setTransformation(modelMatrix);
 
 		// Activate the shader program and set the transformation matricies to the

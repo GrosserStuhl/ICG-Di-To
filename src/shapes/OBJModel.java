@@ -39,6 +39,9 @@ public class OBJModel extends ShapeNode implements App {
 	@Override
 	public void init() {
 
+		if(vertices == null)
+		System.out.println("NULL");
+		
 		positionData = createFloatBuffer(vertices.length * 3);
 		textureData = createFloatBuffer(vertices.length * 2);
 
@@ -96,11 +99,10 @@ public class OBJModel extends ShapeNode implements App {
 		a.rewind();
 	}
 
-	private void finalizeTextured(FloatBuffer positionData,
-			FloatBuffer textureData, Vertex[] vertices) {
+	private void finalizeTextured(FloatBuffer positionData, FloatBuffer textureData, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			if(v.getPosition() != null)
-				positionData.put(v.getPosition().asArray());
+			if(v.getPosition3f() != null)
+				positionData.put(v.getPosition3f().asArray());
 			if(v.getTextureCoord() != null)
 				textureData.put(asArray(v.getTextureCoord()));
 		}

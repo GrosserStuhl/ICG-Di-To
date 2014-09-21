@@ -21,6 +21,7 @@ public class Vertex {
 	Vector normal;
 
 	Vector3f position3f;
+	mathe.Color colorM;
 	Vector3f normal3f;
 
 	Vertex(Vector p, Color c) {
@@ -35,6 +36,29 @@ public class Vertex {
 		position = p;
 		textureCoord = t;
 	}
+	
+	
+	
+	
+	public Vertex(Vector3f p, mathe.Color c, Vector3f n) {
+		position3f = p;
+		colorM = c;
+		normal3f = n;
+		
+		
+	}
+	
+	public Vertex(Vector3f p, Vector2f t, Vector3f n) {
+		position3f = p;
+		textureCoord = t;
+		normal3f = n;
+	}
+	
+	
+	
+	
+	
+	
 
 	// Make construction of vertices easy on the eyes.
 	public static Vertex v(Vector p, Color c) {
@@ -188,23 +212,60 @@ public class Vertex {
 		return "Vertex p:" + position + " Color:" + color;
 	}
 
-	public static Vertex[] meshVertices(Vector[] p, Color[] c, int[] faces) {
-		Vertex[] vertices = new Vertex[faces.length];
-		for (int i = 0; i < vertices.length; i++) {
-			vertices[i] = v(p[faces[i]], c[faces[i]]);
-		}
-		return vertices;
-	}
-
-	public static Vertex[] meshVertices(Vector[] p, Vector2f[] t,
-			ArrayList<OBJIndex> indices) {
+	public static Vertex[] meshVertices(Vector3f[] p, mathe.Color[] c, Vector3f[] n, ArrayList<OBJIndex> indices) {
 		Vertex[] vertices = new Vertex[indices.size()];
 		for (int i = 0; i < vertices.length; i++) {
 			OBJIndex temp = indices.get(i);
-			vertices[i] = vt(p[temp.vertexIndex], t[temp.texCoordIndex]);
+			vertices[i] = v_pcn(p[temp.vertexIndex], c[temp.vertexIndex], n[temp.normalIndex]);
 		}
 		return vertices;
 	}
+	
+	
+	/**
+	 *  returns a new Vertex from OBJModel with vertexpositions, colorData, and normals
+	 * @param p = Vector3f position;
+	 * @param c = mathe.Color colorData;
+	 * @param n = Vector3f normals;
+	 * @return new Vertex(p,c,n);
+	 */
+	public static Vertex v_pcn(Vector3f p, mathe.Color c,Vector3f n) {
+		return new Vertex(p, c, n);
+	}
+	
+	
+	
+	
+	/**
+	 * Creates OBJ-Model vertices. These usually have VertexCoordinates, TextureCoordinates and NormalData.
+	 * @param p = Vector3f[] position;
+	 * @param t = Vector2f[] textureCoordinates;
+	 * @param n = Vector3f[] normalData;
+	 * @param indices = ArrayList<OBJIndex> indices;
+	 * @return new Vertex[] vertices
+	 */
+	public static Vertex[] modelVertices(Vector3f[] p, Vector2f[] t,Vector3f[] n, ArrayList<OBJIndex> indices) {
+		Vertex[] vertices = new Vertex[indices.size()];
+		for (int i = 0; i < vertices.length; i++) {
+			OBJIndex temp = indices.get(i);
+			vertices[i] = v_ptn(p[temp.vertexIndex], t[temp.texCoordIndex],n[temp.normalIndex]);
+		}
+		return vertices;
+	}
+	
+	/**
+	 *  returns a new Vertex from OBJModel with vertexpositions, normals, and texturecoords
+	 * @param p = Vector3f position;
+	 * @param t = Vector2f textureCoordinates;
+	 * @param n = Vector3f normals;
+	 * @return
+	 */
+	public static Vertex v_ptn(Vector3f p, Vector2f t,Vector3f n) {
+		return new Vertex(p, t, n);
+	}
+	
+	
+	
 
 	public static Vertex[] fakeColor(Vector[] p, Color[] c,
 			ArrayList<OBJIndex> indices) {

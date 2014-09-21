@@ -51,6 +51,15 @@ public class Color {
 		
 	}
 	
+	public float[] asArray(){
+		float[] res = new float[3];
+		res[0] = r;
+		res[1] = g;
+		res[2] = b;
+		
+		return res;
+	}
+	
 
 	public float getR() {
 		return r;

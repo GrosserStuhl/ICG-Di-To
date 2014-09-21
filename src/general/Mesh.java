@@ -1,6 +1,7 @@
 package general;
+import mathe.Vector3f;
+
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
@@ -13,6 +14,10 @@ public class Mesh {
 	public Vector2f[] texCoord;
 	
 	public Vertex[] vertices;
+	
+	private Vector3f[] position3f;
+	private Vector3f[] normal3f;
+	private mathe.Color[] colorM; 
 	
 	
 	public Mesh(Vector[] vec, Color[] col) {
@@ -38,10 +43,47 @@ public class Mesh {
 	
 	
 
+	public Mesh(Vector3f[] p, Vector2f[] t,Vector3f[] n, Vertex[] vertices) {
+		this.position3f = p;
+		this.texCoord = t;
+		this.normal3f = n;
+		this.vertices = vertices;
+	}
+
+	public Mesh(Vector3f[] p, mathe.Color[] c,Vector3f[] n, Vertex[] vertices) {
+		this.position3f = p;
+		this.colorM = c;
+		this.normal3f = n;
+		this.vertices = vertices;
+		
+	}
+	
+	
+	
+
 	public Vector[] getPositionData() {
 		return positionData;
 	}
+	
+	
+	
+	public Vector3f[] getNormal3f() {
+		return normal3f;
+	}
+	
+	public Vector3f[] getPosition3f() {
+		return position3f;
+	}
+	
+	public Vector2f[] getTexCoord() {
+		return texCoord;
+	}
 
+	
+	public mathe.Color[] getColorM() {
+		return colorM;
+	}
+	
 
 	public void setPositionData(Vector[] positionData) {
 		this.positionData = positionData;

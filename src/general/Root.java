@@ -213,10 +213,9 @@ public class Root extends Node implements App {
 				vecmath.vector(0, 0, -45));
 		addNode(plane3);
 		
-		// Mesh m2 = ResourceLoader.loadOBJModel("optimus.obj");
-		// Texture t2 = ResourceLoader.loadTexture("optimus.png");
-		// OBJModel monkeyMod2 = new OBJModel(m2.getVertices(), shader,t2);
-		// row_one.addNode(monkeyMod2);
+
+		
+		
 
 		row_one.setName("Row One");
 		row_two.setName("Row Two");

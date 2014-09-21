@@ -26,8 +26,6 @@ public abstract class ShapeNode extends Node {
 	protected float angle = 0;
 
 	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation) {
-		this.positionData = createFloatBuffer(vertices.length);
-		this.colorData = createFloatBuffer(vertices.length);
 		this.vertices = vertices;
 		this.shader = shader;
 		this.translation = translation;
@@ -80,19 +78,6 @@ public abstract class ShapeNode extends Node {
 		return BufferUtils.createFloatBuffer(verticesLength
 				* vecmath.vectorSize());
 	}
-
-	
-
-//	protected void finalizeBuffers(FloatBuffer positionData,
-//			FloatBuffer colorData, Vertex[] vertices) {
-//		for (Vertex v : vertices) {
-//			positionData.put(v.position.asArray());
-//			colorData.put(v.color.asArray());
-//
-//		}
-//		positionData.rewind();
-//		colorData.rewind();
-//	}
 
 	@Override
 	public void setTranslation(Vector translation) {

@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import mathe.Vector3f;
 import ogl.app.Texture;
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
@@ -64,13 +65,10 @@ public class ResourceLoader {
 	
 	public static Mesh loadOBJModel(String fileName){
 		
-		Mesh m = null;
-		
-		
 		BufferedReader meshReader = null;
 		
-		ArrayList<Vector> vData = new ArrayList<Vector>();
-		ArrayList<Vector> nData = new ArrayList<Vector>();
+		ArrayList<Vector3f> vData = new ArrayList<Vector3f>();
+		ArrayList<Vector3f> nData = new ArrayList<Vector3f>();
 		ArrayList<Vector2f> texCoord = new ArrayList<Vector2f>();
 		ArrayList<OBJIndex> indices = new ArrayList<OBJIndex>();
 		
@@ -84,12 +82,12 @@ public class ResourceLoader {
 			while((line = meshReader.readLine()) != null){
 				if (line.startsWith("v ")){
 					// extracts vertex info
-					vData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					vData.add(v3f(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
 				} else if(line.startsWith("vn ")){
 					// extracts Vectornormal info
 					
-					nData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					nData.add(v3f(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
 				} else if(line.startsWith("vt ")){
 					// extracts Vectornormal info
@@ -174,14 +172,16 @@ public class ResourceLoader {
 			meshReader.close();
 			
 			
-			Vector[] positionData = createMeshVertexData(vData);
+			Vector3f[] positionData = toVector3fArray(vData);
+			Vector3f[] normalData = toVector3fArray(nData);
 			Vector2f[] textureCoord = toVector2fArray(texCoord);
 			
-			Vertex[] vertices = Vertex.meshVertices(positionData, textureCoord, indices);
-			return new Mesh(positionData,textureCoord,vertices);
+			Vertex[] vertices = Vertex.modelVertices(positionData, textureCoord,normalData, indices);
+			
 
 			
-			
+			return new Mesh(positionData,textureCoord,normalData,vertices);
+
 		} catch(Exception e){
 			
 			e.printStackTrace();
@@ -195,16 +195,11 @@ public class ResourceLoader {
 	
 	public static Mesh loadOBJMesh(String fileName){
 		
-
-		Mesh m = null;
-		
-		
 		BufferedReader meshReader = null;
 		
-		ArrayList<Vector> vData = new ArrayList<Vector>();
-		ArrayList<Vector> nData = new ArrayList<Vector>();
-		ArrayList<Integer>  fData = new ArrayList<Integer>();
-		
+		ArrayList<Vector3f> vData = new ArrayList<Vector3f>();
+		ArrayList<Vector3f> nData = new ArrayList<Vector3f>();
+		ArrayList<OBJIndex> indices = new ArrayList<OBJIndex>();
 		
 		String line;
 		
@@ -215,12 +210,12 @@ public class ResourceLoader {
 			while((line = meshReader.readLine()) != null){
 				if (line.startsWith("v ")){
 					// extracts vertex info
-					vData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					vData.add(v3f(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
 				} else if(line.startsWith("vn ")){
 					// extracts Vectornormal info
 					
-					nData.add(vec(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
+					nData.add(v3f(Float.parseFloat(line.split("\\s+")[1]),Float.parseFloat(line.split("\\s+")[2]),Float.parseFloat(line.split("\\s+")[3])));
 					
 				} else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/{1}\\d+") ){
 					
@@ -232,18 +227,11 @@ public class ResourceLoader {
 					//    			  wegen Einfachheit wurde hier erstmal auf Texturkoordinaten verzichtet und jedesmal nur die Vertexkoordinate extrahiert
 
 					
-					
-				for (int j = 0; j < line.split("\\s+").length; j++) {
-					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) - 1);
-					fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) - 1);
-					
-					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) - 1);
-					fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) - 1);
-					
-					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) - 1);
-					fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) - 1);
-				}
-					
+					for (int j = 0; j < line.split("\\s+").length - 2; j++) {
+						indices.add(parseOBJIndex(line.split("\\s+")[1 ],false));
+						indices.add(parseOBJIndex(line.split("\\s+")[2 + j],false));
+					}
+						
 		
 			}else if(line.startsWith("f ") && line.split("\\s+")[1].matches("\\d+\\/\\d+\\/\\d+") ){
 					// holt die FaceDaten aus dem .obj-File mit zusätzlichen Textur und Vektornormaleninfos. Das Format z.B.  
@@ -252,71 +240,41 @@ public class ResourceLoader {
 					
 					//    Bsp. 7/2/6 : hier wäre die erste Zahl(7) die vertex koordinate, die zweite Zahl (2) die Texturkoordinate, die dritte Zahl (6) die Vektornormale
 
-						for (int j = 0; j < line.split("\\s+").length; j++) {
-							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[0]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[1]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[1].split("\\/")[2]) - 1);
-							
-							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[0]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[1]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[2].split("\\/")[2]) - 1);
-							
-							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[0]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[1]) - 1);
-							fData.add(Integer.parseInt(line.split("\\s+")[3].split("\\/")[2]) - 1);
-						}
-				
-					
-				
-				
-				}
-		
+					for (int j = 0; j < line.split("\\s+").length - 3; j++) {
+						indices.add(parseOBJIndex(line.split("\\s+")[1], true));
+						indices.add(parseOBJIndex(line.split("\\s+")[2 + j], true));
+						indices.add(parseOBJIndex(line.split("\\s+")[3 + j], true));
+					}
 			}
+				
+				
+		
+	}
 			meshReader.close();
 			
 			
-			Vector[] positionData = createMeshVertexData(vData);
-			Color[] col = null;
+			Vector3f[] positionData = toVector3fArray(vData);
+			Vector3f[] normalData = toVector3fArray(nData);
+			mathe.Color[] col = createGreenColor(vData.size());
 			
-			
-			
-			//create arrays
-			int[] faces = toIntArray(fData);
-//			
 			Vertex[] vertices = null;
-
-
-				col = createWhiteColor(vData.size());
-				vertices = Vertex.meshVertices(positionData,col, faces);
-				return m = new Mesh(positionData,col,vertices);
-
-//			col = createWhiteColor(vData.size());
 			
-			
-			
-
-			
+				vertices = Vertex.meshVertices(positionData,col,normalData, indices);
+				return new Mesh(positionData,col,normalData,vertices);
+				
 			
 		} catch(Exception e){
-			
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
 		return null;
-		
-		
-		
 	}
 	
 	
 	public static Vector2f[] toVector2fArray(ArrayList<Vector2f> data) {
 		Vector2f[] result = new Vector2f[data.size()];
-		
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 0; i < data.size(); i++)
 			result[i] = data.get(i);
-		}
-		
 		
 		return result;
 	}
@@ -337,16 +295,11 @@ public class ResourceLoader {
 	}
 	
 	
-
-
-	private static Vector vec(float x, float y, float z) {
-		return vecmath.vector(x, y, z);
+	
+	private static Vector3f v3f(float x, float y, float z) {
+		return new Vector3f(x, y, z);
 	}
-	
-	
-	
 
-	
 	private static Vector2f v2f(float x, float y) {
 		return new Vector2f(x,y);
 	}
@@ -355,24 +308,18 @@ public class ResourceLoader {
 	
 
 	
-	public static Vector[] createMeshVertexData(ArrayList<Vector> data) {
-		Vector[] result = new Vector[data.size()];
-		
-		for (int i = 0; i < data.size(); i++) {
+	public static Vector3f[] toVector3fArray(ArrayList<Vector3f> data) {
+		Vector3f[] result = new Vector3f[data.size()];
+		for (int i = 0; i < data.size(); i++) 
 			result[i] = data.get(i);
-		}
-		
-		
+			
 		return result;
 	}
 	
 	public static int[] toIntArray(ArrayList<Integer> data) {
 		int[] result = new int[data.size()];
-		
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 0; i < data.size(); i++)
 			result[i] = data.get(i).intValue();
-		}
-		
 		
 		return result;
 	}
@@ -383,11 +330,11 @@ public class ResourceLoader {
 	
 	
 	
-	public static Color[] createWhiteColor(int length){
-		Color[] c = new Color[length];
+	public static mathe.Color[] createGreenColor(int length){
+		mathe.Color[] c = new mathe.Color[length];
 		
 		for (int i = 0; i < c.length; i++) {
-			c[i] = vecmath.color(255f, 255f, 255f);
+			c[i] = new mathe.Color(0,1,0);
 		}
 		
 		return c;
