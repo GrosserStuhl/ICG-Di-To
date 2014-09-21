@@ -49,7 +49,7 @@ public class Shader extends Node {
 	private MatrixUniform rotationMatrixUniform;
 	
 	private MatrixUniform transformMatrixUniform;
-	private VectorUniform lightVectorMatrixUniform;
+	private VectorUniform lightPositionMatrixUniform;
 
 	
 	public Shader() {
@@ -63,14 +63,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("phongAmbVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("AmbDiffVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL_FRAGMENT_SHADER);
 		// load fragmentShader
-		glShaderSource(fs, ResourceLoader.loadShader("phongAmbFragment.fs"));
+		glShaderSource(fs, ResourceLoader.loadShader("AmbDiffFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -106,8 +106,8 @@ public class Shader extends Node {
 		directionalLightDirection = new VectorUniform(program,
 				"directionalLight.direction");
 		
-		lightVectorMatrixUniform = new VectorUniform(program,
-				"lightVector");
+		lightPositionMatrixUniform = new VectorUniform(program,
+				"lightPosition");
 		
 		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
 	}
@@ -242,8 +242,8 @@ public class Shader extends Node {
 		this.directionalLightIntensity = directionalLightIntensity;
 	}
 	
-	public VectorUniform getLightVectorMatrixUniform() {
-		return lightVectorMatrixUniform;
+	public VectorUniform getLightPositionMatrixUniform() {
+		return lightPositionMatrixUniform;
 	}
 
 	public ColorUniform getDirectionalLightColor() {

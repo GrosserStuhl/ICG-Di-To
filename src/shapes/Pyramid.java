@@ -26,12 +26,20 @@ public class Pyramid extends ShapeNode {
 		super(vertices, shader, translation);
 		
 		
+		positionData = createFloatBuffer(vertices.length * 3);
+		colorData = createFloatBuffer(vertices.length * 3);
+		finalizeBuffer(positionData, colorData, vertices);
+		
+		
 		ambientData = BufferUtils.createFloatBuffer(vertices.length * 3);
 		finalizeAmbientBuffer(ambientData, vertices);
 		
 		normalData = createFloatBuffer(vertices.length * 3);
 		finalizeNormalBuffer(normalData,vertices);
 	}
+	
+	FloatBuffer positionData;
+	FloatBuffer colorData;
 	
 	FloatBuffer ambientData;
 	FloatBuffer normalData;
@@ -68,7 +76,7 @@ public class Pyramid extends ShapeNode {
 		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
 		
 		
-		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
+		getShader().getLightPositionMatrixUniform().set(vecmath.vector(1, 0, 0));
 
 		// vertex position of the pyramid
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
@@ -99,16 +107,27 @@ public class Pyramid extends ShapeNode {
 		
 	}
 	
-	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
+	private void finalizeBuffer(FloatBuffer p,FloatBuffer c, Vertex[] vertices){
+		for (Vertex v : vertices) {
+			p.put(v.getPosition3f().asArray());
+			c.put(v.getColor().asArray());
+		}
+		p.rewind();
+		c.rewind();
+	}
+	
+	
+	
+	private void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
 		for (int i = 0; i<vertices.length;i++) {
 			a.put(PhongShader.ambientToArray());
 		}
 		a.rewind();
 	}
 	
-	protected void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
+	private void finalizeNormalBuffer(FloatBuffer n, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			n.put(v.getNormal().asArray());
+			n.put(v.getNormal3f().asArray());
 		}
 		n.rewind();
 	}

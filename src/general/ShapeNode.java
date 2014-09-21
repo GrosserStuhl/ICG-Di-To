@@ -35,9 +35,6 @@ public abstract class ShapeNode extends Node {
 
 	@Override
 	public void init() {
-		positionData = createFloatBuffer(vertices.length);
-		colorData = createFloatBuffer(vertices.length);
-		finalizeBuffers(positionData, colorData, vertices);
 
 		for (Node child : getChildNodes()) {
 			child.init();
@@ -86,16 +83,16 @@ public abstract class ShapeNode extends Node {
 
 	
 
-	protected void finalizeBuffers(FloatBuffer positionData,
-			FloatBuffer colorData, Vertex[] vertices) {
-		for (Vertex v : vertices) {
-			positionData.put(v.position.asArray());
-			colorData.put(v.color.asArray());
-
-		}
-		positionData.rewind();
-		colorData.rewind();
-	}
+//	protected void finalizeBuffers(FloatBuffer positionData,
+//			FloatBuffer colorData, Vertex[] vertices) {
+//		for (Vertex v : vertices) {
+//			positionData.put(v.position.asArray());
+//			colorData.put(v.color.asArray());
+//
+//		}
+//		positionData.rewind();
+//		colorData.rewind();
+//	}
 
 	@Override
 	public void setTranslation(Vector translation) {

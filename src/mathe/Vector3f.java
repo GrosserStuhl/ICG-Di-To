@@ -107,6 +107,22 @@ public class Vector3f {
 	public void setZ(float z) {
 		this.z = z;
 	}
+	
+	/**
+	 * returns the Vector3f as a float Array 
+	 * @return float[ X, Y, Z];
+	 */
+	
+	public float[] asArray(){
+		float[] res = new float[3];
+		res[0] = x;
+		res[1] = y;
+		res[2] = z;
+		
+		return res;
+	}
+	
+	
 
 	@Override
 	public String toString() {

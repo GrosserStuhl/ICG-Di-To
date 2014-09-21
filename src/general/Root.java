@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 
 
+
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
@@ -117,7 +118,15 @@ public class Root extends Node implements App {
 
 	@Override
 	public void init() {
-
+		//normale cube Vertices
+		//vertices = Vertex.cubeVertices(p, c);
+		
+		
+		
+		
+		
+		
+		
 		
 		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
 		
@@ -128,7 +137,7 @@ public class Root extends Node implements App {
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
-		Scene scene = SceneLoader.loadScene("scene1.xml");
+//		Scene scene = SceneLoader.loadScene("scene1.xml");
 
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
@@ -137,25 +146,27 @@ public class Root extends Node implements App {
 		addNode(row_two);
 		addNode(row_three);
 
+		
+		
 		setTransformation(vecmath.identityMatrix());
 		cam = new Camera(getTransformation());
 		addNode(cam);
 
-		vertices = Vertex.cubeVertices(p, c);
-		// cube mit color ohne textur
-		// Vertex[] vertices_cube2 = Vertex.cubeVertices(p_row2, c);
-		// Vertex[] vertices_cube3 = Vertex.cubeVertices(p_row3, c);
-
-		verticesT = Vertex.triangleVertices(t, colorT);
-
 		
 		
-		//Phong extra diffuse:
-		Vertex.calcNormals(vertices, cubeIndices());
 		
 //		for (int i = 0; i < vertices.length; i++) {
 //			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
 //		}
+		
+		
+//		Vertex.calcNormals(verticesT, pyramidIndices());
+		
+		//Phong extra diffuse:
+		Vector3f[] v3fArray = toV3f(p);
+		
+		verticesT = Vertex.triangleVertices(v3fArray, c);
+		calcNormals(verticesT, pyramidIndices());
 		
 		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
 		row_one.addNode(pyr);
@@ -192,7 +203,7 @@ public class Root extends Node implements App {
 		
 		
 
-		Mesh m2 = ResourceLoader.loadOBJModel("start.obj");
+		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
 		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
 				vecmath.vector(0, 0, 0));
@@ -248,6 +259,8 @@ public class Root extends Node implements App {
 			child.init();
 		}
 	}
+
+
 
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -345,6 +358,56 @@ public class Root extends Node implements App {
 		res[20] = 5; res[21] = 4; res[22] = 1; res[23] = 0;
 		
 		return res;
+	}
+	
+	public int[] pyramidIndices(){
+		int[] res = new int[15];
+		
+		res[0]= 0; 		res[1] = 1;    res[2] = 4;
+		res[3] = 2;     res[4] = 4;    res[5] = 3;
+		res[6] = 4;     res[7] = 0;    res[8] = 3;
+		res[9] = 1;     res[10] = 2;   res[11] = 4;
+		res[12] = 3;    res[13] = 2;   res[14] = 1;
+		
+		return res;
+	}
+	
+	private Vector3f[] toV3f(Vector[] p) {
+	
+		Vector3f[] res = new Vector3f[p.length];
+		
+		for (int i = 0; i < p.length; i++) {
+			res[i] = new Vector3f(p[i].x(),p[i].y(),p[i].z());
+		}
+		
+		return res;
+	}
+	
+	
+	private void calcNormals(Vertex[] vertices, int[] indices) {
+		int pointer = 0;
+		
+		for (int i = 0; i < indices.length; i += 3) {
+			int i0 = indices[i];
+			int i1 = indices[i + 1];
+			int i2 = indices[i + 2];
+			
+			Vector3f v1 = vertices[i1].getPosition3f().sub(vertices[i0].getPosition3f());
+			Vector3f v2 = vertices[i2].getPosition3f().sub(vertices[i0].getPosition3f());
+			
+			Vector3f normal = v1.cross(v2).normalize();
+			
+			
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+			vertices[pointer].setNormal3f(normal);
+			pointer++;
+		}
+		for (int i = 0; i < vertices.length; i++)
+			vertices[i].getNormal3f().normalize();
+		
 	}
 	
 
