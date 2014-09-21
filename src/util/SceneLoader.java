@@ -13,7 +13,8 @@ public class SceneLoader {
 		try {
 			LineNumberReader reader = null;
 			try {
-				reader = new LineNumberReader(new FileReader("./res/scenes/"+ fileName));
+				reader = new LineNumberReader(new FileReader("./res/scenes/"
+						+ fileName));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -25,7 +26,7 @@ public class SceneLoader {
 			while (!line.equals("</scene>")) {
 				line = reader.readLine();
 				if (line.contains("<shape")) {
-					System.out.println(line);
+					System.out.println("first line" + line);
 					ShapePlan shape = null;
 					String[] attributes = line.split("#");
 					String[] planet = attributes[1].split("\"");
@@ -37,15 +38,16 @@ public class SceneLoader {
 						scale = Float.parseFloat(scale3);
 					}
 
-					if (!reader.readLine().trim().equals("</shape>") && !line.endsWith("</shape>")) {
+					if (!line.endsWith("</shape>")) {
 						ArrayList<ShapePlan> children = new ArrayList<>();
 						rowCount++;
 						reader.setLineNumber(reader.getLineNumber() - 1);
 						ShapePlan child = null;
-						while (!reader.readLine().trim().equals("</shape>")) {
+						line = reader.readLine();
+						while (!line.trim().equals("</shape>")) {
 							System.out.println("zweite while: " + line);
 							String[] attributes2 = line.split("#");
-							String[] planet2 = attributes[1].split("\"");
+							String[] planet2 = attributes2[1].split("\"");
 							float scaleTwo = 0;
 							if (attributes2.length > 2) {
 								String[] scale1 = attributes2[2].split("=");
@@ -53,15 +55,16 @@ public class SceneLoader {
 								String scale3 = scale2[0];
 								scaleTwo = Float.parseFloat(scale3);
 							}
-							if (!reader.readLine().trim().equals("</shape>") && !line.endsWith("</shape>")) {
+							if (!line.endsWith("</shape>")) {
 								ArrayList<ShapePlan> children2 = new ArrayList<>();
 								rowCount++;
 								reader.setLineNumber(reader.getLineNumber() - 1);
 								ShapePlan child2 = null;
-								while (!reader.readLine().equals("</shape>")) {
-									System.out.println("dritte while: "+line);
+								line = reader.readLine();
+								while (!line.trim().equals("</shape>")) {
+									System.out.println("dritte while: " + line);
 									String[] attributes3 = line.split("#");
-									String[] planet3 = attributes[1]
+									String[] planet3 = attributes3[1]
 											.split("\"");
 									float scaleThree = 0;
 									if (attributes3.length > 2) {
@@ -69,21 +72,32 @@ public class SceneLoader {
 												.split("=");
 										String[] scale2 = scale1[1].split(">");
 										String scale3 = scale2[0];
-										scaleTwo = Float.parseFloat(scale3);
+										scaleThree = Float.parseFloat(scale3);
 									}
 									child2 = new ShapePlan(planet3[1],
 											scaleThree);
+									System.out.println("child2: " + child2);
 									children2.add(child2);
+									line = reader.readLine();
 								}
 								child = new ShapePlan(planet2[1], children2,
 										scaleTwo);
-							} else
+								System.out
+										.println("child through if: " + child);
+							} else {
 								child = new ShapePlan(planet2[1], scaleTwo);
+								System.out.println("child through else: "
+										+ child);
+							}
 							children.add(child);
+							line = reader.readLine();
 						}
+						System.out.println("shape through if: " + shape);
 						shape = new ShapePlan(planet[1], children, scale);
-					} else
+					} else {
 						shape = new ShapePlan(planet[1], scale);
+						System.out.println("shape through else: " + shape);
+					}
 					shapes.add(shape);
 				}
 			}

@@ -8,13 +8,28 @@ public class Scene {
 
 	private ArrayList<ShapePlan> shapes;
 	private int rowCount;
-	private ArrayList<Node> nodes = new ArrayList<>();
 
 	public Scene(ArrayList<ShapePlan> shapes, int rowCount) {
 		this.shapes = shapes;
 		this.rowCount = rowCount;
-		
+
 		System.out.println("FERTIG EHEHHEHEH");
+		for (ShapePlan shape : shapes) {
+			System.out.println("shapes: " + shape);
+			if (shape.getChildren() != null) {
+				for (ShapePlan child : shape.getChildren()) {
+					System.out.println("children: " + child);
+					if (child.getChildren() != null) {
+						for (ShapePlan child2 : child.getChildren()) {
+							System.out.println("children2: " + child2);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		
 	}
 
 	public int getRowCount() {
@@ -23,9 +38,5 @@ public class Scene {
 
 	public ArrayList<ShapePlan> getShapes() {
 		return shapes;
-	}
-	
-	public ArrayList<Node> getNodes() {
-		return nodes;
 	}
 }

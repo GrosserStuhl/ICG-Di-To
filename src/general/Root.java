@@ -5,15 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 import mathe.Vector3f;
 
 import org.lwjgl.util.vector.Vector2f;
-
-
-
-
-
-
-
-
-
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
@@ -118,15 +109,7 @@ public class Root extends Node implements App {
 
 	@Override
 	public void init() {
-		//normale cube Vertices
-		//vertices = Vertex.cubeVertices(p, c);
-		
-		
-		
-		
-		
-		
-		
+
 		
 		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
 		
@@ -137,8 +120,9 @@ public class Root extends Node implements App {
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 		planeShader = new Shader("originalVertex.vs","originalFragment.fs");
 		
-//		Scene scene = SceneLoader.loadScene("scene1.xml");
-
+		Scene scene = SceneLoader.loadScene("scene1.xml");
+		
+		
 		RowNode row_one = new RowNode(0);
 		RowNode row_two = new RowNode(1);
 		RowNode row_three = new RowNode(2);
@@ -259,8 +243,6 @@ public class Root extends Node implements App {
 			child.init();
 		}
 	}
-
-
 
 	@Override
 	public void simulate(float elapsed, Input input) {
