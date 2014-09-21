@@ -175,9 +175,6 @@ public class Root extends Node implements App {
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
 		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
 				vecmath.vector(0, 0, 0));
-		
-		
-		
 
 		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
 		Texture t2 = ResourceLoader.loadTexture("stark.png");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ShapePlan {
 
 	private String name;
-	private ArrayList<ShapePlan> children;
+	private ArrayList<ShapePlan> children = new ArrayList<>();
 	private float scale;
 
 	public ShapePlan(String name, ArrayList<ShapePlan> children, float scale) {
@@ -16,13 +16,11 @@ public class ShapePlan {
 
 	public ShapePlan(String name, float scale) {
 		this.name = name;
-		this.children = null;
 		this.setScale(scale);
 	}
 
 	public ShapePlan(String name) {
 		this.name = name;
-		this.children = null;
 		setScale(1);
 	}
 
