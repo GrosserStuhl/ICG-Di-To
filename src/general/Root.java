@@ -115,7 +115,7 @@ public class Root extends Node implements App {
 		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
-		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(1,1,1),0.8f),vecmath.vector(1,1,1));
+		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(0.5f,0.5f,0.5f),0.8f),vecmath.vector(1,1,1));
 		
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
@@ -138,28 +138,19 @@ public class Root extends Node implements App {
 		addNode(cam);
 
 		
-		
-		
-//		for (int i = 0; i < vertices.length; i++) {
-//			System.out.println("Normal: x("+vertices[i].getNormal().x()+"), y("+vertices[i].getNormal().y()+"), z("+vertices[i].getNormal().z()+")");
-//		}
-		
-		
-//		Vertex.calcNormals(verticesT, pyramidIndices());
-		
 		//Phong extra diffuse:
 		Vector3f[] v3fArray = toV3f(t);
-		
 		verticesT = Vertex.triangleVertices(v3fArray, colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
+		// ENd Phong diffuse component
 		
-		Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		Pyramid pyr = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
 		row_one.addNode(pyr);
 		
-		Pyramid pyr2 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		Pyramid pyr2 = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
 		row_one.addNode(pyr2);
 		
-		Pyramid pyr3 = new Pyramid(verticesT, shader, vecmath.vector(0, 0, 0));
+		Pyramid pyr3 = new Pyramid(verticesT, shader, cam.getEye(), vecmath.vector(0, 0, 0));
 		row_one.addNode(pyr3);
 		
 //		Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f, 0f));

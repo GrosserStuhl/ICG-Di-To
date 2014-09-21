@@ -1,6 +1,7 @@
 package shader;
 
 import static org.lwjgl.opengl.GL11.glClearColor;
+
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glBindAttribLocation;
@@ -49,7 +50,10 @@ public class Shader extends Node {
 	private MatrixUniform rotationMatrixUniform;
 	
 	private MatrixUniform transformMatrixUniform;
-	private VectorUniform lightPositionMatrixUniform;
+	private VectorUniform lightPositionVectorUniform;
+	private FloatUniform specularIntensityFloatUniform;
+	private FloatUniform specularExponentFloatUniform;
+	private VectorUniform eyePositionVectorUniform;
 
 	
 	public Shader() {
@@ -63,14 +67,14 @@ public class Shader extends Node {
 		// Create and compile the vertex shader.
 		int vs = glCreateShader(GL_VERTEX_SHADER);
 		// load vertexShader
-		glShaderSource(vs, ResourceLoader.loadShader("AmbDiffVertex.vs"));
+		glShaderSource(vs, ResourceLoader.loadShader("AmbDiffSpecVertex.vs"));
 		glCompileShader(vs);
 		Util.checkCompilation(vs);
 
 		// Create and compile the fragment shader.
 		int fs = glCreateShader(GL_FRAGMENT_SHADER);
 		// load fragmentShader
-		glShaderSource(fs, ResourceLoader.loadShader("AmbDiffFragment.fs"));
+		glShaderSource(fs, ResourceLoader.loadShader("AmbDiffSpecFragment.fs"));
 		glCompileShader(fs);
 		Util.checkCompilation(fs);
 
@@ -106,8 +110,13 @@ public class Shader extends Node {
 		directionalLightDirection = new VectorUniform(program,
 				"directionalLight.direction");
 		
-		lightPositionMatrixUniform = new VectorUniform(program,
+		lightPositionVectorUniform = new VectorUniform(program,
 				"lightPosition");
+		
+		specularIntensityFloatUniform = new FloatUniform(program,"specIntensity");
+		specularExponentFloatUniform = new FloatUniform(program, "specExponent");
+		eyePositionVectorUniform = new VectorUniform(program,"eyePosition");
+		
 		
 		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
 	}
@@ -131,6 +140,7 @@ public class Shader extends Node {
 
 		// Enable depth testing.
 		glEnable(GL_DEPTH_TEST);
+		
 		
 		//cull faces (back), clockwise
 //		glFrontFace(GL_CCW);
@@ -242,9 +252,22 @@ public class Shader extends Node {
 		this.directionalLightIntensity = directionalLightIntensity;
 	}
 	
-	public VectorUniform getLightPositionMatrixUniform() {
-		return lightPositionMatrixUniform;
+	public VectorUniform getLightPositionVectorUniform() {
+		return lightPositionVectorUniform;
 	}
+	
+	public FloatUniform getSpecularExponentFloatUniform() {
+		return specularExponentFloatUniform;
+	}
+	
+	public FloatUniform getSpecularIntensityFloatUniform() {
+		return specularIntensityFloatUniform;
+	}
+	
+	public VectorUniform getEyePositionVectorUniform() {
+		return eyePositionVectorUniform;
+	}
+	
 
 	public ColorUniform getDirectionalLightColor() {
 		return directionalLightColor;
