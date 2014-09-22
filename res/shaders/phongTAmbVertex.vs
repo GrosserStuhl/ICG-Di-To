@@ -18,14 +18,18 @@ uniform mat4 normalMatrix;
 varying vec3 lightVector;
 varying vec4 worldPosition;
 
+varying vec4 ptlWorldPosition;
+uniform mat4 pLPosWorld;
+
 void main() {
 
 	worldPosition = viewMatrix * modelMatrix * vec4(vertex,1.0);
+	ptlWorldPosition = pLPosWorld * vec4(vertex,1.0);
 
 	ftextureCoord = textureCoord;
 
 	fnormal =  normalize ((normalMatrix * vec4(normal,0.0)).xyz);
-	lightVector =  normalize(  (viewMatrix*vec4(0,0,16, 1.0)).xyz - worldPosition.xyz);
+	lightVector =  normalize(  (viewMatrix*vec4(lightPosition, 1.0)).xyz - worldPosition.xyz);
 	
 	gl_Position = projectionMatrix * worldPosition;
 }

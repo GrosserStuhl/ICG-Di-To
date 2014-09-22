@@ -3,7 +3,6 @@ package mathe;
 
 
 import ogl.app.Uniform;
-import ogl.vecmath.Color;
 import static org.lwjgl.opengl.GL20.glUniform3f;
 
 public class ColorUniform extends Uniform{

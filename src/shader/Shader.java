@@ -50,7 +50,17 @@ public class Shader extends Node {
 	private VectorUniform eyePositionVectorUniform;
 	
 	private VectorUniform ambientLightVectorUniform;
+	
+	
+	private MatrixUniform pLPosLightUniform;
+	private VectorUniform vpositionUniform;
+	private ColorUniform vcolorUniform;
+	private FloatUniform fambientUniform;
+	private FloatUniform constantAttenuationUniform;
+	private FloatUniform linearAttenuationUniform;
+	private FloatUniform exponentAttenuationUniform;
 
+	
 	
 	public Shader() {
 
@@ -189,6 +199,17 @@ public class Shader extends Node {
 		
 		
 		normalMatrixUniform = new MatrixUniform(program, "normalMatrix");
+		
+		
+		pLPosLightUniform = new MatrixUniform(program, "pLPosLight");
+		
+		vpositionUniform = new VectorUniform(program, "pointLight.vposition");
+		vcolorUniform = new ColorUniform(program, "pointLight.vcolor");
+		fambientUniform = new FloatUniform(program, "fambient");
+		constantAttenuationUniform = new FloatUniform(program, "pointLight.fconstantAtt");
+		linearAttenuationUniform = new FloatUniform(program, "pointLight.flinearAtt");
+		exponentAttenuationUniform = new FloatUniform(program, "pointLight.fexpAtt");
+		
 	}
 
 	public static int getVertexAttribIdx() {
@@ -246,6 +267,10 @@ public class Shader extends Node {
 		return eyePositionVectorUniform;
 	}
 	
+	public MatrixUniform getpLPosLightUniform() {
+		return pLPosLightUniform;
+	}
+	
 	
 	public MatrixUniform getNormalMatrixUniform() {
 		return normalMatrixUniform;
@@ -255,6 +280,26 @@ public class Shader extends Node {
 		return ambientLightVectorUniform;
 	}
 	
+	
+	
+	public FloatUniform getConstantAttenuationUniform() {
+		return constantAttenuationUniform;
+	}
+	public FloatUniform getExponentAttenuationUniform() {
+		return exponentAttenuationUniform;
+	}
+	public FloatUniform getLinearAttenuationUniform() {
+		return linearAttenuationUniform;
+	}
+	public FloatUniform getFambientUniform() {
+		return fambientUniform;
+	}
+	public ColorUniform getVcolorUniform() {
+		return vcolorUniform;
+	}
+	public VectorUniform getVpositionUniform() {
+		return vpositionUniform;
+	}
 
 	
 	

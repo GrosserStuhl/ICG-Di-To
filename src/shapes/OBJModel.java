@@ -2,6 +2,7 @@ package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
+
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.*;
@@ -10,6 +11,7 @@ import general.Vertex;
 
 import java.nio.FloatBuffer;
 
+import mathe.Color;
 import mathe.Vector3f;
 import ogl.app.App;
 import ogl.app.Texture;
@@ -44,10 +46,8 @@ public class OBJModel extends ShapeNode implements App {
 	FloatBuffer normalData;
 	
 	FloatBuffer ambientData;
-	
-	Vector eyePosition;
-	
 
+	
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		// ohne t.bind() funktioniert es nicht!!!
@@ -62,13 +62,23 @@ public class OBJModel extends ShapeNode implements App {
 
 		getShader().getModelMatrixUniform().set(modelMatrix);
 		
-//		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
-		
 		
 		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
-
 		getShader().getNormalMatrixUniform().set(normalMatrix);
+		
+		
+		
+		getShader().getpLPosLightUniform().set(viewMatrix);
+		
+		getShader().getVpositionUniform().set(new Vector3f( 0, 0, 16));
+		getShader().getVcolorUniform().set(new Color(1,0,0));
+		getShader().getFambientUniform().set((float) 0.8);
+		
+		getShader().getConstantAttenuationUniform().set((float) 0);
+		getShader().getLinearAttenuationUniform().set((float) 1);
+		getShader().getExponentAttenuationUniform().set((float) 1);
+		
 		
 		
 		
@@ -84,11 +94,9 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getSpecularExponentFloatUniform().set(32);
 		////////////////////////////////////////////////
 		
-		
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		
 		
 		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
 				normalData);
@@ -102,8 +110,6 @@ public class OBJModel extends ShapeNode implements App {
 		
 
 		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
-
-		
 	}
 	
 

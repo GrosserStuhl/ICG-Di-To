@@ -2,6 +2,7 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
+import mathe.Color;
 import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.App;
