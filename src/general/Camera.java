@@ -21,33 +21,40 @@ public class Camera extends Node {
 		setTransformation(parentMatrix.mult(vecmath.translationMatrix(3, 0, 5)));
 	}
 
+	public Camera(Vector eye, Vector center) {
+		this.eye = eye;
+		this.center = center;
+	}
+
 	@Override
 	public void init() {
-		center = getTransformation().getPosition();
-		eye = center.add(vecmath.vector(0, 0, 10f));
-		up = vecmath.vector(0f, 1f, 0f);
+		if (eye == null && center == null) {
+			center = getTransformation().getPosition();
+			eye = center.add(vecmath.vector(0, 0, 10f));
+			up = vecmath.vector(0f, 1f, 0f);
+		}
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
 
-//	@Override
-//	public void simulate(float elapsed, Input input) {
-//		if (animationFor) {
-//			if (center.z() < animationStartZ - 20) {
-//				animationFor = false;
-//			} else {
-//				center = center.sub(vecmath.vector(0, 0, elapsed * 20f));
-//				eye = center.add(vecmath.vector(0, 0, 10f));
-//			}
-//		} else if (animationBack) {
-//			if (center.z() > animationStartZ + 20) {
-//				animationBack = false;
-//			} else {
-//				center = center.add(vecmath.vector(0, 0, elapsed * 20f));
-//				eye = center.add(vecmath.vector(0, 0, 10f));
-//			}
-//		}
-//	}
-	
+	// @Override
+	// public void simulate(float elapsed, Input input) {
+	// if (animationFor) {
+	// if (center.z() < animationStartZ - 20) {
+	// animationFor = false;
+	// } else {
+	// center = center.sub(vecmath.vector(0, 0, elapsed * 20f));
+	// eye = center.add(vecmath.vector(0, 0, 10f));
+	// }
+	// } else if (animationBack) {
+	// if (center.z() > animationStartZ + 20) {
+	// animationBack = false;
+	// } else {
+	// center = center.add(vecmath.vector(0, 0, elapsed * 20f));
+	// eye = center.add(vecmath.vector(0, 0, 10f));
+	// }
+	// }
+	// }
+
 	@Override
 	public void simulate(float elapsed, Input input) {
 		if (animationFor) {
@@ -147,7 +154,7 @@ public class Camera extends Node {
 	public void moveRowForward(Vector pos) {
 		animationBack = false;
 		animationFor = true;
-		targetPos= pos.add(vecmath.vector(0, 0, 5));
+		targetPos = pos.add(vecmath.vector(0, 0, 5));
 	}
 
 	public void moveRowBack(Vector pos) {
