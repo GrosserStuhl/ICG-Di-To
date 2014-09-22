@@ -1,5 +1,6 @@
 package shader;
 
+import mathe.Vector3f;
 import ogl.vecmath.Vector;
 //import mathe.Vector3f;
 
@@ -8,9 +9,9 @@ import ogl.vecmath.Vector;
 public class DirectionalLight {
 
 	private BaseLight base;
-	Vector direction;
+	Vector3f direction;
 	
-	public DirectionalLight(BaseLight base, Vector direction) {
+	public DirectionalLight(BaseLight base, Vector3f direction) {
 
 		this.base = base;
 		this.direction = direction.normalize();
@@ -20,7 +21,7 @@ public class DirectionalLight {
 		return base;
 	}
 	
-	public Vector getDirection() {
+	public Vector3f getDirection() {
 		return direction;
 	}
 	
@@ -28,7 +29,7 @@ public class DirectionalLight {
 		this.base = base;
 	}
 	
-	public void setDirection(Vector direction) {
+	public void setDirection(Vector3f direction) {
 		this.direction = direction;
 	}
 	

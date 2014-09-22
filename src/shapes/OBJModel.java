@@ -113,12 +113,12 @@ public class OBJModel extends ShapeNode implements App {
 
 	private void finalizeBuffers(FloatBuffer p, FloatBuffer t,FloatBuffer n, FloatBuffer a, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			if(v.getPosition3f() != null)
-				p.put(v.getPosition3f().asArray());
+			if(v.getPosition() != null)
+				p.put(v.getPosition().asArray());
 			if(v.getTextureCoord() != null)
 				t.put(asArray(v.getTextureCoord()));
-			if(v.getNormal3f() != null)
-				n.put(v.getNormal3f().asArray());
+			if(v.getNormal() != null)
+				n.put(v.getNormal().asArray());
 			
 				a.put(PhongShader.ambientToArray());
 		}

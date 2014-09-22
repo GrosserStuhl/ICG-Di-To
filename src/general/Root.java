@@ -43,14 +43,13 @@ public class Root extends Node implements App {
 	private Vertex[] vertices;
 	private Vertex[] verticesT;
 
-	// Make construction of vectors easy on the eyes.
-	private Vector vec(float x, float y, float z) {
-		return vecmath.vector(x, y, z);
+	private Vector3f vec(float x, float y, float z) {
+		return new Vector3f(x, y, z);
 	}
 
-	// Make construction of colors easy on the eyes.
-	private Color col(float r, float g, float b) {
-		return vecmath.color(r, g, b);
+	
+	private mathe.Color col(float r, float g, float b){
+		return new mathe.Color(r,g,b);
 	}
 
 	private Vector2f v2f(float x, float y) {
@@ -68,18 +67,24 @@ public class Root extends Node implements App {
 	//
 
 	// The positions of the cube vertices.
-	private Vector[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
+	private Vector3f[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
 			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
 
 	// The colors of the cube vertices.
-	private Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
+	private mathe.Color[] c = { 
+			col(1, 0, 0), 
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0), 
+			col(0, 1, 0),
 			col(0, 1, 0) };
 
 	// Pyramid
 
-	private Vector[] t = {
+	private Vector3f[] t = {
 			// hinten links-unten
 			vec(-w2, -h2, -d2),
 			// hinten rechts-unten
@@ -95,9 +100,13 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private Color[] colorT = 
-		{ col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
-			col(1, 0, 0), col(0, 1, 0) };
+	private mathe.Color[] colorT = 
+		{ 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(1, 0, 0),
+			col(1, 0, 0), 
+			col(0, 1, 0) };
 
 	public Root() {
 
@@ -110,7 +119,7 @@ public class Root extends Node implements App {
 		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
-		PhongShader.setDirectionalLight(new BaseLight(vecmath.color(0.5f,0.5f,0.5f),0.8f),vecmath.vector(1,1,1));
+		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
 		
 		shader = new Shader();
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
@@ -135,8 +144,8 @@ public class Root extends Node implements App {
 
 		
 		// Phong extra diffuse:
-		Vector3f[] v3fArray = toV3f(t);
-		verticesT = Vertex.triangleVertices(v3fArray, colorT);
+//		Vector3f[] v3fArray = toV3f(t);
+		verticesT = Vertex.triangleVertices(t,colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
 		// ENd Phong diffuse component
 
@@ -386,15 +395,5 @@ public class Root extends Node implements App {
 		return res;
 	}
 
-	private Vector3f[] toV3f(Vector[] p) {
-
-		Vector3f[] res = new Vector3f[p.length];
-
-		for (int i = 0; i < p.length; i++) {
-			res[i] = new Vector3f(p[i].x(), p[i].y(), p[i].z());
-		}
-
-		return res;
-	}
 
 }

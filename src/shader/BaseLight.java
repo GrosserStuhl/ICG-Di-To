@@ -13,17 +13,17 @@ import ogl.vecmath.Color;
 
 public class BaseLight {
 
-	private Color color;
+	private mathe.Color color;
 	private float intensity;
 	
 	
-	public BaseLight(Color c, float intensity) {
+	public BaseLight(mathe.Color c, float intensity) {
 		this.color = c;
 		this.intensity = intensity;
 	
 	}
 	
-	public Color getColor() {
+	public mathe.Color getColor() {
 		return color;
 	}
 	
@@ -31,7 +31,7 @@ public class BaseLight {
 		return intensity;
 	}
 	
-	public void setColor(Color color) {
+	public void setColor(mathe.Color color) {
 		this.color = color;
 	}
 	

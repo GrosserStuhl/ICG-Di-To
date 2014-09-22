@@ -13,8 +13,6 @@ import shader.Shader;
 
 public abstract class ShapeNode extends Node {
 
-	protected FloatBuffer positionData;
-	protected FloatBuffer colorData;
 	protected Vertex[] vertices;
 	protected Vector translation;
 	private Shader shader;
@@ -63,13 +61,6 @@ public abstract class ShapeNode extends Node {
 		this.shader = shader;
 	}
 
-	public FloatBuffer getPositionData() {
-		return positionData;
-	}
-
-	public FloatBuffer getColorData() {
-		return colorData;
-	}
 
 	@Override
 	public Vertex[] getVertices() {

@@ -1,6 +1,5 @@
 package shader;
 
-import ogl.vecmath.Vector;
 import mathe.Vector3f;
 
 
@@ -43,7 +42,7 @@ public class PhongShader {
 	
 	
 	public static void setDirectionalLight(BaseLight baseLight,
-			Vector direction) {
+			Vector3f direction) {
 		PhongShader.directionalLight = new DirectionalLight(baseLight,
 				direction);
 
