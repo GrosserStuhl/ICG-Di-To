@@ -60,6 +60,10 @@ public final class Input {
   public boolean isKeyToggled(int k) {
     return toggled.contains(k);
   }
+  
+  public void setKeyToggeled(int k) {
+	  toggled.add(k);
+  }
 
   /**
    * Get the current position of the mouse in pixels. Position (0,0) is at the
