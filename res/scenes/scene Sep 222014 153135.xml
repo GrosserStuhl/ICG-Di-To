@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scene>
+<camera #eye="16.745182,0.0,12.42894" #center="16.145874,0.0,11.628422" #mode="free"></camera>
+<shape #planet="Moon" #scale=3.0>
+	<shape #planet="Merkur" #scale=3.0>
+		<shape #planet="Merkur" #scale=3.0></shape>
+	</shape>
+</shape>
+<shape #planet="Merkur" #scale=2.0>
+	<shape #planet="Moon" #scale=2.0></shape>
+	<shape #planet="Merkur" #scale=2.0></shape>
+</shape>
+<shape #planet="Moon" #scale=1.0></shape>
+<shape #planet="Moon" #scale=1.0></shape>
+<shape #planet="Moon" #scale=2.0></shape>
+<shape #planet="Moon" #scale=1.0></shape>
+<shape #planet="Moon" #scale=3.0></shape>
+</scene>

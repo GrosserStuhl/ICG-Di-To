@@ -21,14 +21,17 @@ public abstract class ShapeNode extends Node {
 	private float height = 1;
 	private float width = 1;
 	private float scale = MEDIUM;
-	
+
 	// Initialize the rotation angle
 	protected float angle = 0;
 
-	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation) {
+	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation, float scale) {
 		this.vertices = vertices;
 		this.shader = shader;
 		this.translation = translation;
+		this.scale = scale;
+		width = width * scale;
+		height = height * scale;
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public abstract class ShapeNode extends Node {
 	public void setUnCompleted() {
 		completed = false;
 	}
-	
+
 	public boolean isCompleted() {
 		return completed;
 	}
@@ -125,7 +128,7 @@ public abstract class ShapeNode extends Node {
 	public void setWidth(float width) {
 		this.width = width;
 	}
-	
+
 	@Override
 	public float getScale() {
 		return scale;

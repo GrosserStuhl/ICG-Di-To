@@ -28,8 +28,8 @@ import shader.Shader;
 
 public class Cube extends ShapeNode implements App {
 
-	public Cube(Vertex[] vertices, Shader shader, Vector translation, Vector eye) {
-		super(vertices, shader, translation);
+	public Cube(Vertex[] vertices, Shader shader, Vector translation, Vector eye, float scale) {
+		super(vertices, shader, translation, scale);
 
 		this.eyePosition = eye;
 		

@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 
+import static ogl.vecmathimp.FactoryDefault.vecmath;
 import ogl.vecmath.Vector;
 import shader.Shader;
+import general.Camera;
 import general.Node;
 import general.Scene;
 
@@ -38,17 +40,46 @@ public class SceneLoader {
 
 			int rowCount = 1;
 			ArrayList<ShapePlan> shapes = new ArrayList<>();
-			Vector eye;
-			Vector center;
+			Vector eye = null;
+			Vector center = null;
+			boolean freeMode = false;
 
 			String line = "";
 			while (!line.equals("</scene>")) {
 				line = reader.readLine();
-				if(line.contains("<camera")) {
+				if (line.contains("<camera")) {
 					System.out.println("camera line" + line);
-					String[] wholeLine = line.split("#");
-					String[] vectors = wholeLine[1].split("\"");
-					
+					String[] vectors = line.split("#");
+					String[] coords = vectors[1].split("\"");
+					String[] floatsEye = coords[1].split(",");
+					float x = 0, y = 0, z = 0;
+					try {
+						x = Float.parseFloat(floatsEye[0]);
+						y = Float.parseFloat(floatsEye[1]);
+						z = Float.parseFloat(floatsEye[2]);
+					} catch (NumberFormatException ne) {
+						System.err
+								.println("Kamerakoordinaten konnten nicht ausgelesen werden");
+					}
+					eye = vecmath.vector(x, y, z);
+					String[] coords2 = vectors[2].split("\"");
+					String[] floatsCenter = coords2[1].split(",");
+					try {
+						x = Float.parseFloat(floatsCenter[0]);
+						y = Float.parseFloat(floatsCenter[1]);
+						z = Float.parseFloat(floatsCenter[2]);
+					} catch (NumberFormatException ne) {
+						System.err
+								.println("Kamerakoordinaten konnten nicht ausgelesen werden");
+					}
+					center = vecmath.vector(x, y, z);
+
+					String[] modePart = vectors[3].split("\"");
+					String mode = modePart[1];
+					if (mode.equals("free"))
+						freeMode = true;
+					else
+						freeMode = false;
 				}
 				if (line.contains("<shape")) {
 					System.out.println("first line" + line);
@@ -127,7 +158,11 @@ public class SceneLoader {
 				}
 			}
 			reader.close();
-			return new Scene(shapes, rowCount);
+			if (eye != null && center != null)
+				return new Scene(shapes, rowCount, new Camera(eye, center,
+						freeMode));
+			else
+				return new Scene(shapes, rowCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -135,26 +170,41 @@ public class SceneLoader {
 		return null;
 	}
 
-	public static void saveScene(String fileName, ArrayList<Node> nodes) {
+	public static void saveScene(String fileName, ArrayList<Node> nodes,
+			Camera cam) {
 		File f = new File("res\\scenes\\" + fileName + ".xml");
 		StringBuilder builder = new StringBuilder(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
 
 		builder.append("\n<scene>\n");
+		builder.append("<camera #eye=\"" + cam.getEye().x() + ","
+				+ cam.getEye().y() + "," + cam.getEye().z() + "\" #center=\""
+				+ cam.getCenter().x() + "," + cam.getCenter().y() + ","
+				+ cam.getCenter().z() + "\"");
+		String mode = "";
+		if (cam.isInFreeMode())
+			mode = "free";
+		else
+			mode = "fixed";
+		builder.append(" #mode=\"" + mode + "\"></camera>\n");
 		for (Node node : nodes.get(0).getChildNodes()) {
-			builder.append("<shape #planet=\""+ node.getName()+"\" #scale="+node.getScale()+">");
-			if(node.getChildNodes().isEmpty()) {
+			builder.append("<shape #planet=\"" + node.getName() + "\" #scale="
+					+ node.getScale() + ">");
+			if (node.getChildNodes().isEmpty()) {
 				builder.append("</shape>\n");
 			} else {
 				builder.append("\n");
-				for(Node child: node.getChildNodes()) {
-					builder.append("	<shape #planet=\""+ child.getName()+"\" #scale="+child.getScale()+">");
-					if(child.getChildNodes().isEmpty()) {
+				for (Node child : node.getChildNodes()) {
+					builder.append("	<shape #planet=\"" + child.getName()
+							+ "\" #scale=" + child.getScale() + ">");
+					if (child.getChildNodes().isEmpty()) {
 						builder.append("</shape>\n");
 					} else {
 						builder.append("\n");
-						for(Node child2: node.getChildNodes()) {
-							builder.append("		<shape #planet=\""+ child2.getName()+"\" #scale="+child2.getScale()+"></shape>");
+						for (Node child2 : node.getChildNodes()) {
+							builder.append("		<shape #planet=\""
+									+ child2.getName() + "\" #scale="
+									+ child2.getScale() + "></shape>");
 						}
 						builder.append("\n	</shape>\n");
 					}

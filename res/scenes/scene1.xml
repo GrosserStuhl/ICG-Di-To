@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <scene>
-<camera #eye="0,0,10f" #center="0,0,0"></camera>
+<camera #eye="0,0,16f" #center="0,0,6f" #mode="fixed"></camera>
 <shape #planet="Moon" #scale=3>
 	<shape #planet="Pyramid" #scale=3>
 	     <shape #planet="Jupiter"></shape>

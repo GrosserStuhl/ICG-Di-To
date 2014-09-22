@@ -90,6 +90,7 @@ public final class OpenGLApp {
 				application.simulate(time.elapsed(), input);
 				application.display(width, height);
 				Display.update();
+				Display.sync(60);
 			}
 		} catch (LWJGLException e) {
 			e.printStackTrace();

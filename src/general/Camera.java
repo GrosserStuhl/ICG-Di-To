@@ -21,9 +21,10 @@ public class Camera extends Node {
 		setTransformation(parentMatrix.mult(vecmath.translationMatrix(3, 0, 5)));
 	}
 
-	public Camera(Vector eye, Vector center) {
+	public Camera(Vector eye, Vector center, boolean freeMode) {
 		this.eye = eye;
 		this.center = center;
+		this.freeMode = freeMode;
 	}
 
 	@Override
@@ -31,8 +32,8 @@ public class Camera extends Node {
 		if (eye == null && center == null) {
 			center = getTransformation().getPosition();
 			eye = center.add(vecmath.vector(0, 0, 10f));
-			up = vecmath.vector(0f, 1f, 0f);
 		}
+		up = vecmath.vector(0f, 1f, 0f);
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
 
@@ -78,9 +79,8 @@ public class Camera extends Node {
 	public void display(int width, int height, Matrix parentMatrix) {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 		// System.out.println(getTransformation());
-		// System.out.println("center: " + center);
-		// System.out.println("eye: " + eye);
-		// System.out.println("tilt: " + totalTilt + "   pan: " + totalPan);
+//		 System.out.println("center: " + center);
+//		 System.out.println("eye: " + eye);
 	}
 
 	@Override
@@ -101,6 +101,8 @@ public class Camera extends Node {
 		}
 	}
 
+	
+	
 	public boolean isAnimationActive() {
 		if (animationFor || animationBack)
 			return true;
@@ -154,13 +156,17 @@ public class Camera extends Node {
 	public void moveRowForward(Vector pos) {
 		animationBack = false;
 		animationFor = true;
-		targetPos = pos.add(vecmath.vector(0, 0, 5));
+		targetPos = pos.add(vecmath.vector(0, 0, 4.5f));
 	}
 
 	public void moveRowBack(Vector pos) {
 		animationFor = false;
 		animationBack = true;
-		targetPos = pos.add(vecmath.vector(0, 0, 5));
+		targetPos = pos.add(vecmath.vector(0, 0, 4.5f));
+	}
+	
+	public boolean isInFreeMode() {
+		return freeMode;
 	}
 
 	public Vector getEye() {

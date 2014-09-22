@@ -26,8 +26,8 @@ public class Pyramid extends ShapeNode {
 	
 	
 	
-	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
-		super(vertices, shader, translation);
+	public Pyramid(Vertex[] vertices, Shader shader, Vector translation, float scale) {
+		super(vertices, shader, translation, scale);
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
@@ -49,7 +49,6 @@ public class Pyramid extends ShapeNode {
 	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
 		
-		getShader().activate();
 		Matrix modelMatrix = parentMatrix.mult(vecmath.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(0, 1, 0, angle));
 		setTransformation(modelMatrix);

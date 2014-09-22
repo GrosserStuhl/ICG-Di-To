@@ -26,8 +26,8 @@ public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation) {
-		super(vertices, shader, translation);
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation, float scale) {
+		super(vertices, shader, translation, scale);
 		
 		this.t = t;
 		
@@ -61,15 +61,14 @@ public class OBJModel extends ShapeNode implements App {
 		
 		setTransformation(modelMatrix);
 
-		getShader().activate();
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
 //		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
 		
 		
-//		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
-//		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
-//		getShader().getNormalMatrixUniform().set(normalMatrix);
+		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
 		

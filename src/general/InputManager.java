@@ -164,7 +164,7 @@ public class InputManager {
 						"MMM ddyyyy HHmmss");
 
 				Date resultdate = new Date(System.currentTimeMillis());
-				SceneLoader.saveScene("scene " + sdf.format(resultdate), nodes);
+				SceneLoader.saveScene("scene " + sdf.format(resultdate), nodes, cam);
 			}
 		} else if (!keysUp.contains(Keyboard.KEY_S)
 				&& !keysUp.contains(Keyboard.KEY_LCONTROL)) {
