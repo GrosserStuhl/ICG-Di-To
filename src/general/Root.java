@@ -127,7 +127,7 @@ public class Root extends Node implements App {
 		// "TAmbDiffSpecFragment.fs");
 		planeShader = new Shader("originalVertex.vs", "originalFragment.fs");
 
-		Scene scene = SceneLoader.createScene("scene Sep 222014 153135.xml",
+		Scene scene = SceneLoader.createScene("scene1.xml",
 				textureShader);
 
 		// RowNode row_one = new RowNode(0);
