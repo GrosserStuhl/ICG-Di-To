@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 
+import ogl.vecmath.Vector;
 import shader.Shader;
 import general.Node;
 import general.Scene;
@@ -37,10 +38,18 @@ public class SceneLoader {
 
 			int rowCount = 1;
 			ArrayList<ShapePlan> shapes = new ArrayList<>();
+			Vector eye;
+			Vector center;
 
 			String line = "";
 			while (!line.equals("</scene>")) {
 				line = reader.readLine();
+				if(line.contains("<camera")) {
+					System.out.println("camera line" + line);
+					String[] wholeLine = line.split("#");
+					String[] vectors = wholeLine[1].split("\"");
+					
+				}
 				if (line.contains("<shape")) {
 					System.out.println("first line" + line);
 					ShapePlan shape = null;
