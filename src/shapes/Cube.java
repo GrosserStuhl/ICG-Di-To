@@ -85,7 +85,6 @@ public class Cube extends ShapeNode implements App {
 		// specular Lightning
 		getShader().getSpecularIntensityFloatUniform().set(2);
 		getShader().getSpecularExponentFloatUniform().set(32);
-		getShader().getEyePositionVectorUniform().set(eyePosition);
 		////////////////////////////////////////////////
 		
 		

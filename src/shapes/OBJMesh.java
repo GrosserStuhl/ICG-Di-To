@@ -77,42 +77,11 @@ public class OBJMesh extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
+		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
-//		MatrixUniform viewEncoder = getShader().getViewMatrixUniform();
-//		
-//		float[] elements = new float[16];
-//		
-//		for (int i = 0; i < viewEncoder.getBuffer().capacity(); i++) {
-//			elements[i] = viewEncoder.getBuffer().get(i);
-//		}
-//		
-//		Matrix m = vecmath.matrix(elements);
-//		Matrix modelView4f = modelMatrix.mult(m);
-//		
-//		Matrix3f modelView3f = toMatrix3f(modelView4f);
-//
-//		org.lwjgl.util.vector.Matrix modelViewMatrix = modelView3f.invert().transpose();
-//		
-//		FloatBuffer modelViewBuffer = BufferUtils.createFloatBuffer(9);
-//		modelViewMatrix.store(modelViewBuffer);
-//		modelViewBuffer.rewind();
-		
-		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
-		//getShader().getTransformMatrixUniform().set(modelViewBuffer);
-		
-		
-		getShader().getDirectionalLightIntensity().set(
-				PhongShader.getDirectionalLight().getBase().getIntensity());
-		getShader().getDirectionalLightColor().set(
-				PhongShader.getDirectionalLight().getBase().getColor());
-		getShader().getDirectionalLightDirection().set(
-				PhongShader.getDirectionalLight().getDirection());
-
-		// Enable the vertex data arrays (with indices 0 and 1). We use a vertex
-		// position and a vertex color.
-
-		// vertex positions of cube
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
@@ -122,15 +91,6 @@ public class OBJMesh extends ShapeNode implements App {
 		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
 		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
-		// ambient Lightning
-//		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-//				ambientData);
-//		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
-
-		// vectornormalData
-//		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
-//				normalData);
-//		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);
