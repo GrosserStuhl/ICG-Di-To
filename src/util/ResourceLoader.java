@@ -176,11 +176,12 @@ public class ResourceLoader {
 			Vector3f[] normalData = toVector3fArray(nData);
 			Vector2f[] textureCoord = toVector2fArray(texCoord);
 			
+			
 			Vertex[] vertices = Vertex.modelVertices(positionData, textureCoord,normalData, indices);
 			
 
 			
-			return new Mesh(positionData,textureCoord,normalData,vertices);
+			return new Mesh(vertices,indices);
 
 		} catch(Exception e){
 			

@@ -1,10 +1,13 @@
 package general;
+import java.util.ArrayList;
+
 import mathe.Vector3f;
 
 import org.lwjgl.util.vector.Vector2f;
 
 import ogl.vecmath.Color;
 import ogl.vecmath.Vector;
+import shapes.OBJIndex;
 
 
 public class Mesh {
@@ -18,6 +21,7 @@ public class Mesh {
 	private Vector3f[] position3f;
 	private Vector3f[] normal3f;
 	private mathe.Color[] colorM; 
+	private ArrayList<OBJIndex> indices;
 	
 	
 	public Mesh(Vector[] vec, Color[] col) {
@@ -32,6 +36,16 @@ public class Mesh {
 		this.vertices = vertices;
 		
 	}
+	
+	
+	// TEST OB DAS AUCH REICHT
+	public Mesh(Vertex[] vertices, ArrayList<OBJIndex> indices) {
+		this.vertices = vertices;
+		this.indices = indices;
+		
+	}
+	
+	
 	
 	public Mesh(Vector[] vData, Vector2f[] texCoord, Vertex[] vertices) {
 		this.positionData = vData;
@@ -106,6 +120,10 @@ public class Mesh {
 	
 	public void setVertices(Vertex[] vertices) {
 		this.vertices = vertices;
+	}
+	
+	public ArrayList<OBJIndex> getIndices() {
+		return indices;
 	}
 	
 	
