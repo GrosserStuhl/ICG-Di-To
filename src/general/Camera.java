@@ -34,8 +34,9 @@ public class Camera extends Node {
 			eye = center.add(vecmath.vector(0, 0, 10f));
 		}
 		up = vecmath.vector(0f, 1f, 0f);
-		oldEye = eye;
-		oldCenter = center;
+		oldCenter = vecmath.vector(3f, 0, 5f);
+		oldEye = oldCenter.add(vecmath.vector(0, 0, 10f));
+		
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
 
@@ -88,6 +89,7 @@ public class Camera extends Node {
 		oldEye = eye;
 		oldCenter = center;
 		freeMode = true;
+		System.out.println("free set");
 	}
 	
 	public void setFixed() {
@@ -96,6 +98,7 @@ public class Camera extends Node {
 		totalPan = -3f;
 		totalTilt = 0;
 		freeMode = false;
+		System.out.println("fixed set");
 	}
 	
 	public boolean isAnimationActive() {

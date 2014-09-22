@@ -237,12 +237,10 @@ public class Scene {
 								childNode2.setName("Merkur");
 							}
 							childNode.addNode(childNode2);
-							nodes.get(nodes.size() - 1).addNode(childNode2);
 							System.out.println("child2 added: " + childNode2);
 						}
 					}
 					node.addNode(childNode);
-					nodes.get(nodes.size() - 1).addNode(childNode);
 					System.out.println("child added: " + childNode);
 				}
 			}

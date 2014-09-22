@@ -54,9 +54,8 @@ public class InputManager {
 
 		if (input.isKeyToggled(Keyboard.KEY_M) && !cam.isAnimationActive()) {
 
-			if (modeChanged == false && !cam.isInFreeMode()) {
+			if (!cam.isInFreeMode()) {
 				cam.setFree();
-				modeChanged = true;
 				// Mouse.setGrabbed(true);
 			}
 
@@ -89,9 +88,8 @@ public class InputManager {
 			cam.rotateY((float) -Mouse.getDX() / 500);
 			cam.rotateX((float) Mouse.getDY() / 500);
 		} else if (!cam.isAnimationActive()) {
-			if (modeChanged == true && cam.isInFreeMode()) {
+			if (cam.isInFreeMode()) {
 				cam.setFixed();
-				modeChanged = false;
 				Mouse.setGrabbed(false);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
