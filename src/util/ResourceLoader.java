@@ -1,5 +1,4 @@
 package util;
-import static ogl.vecmathimp.FactoryDefault.vecmath;
 import general.Mesh;
 import general.Vertex;
 
@@ -11,8 +10,6 @@ import java.util.ArrayList;
 import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.Texture;
-
-
 import shapes.OBJIndex;
 
 public class ResourceLoader {

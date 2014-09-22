@@ -5,12 +5,8 @@ import mathe.Vector3f;
 
 public class PhongShader {
 
-	private static final int MAX_POINT_LIGHTS = 4;
-	
-	
-	
 	public PhongShader() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private static Vector3f ambientLight;

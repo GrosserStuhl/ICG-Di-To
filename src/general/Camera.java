@@ -62,9 +62,6 @@ public class Camera extends Node {
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
-		// System.out.println(getTransformation());
-//		 System.out.println("center: " + center);
-//		 System.out.println("eye: " + eye);
 	}
 
 	@Override

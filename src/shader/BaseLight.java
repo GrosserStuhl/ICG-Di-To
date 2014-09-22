@@ -1,8 +1,6 @@
 package shader;
 
 
-import mathe.Vector3f;
-import ogl.vecmath.Color;
 
 /**
  * Mirroring GLSL Structure ( its a wrapper class)

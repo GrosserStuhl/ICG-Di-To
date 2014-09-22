@@ -1,26 +1,23 @@
 package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL11.*;
+import general.ShapeNode;
+import general.Vertex;
 
 import java.nio.FloatBuffer;
 
 import mathe.Vector3f;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix3f;
-
-import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
+
+import org.lwjgl.opengl.GL20;
+
 import shader.PhongShader;
 import shader.Shader;
-import general.Node;
-import general.ShapeNode;
-import general.Vertex;
 
 public class Pyramid extends ShapeNode {
 	
