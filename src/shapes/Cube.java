@@ -14,6 +14,7 @@ import general.Node;
 import general.ShapeNode;
 import general.Vertex;
 import mathe.Matrix4f;
+import mathe.Vector3f;
 import ogl.app.App;
 import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
@@ -35,10 +36,9 @@ public class Cube extends ShapeNode implements App {
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
-		ambientData = createFloatBuffer(vertices.length * 3);
 		normalData = createFloatBuffer(vertices.length * 3);
 		
-		finalizeCubeBuffers(positionData, colorData, ambientData, normalData, vertices);
+		finalizeCubeBuffers(positionData, colorData,normalData, vertices);
 		
 		
 		
@@ -46,7 +46,6 @@ public class Cube extends ShapeNode implements App {
 
 	FloatBuffer positionData;
 	FloatBuffer colorData;
-	FloatBuffer ambientData;
 	FloatBuffer normalData;
 	
 	Vector eyePosition;
@@ -65,7 +64,7 @@ public class Cube extends ShapeNode implements App {
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
-		getShader().getLightPositionVectorUniform().set(vecmath.vector(0, 0, 0));
+		getShader().getLightPositionVectorUniform().set(new Vector3f(0, 0, 0));
 		
 		
 		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
@@ -75,12 +74,10 @@ public class Cube extends ShapeNode implements App {
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light
-		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-				ambientData);
-		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		getShader().getAmbientLightVectorUniform().set(PhongShader.getAmbientLight());
 				
 		// diffuse Lightning
-		getShader().getLightPositionVectorUniform().set(vecmath.vector(1, 1, 1));
+		getShader().getLightPositionVectorUniform().set(new Vector3f(1, 1, 1));
 		
 		// specular Lightning
 		getShader().getSpecularIntensityFloatUniform().set(2);
@@ -110,20 +107,17 @@ public class Cube extends ShapeNode implements App {
 
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
-		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 	}
 
 
-	private void finalizeCubeBuffers(FloatBuffer pos, FloatBuffer col, FloatBuffer amb, FloatBuffer norm, Vertex[] vertices) {
+	private void finalizeCubeBuffers(FloatBuffer pos, FloatBuffer col,FloatBuffer norm, Vertex[] vertices) {
 		for (Vertex v : vertices) {
 			pos.put(v.getPosition().asArray());
 			col.put(v.getColor().asArray());
-			amb.put(PhongShader.ambientToArray());
 			norm.put(v.getNormal().asArray());
 		}
 		pos.rewind();
 		col.rewind();
-		amb.rewind();
 		norm.rewind();
 	}
 	

@@ -11,8 +11,8 @@ public class VectorUniform extends Uniform {
 		super(program, name);
 	}
 	
-	public void set(Vector value){
-		glUniform3f(location, value.x(), value.y(), value.z());
+	public void set(Vector3f value){
+		glUniform3f(location, value.getX(), value.getY(), value.getZ());
 	}
 
 }

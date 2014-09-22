@@ -37,7 +37,7 @@ public class Scene {
 		}
 
 		Mesh small = ResourceLoader.loadOBJModel("small.obj");
-		Mesh medium = ResourceLoader.loadOBJModel("jupiter.obj");
+		Mesh medium = ResourceLoader.loadOBJModel("jupiterSmoothShaded.obj");
 		Mesh large = ResourceLoader.loadOBJModel("xlarge.obj");
 		Texture moonT = ResourceLoader.loadTexture("MoonMap2.jpg");
 		Texture jupiterT = ResourceLoader.loadTexture("jupiter.jpg");

@@ -97,7 +97,6 @@ public class OBJMesh extends ShapeNode implements App {
 
 		GL20.glDisableVertexAttribArray(Shader.getVertexAttribIdx());
 		GL20.glDisableVertexAttribArray(Shader.getColorAttribIdx());
-		GL20.glDisableVertexAttribArray(Shader.getAmbientAttribIdx());
 	}
 
 }

@@ -1,6 +1,7 @@
 package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.*;
@@ -17,7 +18,6 @@ import ogl.vecmath.Vector;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Vector2f;
 
 import shader.PhongShader;
 import shader.Shader;
@@ -36,7 +36,7 @@ public class OBJModel extends ShapeNode implements App {
 		normalData = createFloatBuffer(vertices.length * 3);
 		ambientData = createFloatBuffer(vertices.length * 3);
 
-		finalizeBuffers(positionData, textureData, normalData, ambientData, vertices);
+		finalizeBuffers(positionData, textureData, normalData, vertices);
 	}
 
 	FloatBuffer positionData;
@@ -50,7 +50,6 @@ public class OBJModel extends ShapeNode implements App {
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-
 		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
 
@@ -61,25 +60,24 @@ public class OBJModel extends ShapeNode implements App {
 		
 		setTransformation(modelMatrix);
 
-		getShader().getModelMatrixUniform().set(getTransformation());
+		getShader().getModelMatrixUniform().set(modelMatrix);
 		
 //		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
 		
 		
 		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light
-		glVertexAttribPointer(Shader.getAmbientAttribIdx(), 3, false, 0,
-				ambientData);
-		glEnableVertexAttribArray(Shader.getAmbientAttribIdx());
+		getShader().getAmbientLightVectorUniform().set(PhongShader.getAmbientLight());
 				
 		// diffuse Lightning
-		getShader().getLightPositionVectorUniform().set(vecmath.vector(1, 1, 1));
+		getShader().getLightPositionVectorUniform().set(new Vector3f(0, 0, 16));
 		
 		// specular Lightning
 		getShader().getSpecularIntensityFloatUniform().set(2);
@@ -90,6 +88,11 @@ public class OBJModel extends ShapeNode implements App {
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		
+		
+		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
+				normalData);
+		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
 
 		// last number offset
 		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
@@ -103,38 +106,17 @@ public class OBJModel extends ShapeNode implements App {
 		
 	}
 	
-	protected void finalizeAmbientBuffer(FloatBuffer a, Vertex[] vertices){
-		for (int i = 0; i<vertices.length;i++) {
-			a.put(PhongShader.ambientToArray());
-		}
-		a.rewind();
-	}
 
-	private void finalizeBuffers(FloatBuffer p, FloatBuffer t,FloatBuffer n, FloatBuffer a, Vertex[] vertices) {
+	private void finalizeBuffers(FloatBuffer p, FloatBuffer t,FloatBuffer n, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			if(v.getPosition() != null)
 				p.put(v.getPosition().asArray());
-			if(v.getTextureCoord() != null)
-				t.put(asArray(v.getTextureCoord()));
-			if(v.getNormal() != null)
+				t.put(v.getTextureCoord().asArray());
 				n.put(v.getNormal().asArray());
-			
-				a.put(PhongShader.ambientToArray());
 		}
 		p.rewind();
 		t.rewind();
 		n.rewind();
-		a.rewind();
 	}
 
-	public float[] asArray(Vector2f t) {
-
-		float[] res = new float[2];
-		res[0] = t.getX();
-		res[1] = t.getY();
-
-		return res;
-
-	}
 
 }

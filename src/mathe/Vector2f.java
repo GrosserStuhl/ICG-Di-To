@@ -77,6 +77,7 @@ public class Vector2f {
 	}
 	
 	
+	
 	public String toString(){
 		return "(" + x + " " + y + ")";
 	}
@@ -95,6 +96,13 @@ public class Vector2f {
 	
 	public void setY(float y) {
 		this.y = y;
+	}
+
+	public float[] asArray() {
+		float[] res = new float[2];
+		res[0] = x;
+		res[1] = y;
+		return res;
 	}
 	
 	

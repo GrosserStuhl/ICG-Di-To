@@ -41,19 +41,15 @@ public class Shader extends Node {
 	public static int colorAttribIdx = 1;
 	public static int textureAttribIdx = 2;
 
-	public static int ambientAttribIdx = 4;
-
 	public static int normalAttribIdx = 5;
-	public ColorUniform directionalLightColor;
-	public FloatUniform directionalLightIntensity;
-	public VectorUniform directionalLightDirection;
-	private MatrixUniform rotationMatrixUniform;
 	
 	private MatrixUniform normalMatrixUniform;
 	private VectorUniform lightPositionVectorUniform;
 	private FloatUniform specularIntensityFloatUniform;
 	private FloatUniform specularExponentFloatUniform;
 	private VectorUniform eyePositionVectorUniform;
+	
+	private VectorUniform ambientLightVectorUniform;
 
 	
 	public Shader() {
@@ -89,7 +85,6 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, colorAttribIdx, "color");
-		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, normalAttribIdx, "normal");
 		
 		
@@ -103,12 +98,7 @@ public class Shader extends Node {
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 
-		directionalLightColor = new ColorUniform(program,
-				"directionalLight.base.color");
-		directionalLightIntensity = new FloatUniform(program,
-				"directionalLight.base.intensity");
-		directionalLightDirection = new VectorUniform(program,
-				"directionalLight.direction");
+		ambientLightVectorUniform = new VectorUniform(program, "ambient");
 		
 		lightPositionVectorUniform = new VectorUniform(program,
 				"lightPosition");
@@ -173,7 +163,6 @@ public class Shader extends Node {
 		// be done *before* linking the program.
 		glBindAttribLocation(program, vertexAttribIdx, "vertex");
 		glBindAttribLocation(program, textureAttribIdx, "textureCoord");
-		glBindAttribLocation(program, ambientAttribIdx, "ambientLight");
 		glBindAttribLocation(program, normalAttribIdx, "normal");
 
 		// Link the shader program.
@@ -187,14 +176,9 @@ public class Shader extends Node {
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 		
 		
-		directionalLightColor = new ColorUniform(program,
-				"directionalLight.base.color");
-		directionalLightIntensity = new FloatUniform(program,
-				"directionalLight.base.intensity");
-		directionalLightDirection = new VectorUniform(program,
-				"directionalLight.direction");
-		
 		normalMatrixUniform = new MatrixUniform(program, "transformMatrix");
+		
+		ambientLightVectorUniform = new VectorUniform(program, "ambient");
 		
 		lightPositionVectorUniform = new VectorUniform(program,
 				"lightPosition");
@@ -240,28 +224,11 @@ public class Shader extends Node {
 	}
 
 
-
-	public static int getAmbientAttribIdx() {
-		return ambientAttribIdx;
-	}
 	
 	public static int getNormalAttribIdx() {
 		return normalAttribIdx;
 	}
 
-	public void setDirectionalLightColor(ColorUniform directionalLightColor) {
-		this.directionalLightColor = directionalLightColor;
-	}
-
-	public void setDirectionalLightDirection(
-			VectorUniform directionalLightDirection) {
-		this.directionalLightDirection = directionalLightDirection;
-	}
-
-	public void setDirectionalLightIntensity(
-			FloatUniform directionalLightIntensity) {
-		this.directionalLightIntensity = directionalLightIntensity;
-	}
 	
 	public VectorUniform getLightPositionVectorUniform() {
 		return lightPositionVectorUniform;
@@ -279,25 +246,13 @@ public class Shader extends Node {
 		return eyePositionVectorUniform;
 	}
 	
-
-	public ColorUniform getDirectionalLightColor() {
-		return directionalLightColor;
-	}
-
-	public VectorUniform getDirectionalLightDirection() {
-		return directionalLightDirection;
-	}
-
-	public FloatUniform getDirectionalLightIntensity() {
-		return directionalLightIntensity;
-	}
-	
-	public MatrixUniform getmRotationMatrixUniform() {
-		return rotationMatrixUniform;
-	}
 	
 	public MatrixUniform getNormalMatrixUniform() {
 		return normalMatrixUniform;
+	}
+	
+	public VectorUniform getAmbientLightVectorUniform() {
+		return ambientLightVectorUniform;
 	}
 	
 

@@ -24,16 +24,6 @@ public class PhongShader {
 		PhongShader.directionalLight = directionalLight;
 	}
 
-	public static float[] ambientToArray() {
-
-		float[] res = new float[3];
-		res[0] = ambientLight.getX();
-		res[1] = ambientLight.getY();
-		res[2] = ambientLight.getZ();
-
-		return res;
-
-	}
 
 	
 	public static DirectionalLight getDirectionalLight() {

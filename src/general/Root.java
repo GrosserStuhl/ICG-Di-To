@@ -2,16 +2,13 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.*;
+import mathe.Vector2f;
 import mathe.Vector3f;
-
-import org.lwjgl.util.vector.Vector2f;
 import ogl.app.App;
 import ogl.app.Input;
 import ogl.app.OpenGLApp;
 import ogl.app.Texture;
-import ogl.vecmath.Color;
 import ogl.vecmath.Matrix;
-import ogl.vecmath.Vector;
 import shader.BaseLight;
 import shader.PhongShader;
 import shader.Shader;
@@ -32,7 +29,7 @@ public class Root extends Node implements App {
 	private Shader planeShader;
 
 	private Camera cam;
-	private Vector eyePosition;
+	private Vector3f eyePosition;
 	private InputManager manager;
 
 	// Width, depth and height of the cube divided by 2.
@@ -116,7 +113,7 @@ public class Root extends Node implements App {
 	public void init() {
 
 		
-		PhongShader.setAmbientLight(new Vector3f(0.5f,0.5f,0.5f));
+		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
 		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
@@ -125,7 +122,7 @@ public class Root extends Node implements App {
 		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 		// textureShader = new Shader("TAmbDiffSpecVertex.vs",
 		// "TAmbDiffSpecFragment.fs");
-		planeShader = new Shader("originalVertex.vs", "originalFragment.fs");
+		planeShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
 
 		Scene scene = SceneLoader.createScene("scene Sep 222014 153135.xml",
 				textureShader);
@@ -215,19 +212,19 @@ public class Root extends Node implements App {
 		// crate.addNode(jupiter);
 		// row_three.addNode(jupiter);
 		//
-		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
-		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,
+		Mesh m3 = ResourceLoader.loadOBJModel("jupiterSmoothShaded.obj");
+		Texture t3 = ResourceLoader.loadTexture("venus.jpg");
+		OBJModel venus = new OBJModel(m3.getVertices(), textureShader, t3,
 				vecmath.vector(0, 0, -5), 0);
-		addNode(plane);
+		addNode(venus);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
-				vecmath.vector(0, 0, -25), 0);
-		addNode(plane2);
-
-		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
-				vecmath.vector(0, 0, -45), 0);
-		addNode(plane3);
+//		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
+//				vecmath.vector(0, 0, -25), 0);
+//		addNode(plane2);
+//
+//		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
+//				vecmath.vector(0, 0, -45), 0);
+//		addNode(plane3);
 		//
 		// row_one.setName("Row One");
 		// row_two.setName("Row Two");
@@ -246,7 +243,7 @@ public class Root extends Node implements App {
 			child.init();
 		}
 
-		eyePosition = cam.getEye();
+		eyePosition = new Vector3f(cam.getEye().x(), cam.getEye().y(), cam.getEye().z());
 	}
 
 	@Override
@@ -304,15 +301,18 @@ public class Root extends Node implements App {
 			child.display(width, height, getTransformation());
 		}
 
+		planeShader.activate();
+		for (Node child : getChildNodes()) {
+			child.display(width, height, getTransformation());
+		}
+		
+		
 		textureShader.activate();
 		for (Node child : getChildNodes()) {
 			child.display(width, height, getTransformation());
 		}
 
-		planeShader.activate();
-		for (Node child : getChildNodes()) {
-			child.display(width, height, getTransformation());
-		}
+		
 	}
 
 	@Override

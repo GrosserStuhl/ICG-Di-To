@@ -8,12 +8,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.Texture;
-import ogl.vecmath.Color;
-import ogl.vecmath.Vector;
 
-import org.lwjgl.util.vector.Vector2f;
 
 import shapes.OBJIndex;
 
@@ -177,8 +175,8 @@ public class ResourceLoader {
 			Vector2f[] textureCoord = toVector2fArray(texCoord);
 			
 			
-			Vertex[] vertices = Vertex.modelVertices(positionData, textureCoord,normalData, indices);
-			
+//			Vertex[] vertices = Vertex.modelVertices(positionData, textureCoord,normalData, indices);
+			Vertex[] vertices = Vertex.modelVertices(positionData, textureCoord, normalData, indices);
 
 			
 			return new Mesh(vertices,indices);
@@ -325,9 +323,6 @@ public class ResourceLoader {
 		return result;
 	}
 	
-	public static Color[] setTextureCoords(int length){
-		return null;
-	}
 	
 	
 	

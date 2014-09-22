@@ -2,15 +2,13 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
-
-
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 
 import mathe.Color;
+import mathe.Vector2f;
 import mathe.Vector3f;
 
-import org.lwjgl.util.vector.Vector2f;
 
 import shapes.OBJIndex;
 
