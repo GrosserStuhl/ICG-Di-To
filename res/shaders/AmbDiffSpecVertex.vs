@@ -24,11 +24,14 @@ void main() {
 
 	fambientLight = ambientLight;
 	fcolor = color;
-	fnormal = (vec4(normal,0) * transformMatrix).xyz;
+	
+	mat4 normalMatrix = transpose(inverse(modelMatrix * viewMatrix));
+	fnormal = (vec4(normal,0) * normalMatrix).xyz;
 	
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
 			
-	lightVector = (transformMatrix * vec4(lightPosition, 1.0)).xyz - (transformMatrix * vec4(vertex.xyz, 1.0)).xyz;		
+			
+	lightVector = (normalMatrix * vec4(lightPosition, 1.0)).xyz - (normalMatrix * vec4(vertex.xyz, 1.0)).xyz;		
 	
-	worldPosition = (vec4(vertex,1.0) * transformMatrix).xyz;
+	worldPosition = (vec4(vertex,1.0) * normalMatrix).xyz;
 }

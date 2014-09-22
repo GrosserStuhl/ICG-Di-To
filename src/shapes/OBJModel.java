@@ -26,11 +26,10 @@ public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation,Vector eye) {
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation) {
 		super(vertices, shader, translation);
 		
 		this.t = t;
-		this.eyePosition = eye;
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		textureData = createFloatBuffer(vertices.length * 2);
@@ -82,9 +81,6 @@ public class OBJModel extends ShapeNode implements App {
 		// specular Lightning
 		getShader().getSpecularIntensityFloatUniform().set(2);
 		getShader().getSpecularExponentFloatUniform().set(32);
-		
-		
-		getShader().getEyePositionVectorUniform().set(eyePosition);
 		////////////////////////////////////////////////
 		
 		

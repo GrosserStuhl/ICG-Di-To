@@ -32,6 +32,7 @@ public class Root extends Node implements App {
 	private Shader planeShader;
 
 	private Camera cam;
+	private Vector eyePosition;
 	private InputManager manager;
 
 	// Width, depth and height of the cube divided by 2.
@@ -139,16 +140,16 @@ public class Root extends Node implements App {
 		Vertex.calcNormals(verticesT, pyramidIndices());
 		// ENd Phong diffuse component
 
-		Vector eyePosition = cam.getTransformation().getPosition();
-		 Pyramid pyr = new Pyramid(verticesT, shader, cam.getEye(),
+		 eyePosition = cam.getTransformation().getPosition();
+		 Pyramid pyr = new Pyramid(verticesT, shader,
 		 vecmath.vector(0, 0, 0));
 		 row_one.addNode(pyr);
 		
-		 Pyramid pyr2 = new Pyramid(verticesT, shader, cam.getEye(),
+		 Pyramid pyr2 = new Pyramid(verticesT, shader,
 		 vecmath.vector(0, 0, 0));
 		 row_one.addNode(pyr2);
 		
-		 Pyramid pyr3 = new Pyramid(verticesT, shader, cam.getEye(),
+		 Pyramid pyr3 = new Pyramid(verticesT, shader,
 		 vecmath.vector(0, 0, 0));
 		 row_one.addNode(pyr3);
 		
@@ -190,11 +191,11 @@ public class Root extends Node implements App {
 //		
 		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,vecmath.vector(0, 0, 0), eyePosition);
+		OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,vecmath.vector(0, 0, 0));
 //
 		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
 		Texture t2 = ResourceLoader.loadTexture("stark.png");
-		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,vecmath.vector(0, 0, 0), eyePosition);
+		OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,vecmath.vector(0, 0, 0));
 		row_three.addNode(crate);
 		pyr2.addNode(crate);
 
@@ -204,20 +205,20 @@ public class Root extends Node implements App {
 		
 		Mesh m5 = ResourceLoader.loadOBJModel("jupiter.obj");
 		Texture t5 = ResourceLoader.loadTexture("jupiter.jpg");
-		OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,vecmath.vector(0, 0, 0), eyePosition);
+		OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,vecmath.vector(0, 0, 0));
 		crate.addNode(jupiter);
 		row_three.addNode(jupiter);
 		
 		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -5), eyePosition);
+		OBJModel plane = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -5));
 		addNode(plane);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -25), eyePosition);
+		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -25));
 		addNode(plane2);
 		
-		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -45), eyePosition);
+		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,vecmath.vector(0, 0, -45));
 		addNode(plane3);
 		
 
@@ -283,6 +284,7 @@ public class Root extends Node implements App {
 		shader.activate();
 		shader.getProjectionMatrixUniform().set(projectionMatrix);
 		shader.getViewMatrixUniform().set(viewMatrix);
+		shader.getEyePositionVectorUniform().set(eyePosition);
 		
 		// getChildNodes().get(0).display(width, height, getTransformation());
 		for (Node child : getChildNodes()) {
@@ -295,6 +297,7 @@ public class Root extends Node implements App {
 		textureShader.activate();
 		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 		textureShader.getViewMatrixUniform().set(viewMatrix);
+		textureShader.getEyePositionVectorUniform().set(eyePosition);
 
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null
@@ -308,6 +311,7 @@ public class Root extends Node implements App {
 		planeShader.activate();
 		planeShader.getProjectionMatrixUniform().set(projectionMatrix);
 		planeShader.getViewMatrixUniform().set(viewMatrix);
+		planeShader.getEyePositionVectorUniform().set(eyePosition);
 
 		for (Node child : getChildNodes()) {
 			if (child.getShader() != null

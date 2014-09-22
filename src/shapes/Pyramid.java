@@ -26,10 +26,8 @@ public class Pyramid extends ShapeNode {
 	
 	
 	
-	public Pyramid(Vertex[] vertices, Shader shader, Vector translation, Vector eye) {
+	public Pyramid(Vertex[] vertices, Shader shader, Vector translation) {
 		super(vertices, shader, translation);
-		
-		this.eyePosition = eye;
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
@@ -46,8 +44,6 @@ public class Pyramid extends ShapeNode {
 	
 	FloatBuffer ambientData;
 	FloatBuffer normalData;
-	
-	Vector eyePosition;
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -76,7 +72,6 @@ public class Pyramid extends ShapeNode {
 		// specular Lightning
 		getShader().getSpecularIntensityFloatUniform().set(2);
 		getShader().getSpecularExponentFloatUniform().set(32);
-		getShader().getEyePositionVectorUniform().set(eyePosition);
 		////////////////////////////////////////////////
 		
 		
