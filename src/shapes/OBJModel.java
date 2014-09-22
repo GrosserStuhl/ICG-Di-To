@@ -1,11 +1,10 @@
 package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-
-
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import general.ShapeNode;
 import general.Vertex;
 
@@ -17,10 +16,6 @@ import ogl.app.App;
 import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL20;
-
 import shader.PhongShader;
 import shader.Shader;
 

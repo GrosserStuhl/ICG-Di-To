@@ -146,10 +146,8 @@ public class Root extends Node implements App {
 		addNode(cam);
 
 		// Phong extra diffuse:
-//		Vector3f[] v3fArray = toV3f(t);
 		verticesT = Vertex.triangleVertices(t,colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
-		// ENd Phong diffuse component
 
 		// Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
 		// 0));
@@ -213,19 +211,19 @@ public class Root extends Node implements App {
 		// crate.addNode(jupiter);
 		// row_three.addNode(jupiter);
 		//
-		Mesh m3 = ResourceLoader.loadOBJModel("jupiterSmoothShaded.obj");
-		Texture t3 = ResourceLoader.loadTexture("venus.jpg");
-		OBJModel venus = new OBJModel(m3.getVertices(), textureShader, t3,
+		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
+		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
+		OBJModel plane1 = new OBJModel(m3.getVertices(), textureShader, t3,
 				vecmath.vector(0, 0, -5), 0);
-		addNode(venus);
+		addNode(plane1);
 
-//		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
-//				vecmath.vector(0, 0, -25), 0);
-//		addNode(plane2);
-//
-//		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
-//				vecmath.vector(0, 0, -45), 0);
-//		addNode(plane3);
+		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
+				vecmath.vector(0, 0, -25), 0);
+		addNode(plane2);
+
+		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
+				vecmath.vector(0, 0, -45), 0);
+		addNode(plane3);
 		//
 		// row_one.setName("Row One");
 		// row_two.setName("Row Two");

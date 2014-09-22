@@ -13,9 +13,6 @@ uniform mat4 pLPosLight;
 uniform mat4 plPosWorld;
 
 // describes how quickly the light fades out
-//  formular: 
-// att = aC + aL * d + aQ * d2
-
 
 struct PointLight
 {

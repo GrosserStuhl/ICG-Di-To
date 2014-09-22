@@ -41,7 +41,7 @@ public class Scene {
 		Mesh large = ResourceLoader.loadOBJModel("xlarge.obj");
 		Texture moonT = ResourceLoader.loadTexture("MoonMap2.jpg");
 		Texture jupiterT = ResourceLoader.loadTexture("jupiter.jpg");
-		Texture merkurT = ResourceLoader.loadTexture("merkur.jpg");
+		Texture merkurT = ResourceLoader.loadTexture("earth.jpg");
 
 		for (ShapePlan shape : shapes) {
 			System.out.println("for loop started");

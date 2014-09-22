@@ -23,9 +23,6 @@ varying vec4 worldPosition;
 void main() {
 
 	worldPosition = viewMatrix * modelMatrix * vec4(vertex,1.0);
-
-	
-	
 	ftextureCoord = textureCoord;
 
 	fnormal =  normalize ((normalMatrix * vec4(normal,0.0)).xyz);
