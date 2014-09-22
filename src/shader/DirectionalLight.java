@@ -1,7 +1,6 @@
 package shader;
 
 import mathe.Vector3f;
-import ogl.vecmath.Vector;
 //import mathe.Vector3f;
 
 

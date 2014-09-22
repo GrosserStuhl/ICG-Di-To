@@ -2,7 +2,6 @@ package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.*;
 import general.ShapeNode;
@@ -12,14 +11,12 @@ import java.nio.FloatBuffer;
 
 import ogl.app.App;
 import ogl.app.Input;
-import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL20;
 
-import shader.PhongShader;
 import shader.Shader;
 
 public class OBJMesh extends ShapeNode implements App {

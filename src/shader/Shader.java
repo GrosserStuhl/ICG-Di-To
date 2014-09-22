@@ -14,7 +14,6 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import general.Node;
 import mathe.ColorUniform;
 import mathe.FloatUniform;
-import mathe.MatrixUniform3f;
 import mathe.VectorUniform;
 import ogl.app.Input;
 import ogl.app.MatrixUniform;

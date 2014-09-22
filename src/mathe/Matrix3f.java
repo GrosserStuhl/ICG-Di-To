@@ -1,7 +1,6 @@
-package general;
+package mathe;
 
 import ogl.vecmath.Matrix;
-import tom.bennybox.Matrix4f;
 
 public class Matrix3f {
 

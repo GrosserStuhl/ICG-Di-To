@@ -2,28 +2,20 @@ package shapes;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
-import static org.lwjgl.opengl.GL11.glGetFloat;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.nio.FloatBuffer;
 
-import general.Node;
 import general.ShapeNode;
 import general.Vertex;
-import mathe.Matrix4f;
 import mathe.Vector3f;
 import ogl.app.App;
-import ogl.app.MatrixUniform;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix3f;
-
 import shader.PhongShader;
 import shader.Shader;
 

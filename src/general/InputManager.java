@@ -55,7 +55,7 @@ public class InputManager {
 
 			if (!cam.isInFreeMode()) {
 				cam.setFree();
-				// Mouse.setGrabbed(true);
+				Mouse.setGrabbed(true);
 			}
 
 			float moveSpeed = elapsed * 10;
@@ -189,7 +189,7 @@ public class InputManager {
 		Ray2 ray = new Ray2(cam, Mouse.getX(), Mouse.getY());
 		Vector position;
 		if (nodes.get(0).getChildNodes().get(0).getTransformation() != null) {
-			for (int i=0;i<nodes.get(rowIndex).getChildNodes().size();i++) {
+			for (int i = 0; i < nodes.get(rowIndex).getChildNodes().size(); i++) {
 				Node child = nodes.get(rowIndex).getChildNodes().get(i);
 				position = child.getTransformation().getPosition();
 				Vector[] vertices = new Vector[4];

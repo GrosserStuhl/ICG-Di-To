@@ -5,11 +5,8 @@ import mathe.Vector3f;
 
 public class PhongShader {
 
-	
-	
-	
 	public PhongShader() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private static Vector3f ambientLight;

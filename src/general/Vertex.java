@@ -1,8 +1,5 @@
 package general;
 
-import static ogl.vecmathimp.FactoryDefault.vecmath;
-
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 
 import mathe.Color;
