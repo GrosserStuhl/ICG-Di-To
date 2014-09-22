@@ -27,8 +27,8 @@ public class OBJMesh extends ShapeNode implements App {
 	private FloatBuffer positionData;
 	private FloatBuffer colorData;
 
-	public OBJMesh(Vertex[] vertices, Shader shader, Vector translation) {
-		super(vertices, shader, translation);
+	public OBJMesh(Vertex[] vertices, Shader shader, Vector translation, float scale) {
+		super(vertices, shader, translation, scale);
 
 	}
 

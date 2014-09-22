@@ -65,7 +65,6 @@ public class MatrixUniform extends Uniform {
   }
   
   public Matrix getMatrix() {
-	  System.out.println("kurz bevor rückgabe"+m);
 	return m;
   }
   
