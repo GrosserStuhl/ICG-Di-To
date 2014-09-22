@@ -1,12 +1,9 @@
 package general;
 
-import static ogl.vecmathimp.FactoryDefault.vecmath;
-
 import java.util.ArrayList;
 
 import ogl.app.Texture;
 import shader.Shader;
-import shapes.OBJModel;
 import util.ResourceLoader;
 import util.ShapePlan;
 
