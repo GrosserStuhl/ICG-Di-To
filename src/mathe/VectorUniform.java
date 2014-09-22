@@ -1,8 +1,6 @@
 package mathe;
 
 import ogl.app.Uniform;
-import ogl.vecmath.Vector;
-
 import static org.lwjgl.opengl.GL20.glUniform3f;
 
 public class VectorUniform extends Uniform {

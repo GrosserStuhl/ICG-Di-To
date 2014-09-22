@@ -2,14 +2,20 @@ package mathe;
 
 public class Vector3f {
 
-	private float x;
-	private float y;
-	private float z;
+	public float x;
+	public float y;
+	public float z;
 
 	public Vector3f(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	public Vector3f() {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
 	}
 
 	public float length() {
@@ -32,21 +38,19 @@ public class Vector3f {
 		float length = length();
 
 		// this will set the overall vectorlength to 1
+		float x = this.x/length;
+		float y = this.y/length;
+		float z = this.z/length;
 
-		x /= length;
-		y /= length;
-		z /= length;
-
-		return this;
-
+		return new Vector3f(x, y, z);
 	}
 
 	public Vector3f rotate(Vector3f axis, float angle) {
 		float sinAngle = (float) Math.sin(-angle);
 		float cosAngle = (float) Math.cos(-angle);
-		return this.cross(axis.mul(sinAngle)).add( // Rotation on local X
-				(this.mul(cosAngle)).add( // Rotation on local Z
-						axis.mul(this.dot(axis.mul(1 - cosAngle))))); // Rotation
+		return this.cross(axis.mult(sinAngle)).add( // Rotation on local X
+				(this.mult(cosAngle)).add( // Rotation on local Z
+						axis.mult(this.dot(axis.mult(1 - cosAngle))))); // Rotation
 																		// on
 																		// local
 																		// Y
@@ -68,11 +72,11 @@ public class Vector3f {
 		return new Vector3f(x - r, y - r, z - r);
 	}
 
-	public Vector3f mul(Vector3f r) {
+	public Vector3f mult(Vector3f r) {
 		return new Vector3f(x * r.getX(), y * r.getY(), z * r.getZ());
 	}
 
-	public Vector3f mul(float r) {
+	public Vector3f mult(float r) {
 		return new Vector3f(x * r, y * r, z * r);
 	}
 
@@ -128,5 +132,4 @@ public class Vector3f {
 	public String toString() {
 		return "(" + this.x + ", " + this.y + ", " + this.z + ")";
 	}
-
 }
