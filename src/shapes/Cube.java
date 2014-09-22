@@ -68,8 +68,9 @@ public class Cube extends ShapeNode implements App {
 		getShader().getLightPositionVectorUniform().set(vecmath.vector(0, 0, 0));
 		
 		
-		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
-		//getShader().getTransformMatrixUniform().set(modelViewBuffer);
+		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
 		//////////LIGHTNING SECTION ////////////////////

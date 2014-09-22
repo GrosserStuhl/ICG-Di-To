@@ -49,7 +49,7 @@ public class Shader extends Node {
 	public VectorUniform directionalLightDirection;
 	private MatrixUniform rotationMatrixUniform;
 	
-	private MatrixUniform transformMatrixUniform;
+	private MatrixUniform normalMatrixUniform;
 	private VectorUniform lightPositionVectorUniform;
 	private FloatUniform specularIntensityFloatUniform;
 	private FloatUniform specularExponentFloatUniform;
@@ -118,7 +118,7 @@ public class Shader extends Node {
 		eyePositionVectorUniform = new VectorUniform(program,"eyePosition");
 		
 		
-		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
+		normalMatrixUniform = new MatrixUniform(program, "normalMatrix");
 	}
 
 	public void activate() {
@@ -194,7 +194,7 @@ public class Shader extends Node {
 		directionalLightDirection = new VectorUniform(program,
 				"directionalLight.direction");
 		
-		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
+		normalMatrixUniform = new MatrixUniform(program, "transformMatrix");
 		
 		lightPositionVectorUniform = new VectorUniform(program,
 				"lightPosition");
@@ -204,7 +204,7 @@ public class Shader extends Node {
 		eyePositionVectorUniform = new VectorUniform(program,"eyePosition");
 		
 		
-		transformMatrixUniform = new MatrixUniform(program, "transformMatrix");
+		normalMatrixUniform = new MatrixUniform(program, "normalMatrix");
 	}
 
 	public static int getVertexAttribIdx() {
@@ -296,8 +296,8 @@ public class Shader extends Node {
 		return rotationMatrixUniform;
 	}
 	
-	public MatrixUniform getTransformMatrixUniform() {
-		return transformMatrixUniform;
+	public MatrixUniform getNormalMatrixUniform() {
+		return normalMatrixUniform;
 	}
 	
 

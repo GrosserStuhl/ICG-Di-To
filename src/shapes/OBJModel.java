@@ -65,7 +65,11 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getModelMatrixUniform().set(getTransformation());
 		
 //		getShader().getLightVectorMatrixUniform().set(vecmath.vector(1, 0, 0));
-		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
+		
+		
+//		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+//		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+//		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
 		

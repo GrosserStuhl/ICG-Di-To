@@ -14,7 +14,7 @@ uniform vec3 lightPosition;
 attribute vec3 normal;
 varying vec3 fnormal;
 
-uniform mat4 transformMatrix;
+uniform mat4 normalMatrix;
 
 
 varying vec3 lightVector;
@@ -24,11 +24,11 @@ void main() {
 
 	fambientLight = ambientLight;
 	ftextureCoord = textureCoord;
-	fnormal = (vec4(normal,0) * transformMatrix).xyz;
+	fnormal = (vec4(normal,0) * normalMatrix).xyz;
 	
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
 			
-	lightVector = (transformMatrix * vec4(lightPosition, 1.0)).xyz - (transformMatrix * vec4(vertex.xyz, 1.0)).xyz;		
+	lightVector = (normalMatrix * vec4(lightPosition, 1.0)).xyz - (normalMatrix * vec4(vertex.xyz, 1.0)).xyz;		
 	
-	worldPosition = (vec4(vertex,1.0) * transformMatrix).xyz;
+	worldPosition = (vec4(vertex,1.0) * normalMatrix).xyz;
 }

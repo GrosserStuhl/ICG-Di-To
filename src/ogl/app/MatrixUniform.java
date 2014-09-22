@@ -27,6 +27,7 @@ public class MatrixUniform extends Uniform {
 //  private final FloatBuffer buffer;
 
 	private FloatBuffer buffer;
+	private Matrix m;
 	
   /**
    * Create a new named uniform binding for the specified shader program.
@@ -50,6 +51,8 @@ public class MatrixUniform extends Uniform {
    *          The new matix value for the uniform variable.
    */
   public void set(Matrix m) {
+	  
+	this.m = m;  
     buffer.rewind();
     buffer.put(m.asArray());
     buffer.rewind();
@@ -59,6 +62,10 @@ public class MatrixUniform extends Uniform {
   
   public FloatBuffer getBuffer() {
 	return buffer;
+  }
+  
+  public Matrix getMatrix() {
+	return m;
   }
   
   

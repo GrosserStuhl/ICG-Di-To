@@ -14,7 +14,7 @@ uniform vec3 lightPosition;
 attribute vec3 normal;
 varying vec3 fnormal;
 
-uniform mat4 transformMatrix;
+uniform mat4 normalMatrix;
 
 
 varying vec3 lightVector;
@@ -25,7 +25,7 @@ void main() {
 	fambientLight = ambientLight;
 	fcolor = color;
 	
-	mat4 normalMatrix = transpose(inverse(modelMatrix * viewMatrix));
+
 	fnormal = (vec4(normal,0) * normalMatrix).xyz;
 	
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);

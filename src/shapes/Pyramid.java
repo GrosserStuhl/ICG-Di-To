@@ -57,7 +57,12 @@ public class Pyramid extends ShapeNode {
 		// Activate the shader program and set the transformation matricies to the
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
-		getShader().getTransformMatrixUniform().set(modelMatrix.invertRigid().transpose());
+		
+		
+		
+		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		
 		////////// LIGHTNING SECTION ////////////////////
