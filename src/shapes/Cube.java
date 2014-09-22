@@ -117,10 +117,10 @@ public class Cube extends ShapeNode implements App {
 
 	private void finalizeCubeBuffers(FloatBuffer pos, FloatBuffer col, FloatBuffer amb, FloatBuffer norm, Vertex[] vertices) {
 		for (Vertex v : vertices) {
-			pos.put(v.getPosition3f().asArray());
+			pos.put(v.getPosition().asArray());
 			col.put(v.getColor().asArray());
 			amb.put(PhongShader.ambientToArray());
-			norm.put(v.getNormal3f().asArray());
+			norm.put(v.getNormal().asArray());
 		}
 		pos.rewind();
 		col.rewind();
