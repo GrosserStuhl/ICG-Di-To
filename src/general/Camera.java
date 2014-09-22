@@ -34,27 +34,10 @@ public class Camera extends Node {
 			eye = center.add(vecmath.vector(0, 0, 10f));
 		}
 		up = vecmath.vector(0f, 1f, 0f);
+		oldEye = eye;
+		oldCenter = center;
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
 	}
-
-	// @Override
-	// public void simulate(float elapsed, Input input) {
-	// if (animationFor) {
-	// if (center.z() < animationStartZ - 20) {
-	// animationFor = false;
-	// } else {
-	// center = center.sub(vecmath.vector(0, 0, elapsed * 20f));
-	// eye = center.add(vecmath.vector(0, 0, 10f));
-	// }
-	// } else if (animationBack) {
-	// if (center.z() > animationStartZ + 20) {
-	// animationBack = false;
-	// } else {
-	// center = center.add(vecmath.vector(0, 0, elapsed * 20f));
-	// eye = center.add(vecmath.vector(0, 0, 10f));
-	// }
-	// }
-	// }
 
 	@Override
 	public void simulate(float elapsed, Input input) {
@@ -101,7 +84,19 @@ public class Camera extends Node {
 		}
 	}
 
+	public void setFree() {
+		oldEye = eye;
+		oldCenter = center;
+		freeMode = true;
+	}
 	
+	public void setFixed() {
+		eye = oldEye;
+		center = oldCenter;
+		totalPan = -3f;
+		totalTilt = 0;
+		freeMode = false;
+	}
 	
 	public boolean isAnimationActive() {
 		if (animationFor || animationBack)
