@@ -7,7 +7,7 @@ import static ogl.vecmathimp.FactoryDefault.vecmath;
 public class RowNode extends Node {
 
 	private int rowIndex;
-	private float newNodePositionX = -2;
+	private float newNodePositionX = -5;
 	private float newNodePositionY = 2;
 
 	public RowNode(int rowIndex) {
@@ -16,9 +16,9 @@ public class RowNode extends Node {
 
 	@Override
 	public void addNode(Node node) {
-		if (newNodePositionX == 13) {
+		if (newNodePositionX > 5 && newNodePositionX % 5 == 0) {
 			newNodePositionY -= 4;
-			newNodePositionX = -2;
+			newNodePositionX = -5;
 		}
 		node.setTranslation(vecmath.vector(newNodePositionX, newNodePositionY,
 				0));

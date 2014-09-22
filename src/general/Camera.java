@@ -34,7 +34,7 @@ public class Camera extends Node {
 			eye = center.add(vecmath.vector(0, 0, 10f));
 		}
 		up = vecmath.vector(0f, 1f, 0f);
-		oldCenter = vecmath.vector(3f, 0, 5f);
+		oldCenter = vecmath.vector(0, 0, 5f);
 		oldEye = oldCenter.add(vecmath.vector(0, 0, 10f));
 		
 		setTransformation(vecmath.lookatMatrix(eye, center, up));
