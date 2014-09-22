@@ -2,7 +2,9 @@ package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ import org.lwjgl.opengl.Display;
 
 import ogl.app.Input;
 import ogl.vecmath.Vector;
+import util.SceneLoader;
 
 public class InputManager {
 
@@ -85,7 +88,7 @@ public class InputManager {
 			}
 			cam.rotateY((float) -Mouse.getDX() / 500);
 			cam.rotateX((float) Mouse.getDY() / 500);
-		} else if(!cam.isAnimationActive()){
+		} else if (!cam.isAnimationActive()) {
 			if (modeChanged == true) {
 				cam.changeMode();
 				modeChanged = false;
@@ -94,17 +97,20 @@ public class InputManager {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				if (keysUp.contains(Keyboard.KEY_W) == true) {
 					keysUp.remove(Keyboard.KEY_W);
-					if (!selectedNode.getChildNodes().isEmpty()) {
-						if(rowIndex==0)
+					if (!selectedNode.getChildNodes().isEmpty()
+							&& nodes.get(rowIndex + 1).getClass()
+									.equals(RowNode.class)) {
+						if (rowIndex == 0)
 							rowOneSelection = selectionIndex;
-						else if(rowIndex==1)
+						else if (rowIndex == 1)
 							rowTwoSelection = selectionIndex;
 						rowIndex++;
 						selectionIndex = 0;
 						nodes.get(rowIndex).getChildNodes().clear();
 						for (Node child : selectedNode.getChildNodes())
 							nodes.get(rowIndex).addNode(child);
-						cam.moveRowForward();
+						cam.moveRowForward(nodes.get(rowIndex)
+								.getTransformation().getPosition());
 						setSelection();
 					}
 				}
@@ -113,13 +119,14 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_W);
 			if (input.isKeyDown(Keyboard.KEY_S)) {
 				if (rowIndex > 0) {
-					if(rowIndex==2)
+					if (rowIndex == 2)
 						selectionIndex = rowTwoSelection;
-					else if(rowIndex==1)
+					else if (rowIndex == 1)
 						selectionIndex = rowOneSelection;
 					rowIndex--;
 					nodes.get(rowIndex + 1).getChildNodes().clear();
-					cam.moveRowBack();
+					cam.moveRowBack(nodes.get(rowIndex).getTransformation()
+							.getPosition());
 					setSelection();
 				}
 			}
@@ -146,6 +153,26 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)
+				&& Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+			if (keysUp.contains(Keyboard.KEY_S) == true
+					&& keysUp.contains((Keyboard.KEY_LCONTROL))) {
+				keysUp.remove(Keyboard.KEY_S);
+				keysUp.remove(Keyboard.KEY_LCONTROL);
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"MMM ddyyyy HHmmss");
+
+				Date resultdate = new Date(System.currentTimeMillis());
+				SceneLoader.saveScene("scene " + sdf.format(resultdate), nodes);
+			}
+		} else if (!keysUp.contains(Keyboard.KEY_S)
+				&& !keysUp.contains(Keyboard.KEY_LCONTROL)) {
+			if (!Keyboard.isKeyDown(Keyboard.KEY_S)
+					&& !Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+				keysUp.add(Keyboard.KEY_S);
+				keysUp.add(Keyboard.KEY_LCONTROL);
+			}
 		}
 		if (Mouse.isButtonDown(0)) {
 			executeRayCalculation();

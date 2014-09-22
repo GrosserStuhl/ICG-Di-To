@@ -1,22 +1,38 @@
 package util;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
 
+import shader.Shader;
+import general.Node;
 import general.Scene;
 
 public class SceneLoader {
 
-	public static Scene loadScene(String fileName) {
+	public static Scene createScene(String fileName, Shader shader) {
+		Scene scene = loadScene(fileName);
+		scene.setShader(shader);
+		scene.createNodes();
+
+		return scene;
+	}
+
+	private static Scene loadScene(String fileName) {
 		try {
 			LineNumberReader reader = null;
 			try {
 				reader = new LineNumberReader(new FileReader("./res/scenes/"
 						+ fileName));
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				System.err
+						.println("Angegebene Szene-Datei konnte nicht gefunden werden, Programm wird beendet");
+				System.exit(0);
 			}
 
 			int rowCount = 1;
@@ -92,8 +108,8 @@ public class SceneLoader {
 							children.add(child);
 							line = reader.readLine();
 						}
-						System.out.println("shape through if: " + shape);
 						shape = new ShapePlan(planet[1], children, scale);
+						System.out.println("shape through if: " + shape);
 					} else {
 						shape = new ShapePlan(planet[1], scale);
 						System.out.println("shape through else: " + shape);
@@ -108,5 +124,52 @@ public class SceneLoader {
 		}
 
 		return null;
+	}
+
+	public static void saveScene(String fileName, ArrayList<Node> nodes) {
+		File f = new File("res\\scenes\\" + fileName + ".xml");
+		StringBuilder builder = new StringBuilder(
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+
+		builder.append("\n<scene>\n");
+		for (Node node : nodes.get(0).getChildNodes()) {
+			builder.append("<shape #planet=\""+ node.getName()+"\" #scale="+node.getScale()+">");
+			if(node.getChildNodes().isEmpty()) {
+				builder.append("</shape>\n");
+			} else {
+				builder.append("\n");
+				for(Node child: node.getChildNodes()) {
+					builder.append("	<shape #planet=\""+ child.getName()+"\" #scale="+child.getScale()+">");
+					if(child.getChildNodes().isEmpty()) {
+						builder.append("</shape>\n");
+					} else {
+						builder.append("\n");
+						for(Node child2: node.getChildNodes()) {
+							builder.append("		<shape #planet=\""+ child2.getName()+"\" #scale="+child2.getScale()+"></shape>");
+						}
+						builder.append("\n	</shape>\n");
+					}
+				}
+				builder.append("</shape>\n");
+			}
+		}
+		builder.append("</scene>");
+		System.out.println(builder.toString());
+
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(f));
+			writer.write(builder.toString());
+			writer.flush();
+			writer.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(fileName);
 	}
 }

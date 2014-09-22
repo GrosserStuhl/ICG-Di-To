@@ -72,11 +72,21 @@ public abstract class Node implements App {
 	public float getWidth() {
 		return 0;
 	}
-	
+
 	public void setHeight(float height) {
 	}
-	
+
 	public void setWidth(float width) {
+	}
+
+	public float getScale() {
+		return 0;
+	}
+	
+	public void setCompleted() {
+	}
+
+	public void setUnCompleted() {
 	}
 
 }
