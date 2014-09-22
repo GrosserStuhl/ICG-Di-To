@@ -140,7 +140,7 @@ public class Root extends Node implements App {
 		Vertex.calcNormals(verticesT, pyramidIndices());
 		// ENd Phong diffuse component
 
-		 eyePosition = cam.getTransformation().getPosition();
+		
 		 Pyramid pyr = new Pyramid(verticesT, shader,
 		 vecmath.vector(0, 0, 0));
 		 row_one.addNode(pyr);
@@ -241,6 +241,8 @@ public class Root extends Node implements App {
 		for (Node child : getChildNodes()) {
 			child.init();
 		}
+		
+		 eyePosition = cam.getEye();
 	}
 
 	@Override
