@@ -53,6 +53,7 @@ public class Shader extends Node {
 	
 	
 	private MatrixUniform pLPosLightUniform;
+	private MatrixUniform pLPosWorldUniform;
 	private VectorUniform vpositionUniform;
 	private ColorUniform vcolorUniform;
 	private FloatUniform fambientUniform;
@@ -202,10 +203,11 @@ public class Shader extends Node {
 		
 		
 		pLPosLightUniform = new MatrixUniform(program, "pLPosLight");
+		pLPosWorldUniform = new MatrixUniform(program, "pLPosWorld");
 		
 		vpositionUniform = new VectorUniform(program, "pointLight.vposition");
 		vcolorUniform = new ColorUniform(program, "pointLight.vcolor");
-		fambientUniform = new FloatUniform(program, "fambient");
+		fambientUniform = new FloatUniform(program, "pointLight.fambient");
 		constantAttenuationUniform = new FloatUniform(program, "pointLight.fconstantAtt");
 		linearAttenuationUniform = new FloatUniform(program, "pointLight.flinearAtt");
 		exponentAttenuationUniform = new FloatUniform(program, "pointLight.fexpAtt");
@@ -282,6 +284,10 @@ public class Shader extends Node {
 	
 	
 	
+	
+	public MatrixUniform getpLPosWorldUniform() {
+		return pLPosWorldUniform;
+	}
 	public FloatUniform getConstantAttenuationUniform() {
 		return constantAttenuationUniform;
 	}

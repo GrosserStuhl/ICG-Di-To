@@ -67,11 +67,10 @@ public class OBJModel extends ShapeNode implements App {
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
-		
-		
 		getShader().getpLPosLightUniform().set(viewMatrix);
+		getShader().getpLPosWorldUniform().set(viewMatrix.mult(modelMatrix));
 		
-		getShader().getVpositionUniform().set(new Vector3f( 0, 0, 16));
+		getShader().getVpositionUniform().set(new Vector3f( -2, 0, 3f));
 		getShader().getVcolorUniform().set(new Color(1,0,0));
 		getShader().getFambientUniform().set((float) 0.8);
 		

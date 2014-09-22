@@ -10,6 +10,7 @@ uniform float specIntensity;
 uniform float specExponent;
 
 uniform mat4 pLPosLight;
+uniform mat4 plPosWorld;
 
 // describes how quickly the light fades out
 //  formular: 
@@ -91,7 +92,7 @@ vec4 getPointLightColor(PointLight ptLight, vec4 vWorldPos, vec3 vNormal)
    float specularTerm = specIntensity * specularFactor;
    
    
-   float fAttTotal = ptLight.fconstantAtt + ptLight.flinearAtt*fDist + ptLight.fexpAtt*fDist*fDist;
+   float fAttTotal = ptLight.fconstantAtt + ptLight.flinearAtt*fDist + ptLight.fexpAtt*fDist*fDist*0.00001;
 
    return vec4(ptLight.vcolor, 1.0)*(ptLight.fambient+fDiffuse)/fAttTotal;
 }
@@ -105,6 +106,8 @@ float diffuseFactor = max(dot(lightVector,fnormal), 0.0);
 vec4 ambientLight = vec4(ambient,1);
 vec4 textureColor = texture2D(img, ftextureCoord.st );
 
+
+//vec4 plWorldPosition = plPosWorld * vec4(pointLight.vposition,1.0);
 vec4 pointLightColor =  getPointLightColor(pointLight, worldPosition, fnormal);
 
 vec3 dirToEye = normalize(worldPosition.xyz);
@@ -119,8 +122,7 @@ float specularTerm = specIntensity * specularFactor;
 //gl_FragColor = textureColor * (diffuseFactor + specularFactor) + textureColor * ambientLight;
 
 
-gl_FragColor = textureColor * (diffuseFactor + specularTerm) + textureColor * ambientLight;
-	+ pointLightColor;
+gl_FragColor = textureColor * (diffuseFactor + specularTerm) + textureColor * ambientLight + pointLightColor;
 
 
 }
