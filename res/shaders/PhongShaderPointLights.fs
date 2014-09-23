@@ -10,6 +10,8 @@ uniform float specIntensity;
 uniform float specExponent;
 
 uniform mat4 pLViewMatrix;
+uniform mat4 pLViewMatrix2;
+uniform mat4 pLViewMatrix3;
 
 // describes how quickly the light fades out
 
@@ -27,6 +29,8 @@ struct PointLight
 };
 
 uniform PointLight pointLight;
+uniform PointLight pointLight2;
+uniform PointLight pointLight3;
 
 
 
@@ -70,7 +74,7 @@ uniform PointLight pointLight;
    //return vec4(ptLight.vcolor, 1.0)*(ptLight.fambient+fDiffuse)/fAttTotal;
 //}
 
-vec4 getPointLightColor(PointLight ptLight, vec4 vWorldPos, vec3 vNormal)
+vec4 getPointLightColor(PointLight ptLight,mat4 viewMatrix,  vec4 vWorldPos, vec3 vNormal)
 {
    vec3 pLPositionToView =  (pLViewMatrix*vec4(ptLight.vposition,1.0)).xyz;
 	
@@ -104,7 +108,9 @@ vec4 textureColor = texture2D(img, ftextureCoord.st );
 
 
 //vec4 plWorldPosition = plPosWorld * vec4(pointLight.vposition,1.0);
-vec4 pointLightColor =  getPointLightColor(pointLight, worldPosition, fnormal);
+vec4 pointLightColor1 =  getPointLightColor(pointLight,pLViewMatrix, worldPosition, fnormal);
+vec4 pointLightColor2 =  getPointLightColor(pointLight2,pLViewMatrix2, worldPosition, fnormal);
+vec4 pointLightColor3 =  getPointLightColor(pointLight3,pLViewMatrix3, worldPosition, fnormal);
 
 vec3 dirToEye = normalize(worldPosition.xyz);
 vec3 reflectDirection = normalize(reflect(lightVector,fnormal));
@@ -115,10 +121,10 @@ specularFactor = pow(specularFactor, specExponent);
 
 float specularTerm = specIntensity * specularFactor;
 
-//gl_FragColor = textureColor * (diffuseFactor + specularFactor) + textureColor * ambientLight;
 
 
-gl_FragColor = textureColor * (diffuseFactor + specularTerm) + textureColor * ambientLight + pointLightColor;
+gl_FragColor = textureColor * (diffuseFactor + specularTerm) + textureColor * ambientLight 
+		+ pointLightColor1 + pointLightColor2 + pointLightColor3;
 
 
 }

@@ -44,7 +44,7 @@ public class Shader extends Node {
 	private FloatUniform specularIntensityFloatUniform;
 	private FloatUniform specularExponentFloatUniform;
 
-	private VectorUniform ambientLightVectorUniform;
+	private ColorUniform ambientLightColorUniform;
 
 	//POINT LIGHT 1
 	private MatrixUniform pLViewMatrixUniform;
@@ -56,6 +56,7 @@ public class Shader extends Node {
 	private FloatUniform exponentAttenuationUniform;
 	
 	// POINT LIGHT 2
+	private MatrixUniform pLViewMatrixUniform2;
 	private VectorUniform vpositionUniform2;
 	private ColorUniform vcolorUniform2;
 	private FloatUniform fambientUniform2;
@@ -64,6 +65,7 @@ public class Shader extends Node {
 	private FloatUniform exponentAttenuationUniform2;
 	
 	// POINT LIGHT 3
+	private MatrixUniform pLViewMatrixUniform3;
 	private VectorUniform vpositionUniform3;
 	private ColorUniform vcolorUniform3;
 	private FloatUniform fambientUniform3;
@@ -123,7 +125,7 @@ public class Shader extends Node {
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 
-		ambientLightVectorUniform = new VectorUniform(program, "ambient");
+		ambientLightColorUniform = new ColorUniform(program, "ambient");
 
 		lightPositionVectorUniform = new VectorUniform(program, "lightPosition");
 
@@ -195,9 +197,7 @@ public class Shader extends Node {
 		viewMatrixUniform = new MatrixUniform(program, "viewMatrix");
 		projectionMatrixUniform = new MatrixUniform(program, "projectionMatrix");
 
-		normalMatrixUniform = new MatrixUniform(program, "transformMatrix");
-
-		ambientLightVectorUniform = new VectorUniform(program, "ambient");
+		ambientLightColorUniform = new ColorUniform(program, "ambient");
 
 		lightPositionVectorUniform = new VectorUniform(program, "lightPosition");
 
@@ -221,26 +221,28 @@ public class Shader extends Node {
 		
 		
 		// POINT LIGHT 2
-		vpositionUniform2 = new VectorUniform(program, "pointLight.vposition");
-		vcolorUniform2 = new ColorUniform(program, "pointLight.vcolor");
-		fambientUniform2 = new FloatUniform(program, "pointLight.fambient");
+		pLViewMatrixUniform2 = new MatrixUniform(program, "pLViewMatrix2");
+		vpositionUniform2 = new VectorUniform(program, "pointLight2.vposition");
+		vcolorUniform2 = new ColorUniform(program, "pointLight2.vcolor");
+		fambientUniform2 = new FloatUniform(program, "pointLight2.fambient");
 		constantAttenuationUniform2 = new FloatUniform(program,
-				"pointLight.fconstantAtt");
+				"pointLight2.fconstantAtt");
 		linearAttenuationUniform2 = new FloatUniform(program,
-				"pointLight.flinearAtt");
+				"pointLight2.flinearAtt");
 		exponentAttenuationUniform2 = new FloatUniform(program,
-				"pointLight.fexpAtt");
+				"pointLight2.fexpAtt");
 		
 		// POINT LIGHT 3
-		vpositionUniform3 = new VectorUniform(program, "pointLight.vposition");
-		vcolorUniform3 = new ColorUniform(program, "pointLight.vcolor");
-		fambientUniform3 = new FloatUniform(program, "pointLight.fambient");
+		pLViewMatrixUniform3 = new MatrixUniform(program, "pLViewMatrix3");
+		vpositionUniform3 = new VectorUniform(program, "pointLight3.vposition");
+		vcolorUniform3 = new ColorUniform(program, "pointLight3.vcolor");
+		fambientUniform3 = new FloatUniform(program, "pointLight3.fambient");
 		constantAttenuationUniform3 = new FloatUniform(program,
-				"pointLight.fconstantAtt");
+				"pointLight3.fconstantAtt");
 		linearAttenuationUniform3 = new FloatUniform(program,
-				"pointLight.flinearAtt");
+				"pointLight3.flinearAtt");
 		exponentAttenuationUniform3 = new FloatUniform(program,
-				"pointLight.fexpAtt");
+				"pointLight3.fexpAtt");
 
 	}
 
@@ -300,8 +302,8 @@ public class Shader extends Node {
 		return normalMatrixUniform;
 	}
 
-	public VectorUniform getAmbientLightVectorUniform() {
-		return ambientLightVectorUniform;
+	public ColorUniform getAmbientLightColorUniform() {
+		return ambientLightColorUniform;
 	}
 
 	
@@ -330,6 +332,62 @@ public class Shader extends Node {
 		return vpositionUniform;
 	}
 	
+	public FloatUniform getConstantAttenuationUniform2() {
+		return constantAttenuationUniform2;
+	}
+
+	public FloatUniform getExponentAttenuationUniform2() {
+		return exponentAttenuationUniform2;
+	}
+
+	public FloatUniform getLinearAttenuationUniform2() {
+		return linearAttenuationUniform2;
+	}
+
+	public FloatUniform getFambientUniform2() {
+		return fambientUniform2;
+	}
+
+	public ColorUniform getVcolorUniform2() {
+		return vcolorUniform2;
+	}
+
+	public VectorUniform getVpositionUniform2() {
+		return vpositionUniform2;
+	}
+	
+	
+	public FloatUniform getConstantAttenuationUniform3() {
+		return constantAttenuationUniform3;
+	}
+
+	public FloatUniform getExponentAttenuationUniform3() {
+		return exponentAttenuationUniform3;
+	}
+
+	public FloatUniform getLinearAttenuationUniform3() {
+		return linearAttenuationUniform3;
+	}
+
+	public FloatUniform getFambientUniform3() {
+		return fambientUniform3;
+	}
+
+	public ColorUniform getVcolorUniform3() {
+		return vcolorUniform3;
+	}
+
+	public VectorUniform getVpositionUniform3() {
+		return vpositionUniform3;
+	}
+	
+	public MatrixUniform getpLViewMatrixUniform2() {
+		return pLViewMatrixUniform2;
+	}
+	
+	public MatrixUniform getpLViewMatrixUniform3() {
+		return pLViewMatrixUniform3;
+	}
 	
 	
 	

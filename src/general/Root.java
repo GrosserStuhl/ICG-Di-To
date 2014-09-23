@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glViewport;
 import mathe.Color;
-import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.App;
 import ogl.app.Input;
@@ -96,15 +95,14 @@ public class Root extends Node implements App {
 	public void init() {
 	
 		
-		PointLight red = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
-//		PointLight green = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
-//		PointLight blue = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
-		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
+		PhongShader.setAmbientLight(new Color(0.2f,0.2f,0.2f));
 		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
 //		
 //		shader = new Shader();
 //		textureShader = new Shader("PhongShaderPointLights.vs", "PhongShaderPointLights.fs");
+		
+		
 
 		Scene scene = SceneLoader.createScene("scene1.xml");
 
@@ -125,6 +123,7 @@ public class Root extends Node implements App {
 			cam = new Camera(getTransformation());
 		addNode(cam);
 
+		
 		// Phong extra diffuse:
 		verticesT = Vertex.triangleVertices(t,colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
@@ -192,23 +191,20 @@ public class Root extends Node implements App {
 		// row_three.addNode(jupiter);
 		//
 		
-		PointLight[] discoPointer = new PointLight[1];
-		discoPointer[0] = red;
-//		discoPointer[1] = green;
-//		discoPointer[2] = blue;
+		
 		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
 		OBJModel plane1 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -5), 0,null);
+				vecmath.vector(0, 0, -5), 0);
 		addNode(plane1);
 
 		OBJModel plane2 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -25), 0,null);
+				vecmath.vector(0, 0, -25), 0);
 		addNode(plane2);
 
 		OBJModel plane3 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -45), 0,null);
+				vecmath.vector(0, 0, -45), 0);
 		addNode(plane3);
 		//
 		// row_one.setName("Row One");

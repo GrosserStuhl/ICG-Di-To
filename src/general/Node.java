@@ -1,6 +1,7 @@
 package general;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ogl.app.App;
 import ogl.vecmath.Matrix;
@@ -96,6 +97,13 @@ public abstract class Node implements App {
 	public boolean isCompleted() {
 		return false;
 	}
+	
+
+	public void setThreePointLights(){}
+	
+	public void setTwoPointLights(){}
+	
+	public void setOnePointLight(){}
 	
 
 }

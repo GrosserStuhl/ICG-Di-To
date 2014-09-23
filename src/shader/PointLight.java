@@ -1,17 +1,13 @@
 package shader;
 
-import static ogl.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import general.ShapeNode;
-import general.Vertex;
 import mathe.Color;
 import mathe.Vector3f;
-import ogl.app.App;
-import ogl.vecmath.Matrix;
-import ogl.vecmath.Vector;
 
 public class PointLight  {
+	
+	public static final PointLight red = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
+	public static final PointLight green = new PointLight(new Vector3f(2, 0, -3f),new Color(0,1,0), (float) 0.4, (float) 0, (float) 1, (float) 1 );
+	public static final PointLight blue = new PointLight(new Vector3f(0, 10, -3f),new Color(0,0,1), (float) 0.4, (float) 0, (float) 1, (float) 1 );
 	
 	
 	private Vector3f plPosition;
@@ -55,6 +51,21 @@ public class PointLight  {
 	
 	public float getLinearAttenuation() {
 		return linearAttenuation;
+	}
+
+
+	public static PointLight getRed() {
+		return red;
+	}
+
+
+	public static PointLight getGreen() {
+		return green;
+	}
+
+
+	public static PointLight getBlue() {
+		return blue;
 	}
 
 

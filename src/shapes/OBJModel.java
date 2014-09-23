@@ -22,14 +22,12 @@ import shader.Shader;
 
 public class OBJModel extends ShapeNode implements App {
 
-	private PointLight[] pls;
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale, PointLight[] pls) {
+	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale) {
 		super(vertices, translation, scale);
 		
 		this.t = t;
-		this.pls = pls;
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		textureData = createFloatBuffer(vertices.length * 2);
@@ -61,18 +59,45 @@ public class OBJModel extends ShapeNode implements App {
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
-		getShader().getpLViewMatrixUniform().set(viewMatrix);
-		getShader().getVpositionUniform().set(new Vector3f( -2, 0, 3f));
-		getShader().getVcolorUniform().set(new Color(1,0,0));
-		getShader().getFambientUniform().set((float) 0.8);
 		
-		getShader().getConstantAttenuationUniform().set((float) 0);
-		getShader().getLinearAttenuationUniform().set((float) 1);
-		getShader().getExponentAttenuationUniform().set((float) 1);
+		// übergibt für alle PointLights die viewMatrix;
+		getShader().getpLViewMatrixUniform().set(viewMatrix);
+		
+
+			getShader().getVpositionUniform().set(PointLight.getRed().getPlPosition());
+			getShader().getVcolorUniform().set(PointLight.getRed().getPlColor());
+			getShader().getFambientUniform().set(PointLight.getRed().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform().set(PointLight.getRed().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform().set(PointLight.getRed().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform().set(PointLight.getRed().getExponentAttenuation());
+		
+
+
+			getShader().getpLViewMatrixUniform2().set(viewMatrix);
+			getShader().getVpositionUniform2().set(PointLight.getGreen().getPlPosition());
+			getShader().getVcolorUniform2().set(PointLight.getGreen().getPlColor());
+			getShader().getFambientUniform2().set(PointLight.getGreen().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform2().set(PointLight.getGreen().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform2().set(PointLight.getGreen().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform2().set(PointLight.getGreen().getExponentAttenuation());
+
+		
+
+			getShader().getpLViewMatrixUniform3().set(viewMatrix);
+			getShader().getVpositionUniform3().set(PointLight.getBlue().getPlPosition());
+			getShader().getVcolorUniform3().set(PointLight.getBlue().getPlColor());
+			getShader().getFambientUniform3().set(PointLight.getBlue().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform3().set(PointLight.getBlue().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform3().set(PointLight.getBlue().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform3().set(PointLight.getBlue().getExponentAttenuation());
+		
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light
-		getShader().getAmbientLightVectorUniform().set(PhongShader.getAmbientLight());
+		getShader().getAmbientLightColorUniform().set(PhongShader.getAmbientLight());
 				
 		// diffuse Lightning
 		getShader().getLightPositionVectorUniform().set(new Vector3f(0, 0, 16));

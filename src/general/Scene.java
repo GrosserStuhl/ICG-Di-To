@@ -3,6 +3,7 @@ package general;
 import java.util.ArrayList;
 
 import ogl.app.Texture;
+import shader.PointLight;
 import shapes.OBJModel;
 import util.ResourceLoader;
 import util.ShapePlan;
@@ -18,6 +19,7 @@ public class Scene {
 	public Scene(ArrayList<ShapePlan> shapes, int rowCount) {
 		this.shapes = shapes;
 		this.rowCount = rowCount;
+		
 	}
 	
 	public Scene(ArrayList<ShapePlan> shapes, int rowCount, Camera cam) {
@@ -62,6 +64,7 @@ public class Scene {
 					break;
 				}
 				node.setName("Moon");
+				
 			} else if (shape.getName().equals("Jupiter")) {
 				System.out.println("jupiter found");
 				switch ((int) shape.getScale()) {

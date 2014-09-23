@@ -3,6 +3,7 @@ package general;
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import ogl.app.Input;
 import ogl.vecmath.Vector;
@@ -21,6 +22,7 @@ public abstract class ShapeNode extends Node {
 	private float height = 1;
 	private float width = 1;
 	private float scale = MEDIUM;
+	
 
 	// Initialize the rotation angle
 	protected float angle = 0;
@@ -32,14 +34,17 @@ public abstract class ShapeNode extends Node {
 		this.scale = scale;
 		width = width * scale;
 		height = height * scale;
+
 	}
 
+
+	
+	
 	@Override
 	public void init() {
 
-		for (Node child : getChildNodes()) {
+		for (Node child : getChildNodes())
 			child.init();
-		}
 	}
 
 	@Override
@@ -75,6 +80,7 @@ public abstract class ShapeNode extends Node {
 				* vecmath.vectorSize());
 	}
 
+	
 	@Override
 	public void setTranslation(Vector translation) {
 		this.translation = translation;

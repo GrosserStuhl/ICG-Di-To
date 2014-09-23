@@ -58,7 +58,7 @@ public class Pyramid extends ShapeNode {
 		
 		////////// LIGHTNING SECTION ////////////////////
 		// ambient light
-		getShader().getAmbientLightVectorUniform().set(PhongShader.getAmbientLight());
+		getShader().getAmbientLightColorUniform().set(PhongShader.getAmbientLight());
 				
 		// diffuse Lightning
 		getShader().getLightPositionVectorUniform().set(new Vector3f(1, 1, 1));

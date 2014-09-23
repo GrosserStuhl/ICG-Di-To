@@ -1,5 +1,6 @@
 package shader;
 
+import mathe.Color;
 import mathe.Vector3f;
 
 
@@ -9,14 +10,14 @@ public class PhongShader {
 		
 	}
 
-	private static Vector3f ambientLight;
+	private static Color ambientLight;
 	private static DirectionalLight directionalLight;
 
-	public static Vector3f getAmbientLight() {
+	public static Color getAmbientLight() {
 		return ambientLight;
 	}
 
-	public static void setAmbientLight(Vector3f ambientLight) {
+	public static void setAmbientLight(Color ambientLight) {
 		PhongShader.ambientLight = ambientLight;
 	}
 
