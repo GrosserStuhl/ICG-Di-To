@@ -25,9 +25,9 @@ public abstract class ShapeNode extends Node {
 	// Initialize the rotation angle
 	protected float angle = 0;
 
-	public ShapeNode(Vertex[] vertices, Shader shader, Vector translation, float scale) {
+	public ShapeNode(Vertex[] vertices, Vector translation, float scale) {
 		this.vertices = vertices;
-		this.shader = shader;
+		this.shader = Shader.textureShader;
 		this.translation = translation;
 		this.scale = scale;
 		width = width * scale;
@@ -98,11 +98,13 @@ public abstract class ShapeNode extends Node {
 
 	@Override
 	public void setCompleted() {
+		shader = Shader.greyShader;
 		completed = true;
 	}
 
 	@Override
 	public void setUnCompleted() {
+		shader = Shader.textureShader;
 		completed = false;
 	}
 

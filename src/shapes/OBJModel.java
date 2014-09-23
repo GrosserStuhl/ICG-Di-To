@@ -23,8 +23,8 @@ public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation, float scale) {
-		super(vertices, shader, translation, scale);
+	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale) {
+		super(vertices, translation, scale);
 		
 		this.t = t;
 		

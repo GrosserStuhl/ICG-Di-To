@@ -13,9 +13,9 @@ import ogl.vecmath.Vector;
 
 public class PointLight extends ShapeNode implements App {
 
-	public PointLight(Vertex[] vertices, Shader shader, Vector translation,
+	public PointLight(Vertex[] vertices, Vector translation,
 			float scale) {
-		super(vertices, shader, translation, scale);
+		super(vertices, translation, scale);
 	}
 
 	@Override
