@@ -21,7 +21,7 @@ public class Scene {
 		this.rowCount = rowCount;
 		
 	}
-	
+
 	public Scene(ArrayList<ShapePlan> shapes, int rowCount, Camera cam) {
 		this.shapes = shapes;
 		this.rowCount = rowCount;
@@ -41,7 +41,7 @@ public class Scene {
 		Mesh large = ResourceLoader.loadOBJModel("xlarge.obj");
 		Texture moonT = ResourceLoader.loadTexture("MoonMap2.jpg");
 		Texture jupiterT = ResourceLoader.loadTexture("jupiter.jpg");
-		Texture merkurT = ResourceLoader.loadTexture("earth.jpg");
+		Texture EarthT = ResourceLoader.loadTexture("earth.jpg");
 
 		for (ShapePlan shape : shapes) {
 			System.out.println("for loop started");
@@ -88,20 +88,20 @@ public class Scene {
 				System.out.println(shape.getName() + "   PIEP");
 				switch ((int) shape.getScale()) {
 				case 1:
-					node = new OBJModel(small.getVertices(), merkurT,
+					node = new OBJModel(small.getVertices(), EarthT,
 							vecmath.vector(0, 0, 0), shape.getScale());
 					break;
 				case 2:
-					node = new OBJModel(medium.getVertices(), merkurT,
+					node = new OBJModel(medium.getVertices(), EarthT,
 							vecmath.vector(0, 0, 0), shape.getScale());
 					break;
 
 				default:
-					node = new OBJModel(large.getVertices(), merkurT,
+					node = new OBJModel(large.getVertices(), EarthT,
 							vecmath.vector(0, 0, 0), shape.getScale());
 					break;
 				}
-				node.setName("Merkur");
+				node.setName("Earth");
 			}
 			if (!shape.getChildren().isEmpty()) {
 				for (ShapePlan child : shape.getChildren()) {
@@ -110,14 +110,20 @@ public class Scene {
 						System.out.println("moon2 found");
 						switch ((int) child.getScale()) {
 						case 1:
-							childNode = new OBJModel(small.getVertices(), moonT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(small.getVertices(),
+									moonT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						case 2:
-							childNode = new OBJModel(medium.getVertices(), moonT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(medium.getVertices(),
+									moonT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 
 						default:
-							childNode = new OBJModel(large.getVertices(), moonT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(large.getVertices(),
+									moonT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						}
 						childNode.setName("Moon");
@@ -127,14 +133,20 @@ public class Scene {
 						System.out.println("jupiter2 found");
 						switch ((int) child.getScale()) {
 						case 1:
-							childNode = new OBJModel(small.getVertices(), jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(small.getVertices(),
+									jupiterT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						case 2:
-							childNode = new OBJModel(medium.getVertices(), jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(medium.getVertices(),
+									jupiterT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 
 						default:
-							childNode = new OBJModel(large.getVertices(), jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(large.getVertices(),
+									jupiterT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						}
 						childNode.setName("Jupiter");
@@ -145,17 +157,23 @@ public class Scene {
 						System.out.println(child.getName() + "   PIEP2");
 						switch ((int) child.getScale()) {
 						case 1:
-							childNode = new OBJModel(small.getVertices(), merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(small.getVertices(),
+									EarthT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						case 2:
-							childNode = new OBJModel(medium.getVertices(),  merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(medium.getVertices(),
+									EarthT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 
 						default:
-							childNode = new OBJModel(large.getVertices(), merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+							childNode = new OBJModel(large.getVertices(),
+									EarthT, vecmath.vector(0, 0, 0),
+									child.getScale());
 							break;
 						}
-						childNode.setName("Merkur");
+						childNode.setName("Earth");
 						System.out.println("childnode new name: "
 								+ childNode.getName());
 					}
@@ -168,18 +186,21 @@ public class Scene {
 								case 1:
 									childNode2 = new OBJModel(
 											small.getVertices(), moonT,
-											vecmath.vector(0, 0, 0), shape.getScale());
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								case 2:
 									childNode2 = new OBJModel(
-											medium.getVertices(),
-											moonT, vecmath.vector(0, 0, 0), shape.getScale());
+											medium.getVertices(), moonT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 
 								default:
 									childNode2 = new OBJModel(
 											large.getVertices(), moonT,
-											vecmath.vector(0, 0, 0), shape.getScale());
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								}
 								childNode2.setName("Moon");
@@ -188,19 +209,22 @@ public class Scene {
 								switch ((int) child2.getScale()) {
 								case 1:
 									childNode2 = new OBJModel(
-											small.getVertices(),
-											jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+											small.getVertices(), jupiterT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								case 2:
 									childNode2 = new OBJModel(
-											medium.getVertices(),
-											jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+											medium.getVertices(), jupiterT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 
 								default:
 									childNode2 = new OBJModel(
-											large.getVertices(),
-											jupiterT, vecmath.vector(0, 0, 0), shape.getScale());
+											large.getVertices(), jupiterT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								}
 								childNode2.setName("Jupiter");
@@ -211,22 +235,25 @@ public class Scene {
 								switch ((int) child2.getScale()) {
 								case 1:
 									childNode2 = new OBJModel(
-											small.getVertices(),
-											merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+											small.getVertices(), EarthT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								case 2:
 									childNode2 = new OBJModel(
-											medium.getVertices(),
-											merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+											medium.getVertices(), EarthT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 
 								default:
 									childNode2 = new OBJModel(
-											large.getVertices(),
-											merkurT, vecmath.vector(0, 0, 0), shape.getScale());
+											large.getVertices(), EarthT,
+											vecmath.vector(0, 0, 0),
+											child2.getScale());
 									break;
 								}
-								childNode2.setName("Merkur");
+								childNode2.setName("Earth");
 							}
 							childNode.addNode(childNode2);
 							System.out.println("child2 added: " + childNode2);
@@ -252,7 +279,7 @@ public class Scene {
 	public ArrayList<ShapePlan> getShapes() {
 		return shapes;
 	}
-	
+
 	public Camera getCamera() {
 		return cam;
 	}

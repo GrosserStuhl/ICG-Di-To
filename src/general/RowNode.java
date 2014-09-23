@@ -36,9 +36,10 @@ public class RowNode extends Node {
 
 	@Override
 	public void simulate(float elapsed, Input input) {
-		if (getChildNodes().isEmpty())
-			newNodePositionX = 0;
-
+		if (getChildNodes().isEmpty()) {
+			newNodePositionX = -5;
+			newNodePositionY = 2;
+		}
 		for (Node child : getChildNodes()) {
 			child.simulate(elapsed, input);
 		}

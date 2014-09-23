@@ -16,7 +16,9 @@ import shader.BaseLight;
 import shader.PhongShader;
 import shader.PointLight;
 import shader.Shader;
+import shapes.Cube;
 import shapes.OBJModel;
+import shapes.Pyramid;
 import util.ResourceLoader;
 import util.SceneLoader;
 
@@ -41,9 +43,8 @@ public class Root extends Node implements App {
 		return new Vector3f(x, y, z);
 	}
 
-	
-	private mathe.Color col(float r, float g, float b){
-		return new mathe.Color(r,g,b);
+	private mathe.Color col(float r, float g, float b) {
+		return new mathe.Color(r, g, b);
 	}
 
 	// The positions of the cube vertices.
@@ -52,14 +53,8 @@ public class Root extends Node implements App {
 			vec(-w2, -h2, d2), vec(-w2, h2, d2), vec(w2, h2, d2) };
 
 	// The colors of the cube vertices.
-	private mathe.Color[] c = { 
-			col(1, 0, 0), 
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0), 
-			col(0, 1, 0),
+	private mathe.Color[] c = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0), col(0, 1, 0), col(0, 1, 0),
 			col(0, 1, 0) };
 
 	// Pyramid
@@ -79,13 +74,8 @@ public class Root extends Node implements App {
 	};
 
 	// The colors of the Pyramid vertices.
-	private mathe.Color[] colorT = 
-		{ 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(1, 0, 0),
-			col(1, 0, 0), 
-			col(0, 1, 0) };
+	private mathe.Color[] colorT = { col(1, 0, 0), col(1, 0, 0), col(1, 0, 0),
+			col(1, 0, 0), col(0, 1, 0) };
 
 	public Root() {
 
@@ -96,27 +86,31 @@ public class Root extends Node implements App {
 	
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
+
+		// BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale
+		// Lichtrichtung
 		PhongShader.setAmbientLight(new Color(0.2f,0.2f,0.2f));
-		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
-//		
-//		shader = new Shader();
-//		textureShader = new Shader("PhongShaderPointLights.vs", "PhongShaderPointLights.fs");
-		
-		
+		PhongShader.setDirectionalLight(new BaseLight(new Color(0.5f,
+				0.5f, 0.5f), 0.8f), new Vector3f(1, 1, 1));
+
+		// shader = new Shader();
+		// textureShader = new Shader("PhongShaderPointLights.vs",
+		// "PhongShaderPointLights.fs");
 
 		Scene scene = SceneLoader.createScene("scene1.xml");
-
-		// RowNode row_one = new RowNode(0);
-		// RowNode row_two = new RowNode(1);
-		// RowNode row_three = new RowNode(2);
-		// addNode(row_one);
-		// addNode(row_two);
-		// addNode(row_three);
 
 		for (RowNode row : scene.getNodes())
 			addNode(row);
 
+		RowNode row_one = new RowNode(0);
+		RowNode row_two = new RowNode(1);
+		RowNode row_three = new RowNode(2);
+		addNode(row_one);
+		addNode(row_two);
+		addNode(row_three);
+
 		setTransformation(vecmath.identityMatrix());
+
 		if (scene.getCamera() != null)
 			cam = scene.getCamera();
 		else
@@ -125,88 +119,63 @@ public class Root extends Node implements App {
 
 		
 		// Phong extra diffuse:
-		verticesT = Vertex.triangleVertices(t,colorT);
+		verticesT = Vertex.triangleVertices(t, colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
 
-		// Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// 0));
-		// row_one.addNode(pyr);
-		//
-		// Pyramid pyr2 = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// 0));
-		// row_one.addNode(pyr2);
-		//
-		// Pyramid pyr3 = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// 0));
-		// row_one.addNode(pyr3);
+//		Pyramid pyr = new Pyramid(verticesT, vecmath.vector(0, 0, 0), 1);
+//		row_one.addNode(pyr);
+//
+//		Pyramid pyr2 = new Pyramid(verticesT, vecmath.vector(0, 0, 0), 1);
+//		row_one.addNode(pyr2);
+//
+//		Pyramid pyr3 = new Pyramid(verticesT, vecmath.vector(0, 0, 0), 1);
+//		row_one.addNode(pyr3);
+//
+//		Cube cube = new Cube(vertices, vecmath.vector(0f, 0f, 0f), 1);
+//		row_one.addNode(cube);
+//
+//		Cube cube2 = new Cube(vertices, vecmath.vector(0, 0, 0), 1);
+//		row_one.addNode(cube2);
+//		Cube cube3 = new Cube(vertices, vecmath.vector(0f, 0, 0), 1);
+//		row_one.addNode(cube3);
+//
+//		Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
+//		Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
+//		OBJModel moon = new OBJModel(m.getVertices(), t,
+//				vecmath.vector(0, 0, 0), 1);
+//
+		Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
+		Texture t2 = ResourceLoader.loadTexture("stark.png");
+		OBJModel crate = new OBJModel(m2.getVertices(), t2, vecmath.vector(0,
+				0, 0), 1);
+		getChildNodes().get(0).addNode(crate);
+//		row_three.addNode(crate);
+//		pyr2.addNode(crate);
+//
+//		crate.addNode(moon);
+//		row_three.addNode(moon);
+//
+//		Mesh m3 = ResourceLoader.loadOBJModel("jupiter.obj");
+//		Texture t3 = ResourceLoader.loadTexture("jupiter.jpg");
+//		OBJModel jupiter = new OBJModel(m3.getVertices(), t3, vecmath.vector(0,
+//				0, 0), 1);
+//		crate.addNode(jupiter);
+//		row_three.addNode(jupiter);
 
-		// Cube cube = new Cube(vertices, shader, vecmath.vector(0f, 0f,
-		// 0f));
-		// row_one.addNode(cube);
-		//
-		// Cube cube2 = new Cube(vertices, shader, vecmath.vector(0, 0, 0));
-		// row_one.addNode(cube2);
-		// Cube cube3 = new Cube(vertices, shader, vecmath.vector(0f, 0, 0));
-		// row_one.addNode(cube3);
-
-		// Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
-		// Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		// OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
-		// vecmath.vector(0, 0, 0));
-		//
-		// Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
-		// Texture t2 = ResourceLoader.loadTexture("stark.png");
-		// OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
-		// vecmath.vector(0, 0, 0));
-		// row_three.addNode(crate);
-		// pyr2.addNode(crate);
-		//
-		// Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// 0));
-		// crate.addNode(moon);
-		// row_three.addNode(moon);
-		//
-		// Mesh m = ResourceLoader.loadOBJModel("jupiter.obj");
-		// Texture t = ResourceLoader.loadTexture("MoonMap2.jpg");
-		// OBJModel moon = new OBJModel(m.getVertices(), textureShader, t,
-		// vecmath.vector(0, 0, 0));
-		// //
-		// Mesh m2 = ResourceLoader.loadOBJModel("crateTest.obj");
-		// Texture t2 = ResourceLoader.loadTexture("stark.png");
-		// OBJModel crate = new OBJModel(m2.getVertices(), textureShader, t2,
-		// vecmath.vector(0, 0, 0));
-		// row_three.addNode(crate);
-		// pyr2.addNode(crate);
-		//
-		// // Pyramid pyr = new Pyramid(verticesT, shader, vecmath.vector(0, 0,
-		// // 0));
-		// crate.addNode(moon);
-		// row_three.addNode(moon);
-		//
-		// Mesh m5 = ResourceLoader.loadOBJModel("jupiter.obj");
-		// Texture t5 = ResourceLoader.loadTexture("jupiter.jpg");
-		// OBJModel jupiter = new OBJModel(m5.getVertices(), textureShader, t5,
-		// vecmath.vector(0, 0, 0));
-		// crate.addNode(jupiter);
-		// row_three.addNode(jupiter);
-		//
-		
-		
-		
-		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
-		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane1 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -5), 0);
+		Mesh m4 = ResourceLoader.loadOBJModel("backFirst.obj");
+		Texture t4 = ResourceLoader.loadTexture("stars.jpg");
+		OBJModel plane1 = new OBJModel(m4.getVertices(), t4, vecmath.vector(0,
+				0, -5), 0);
 		addNode(plane1);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -25), 0);
+		OBJModel plane2 = new OBJModel(m4.getVertices(), t4, vecmath.vector(0,
+				0, -25), 0);
 		addNode(plane2);
 
-		OBJModel plane3 = new OBJModel(m3.getVertices(), t3,
-				vecmath.vector(0, 0, -45), 0);
+		OBJModel plane3 = new OBJModel(m4.getVertices(), t4, vecmath.vector(0,
+				0, -45), 0);
 		addNode(plane3);
-		//
+
 		// row_one.setName("Row One");
 		// row_two.setName("Row Two");
 		// row_three.setName("Row Three");
@@ -250,12 +219,10 @@ public class Root extends Node implements App {
 		// The perspective projection. Camera space to NDC.
 		Matrix projectionMatrix = vecmath.perspectiveMatrix(60f, aspect, 0.1f,
 				100f);
-		Matrix viewMatrix = cam.getTransformation();
 
 		// The inverse camera transformation. World space to camera
 		// space.
-		// Matrix viewMatrix = vecmath.lookatMatrix(vecmath.vector(0f, 0f, 10f),
-		// vecmath.vector(0f, 0f, 0f), vecmath.vector(0f, 1f, 0f));
+		Matrix viewMatrix = cam.getTransformation();
 
 		// Activate the shader program and set the transformation
 		// matricies to
@@ -332,6 +299,5 @@ public class Root extends Node implements App {
 
 		return res;
 	}
-
 
 }
