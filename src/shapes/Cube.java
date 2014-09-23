@@ -21,28 +21,19 @@ import shader.Shader;
 
 public class Cube extends ShapeNode implements App {
 
-	public Cube(Vertex[] vertices, Shader shader, Vector translation, Vector eye, float scale) {
-		super(vertices, shader, translation, scale);
+	public Cube(Vertex[] vertices, Vector translation, float scale) {
+		super(vertices, translation, scale);
 
-		this.eyePosition = eye;
-		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
 		normalData = createFloatBuffer(vertices.length * 3);
 		
 		finalizeCubeBuffers(positionData, colorData,normalData, vertices);
-		
-		
-		
 	}
 
 	FloatBuffer positionData;
 	FloatBuffer colorData;
 	FloatBuffer normalData;
-	
-	Vector eyePosition;
-
-
 
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {

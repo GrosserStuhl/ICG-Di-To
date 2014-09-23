@@ -106,8 +106,7 @@ public class Root extends Node implements App {
 //		shader = new Shader();
 //		textureShader = new Shader("PhongShaderPointLights.vs", "PhongShaderPointLights.fs");
 
-		Scene scene = SceneLoader.createScene("scene1.xml",
-				Shader.textureShader);
+		Scene scene = SceneLoader.createScene("scene1.xml");
 
 		// RowNode row_one = new RowNode(0);
 		// RowNode row_two = new RowNode(1);
@@ -200,13 +199,16 @@ public class Root extends Node implements App {
 		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane1 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -5), 0, null);
+		OBJModel plane1 = new OBJModel(m3.getVertices(), t3,
+				vecmath.vector(0, 0, -5), 0,null);
 		addNode(plane1);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -25), 0, null);
+		OBJModel plane2 = new OBJModel(m3.getVertices(), t3,
+				vecmath.vector(0, 0, -25), 0,null);
 		addNode(plane2);
 
-		OBJModel plane3 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -45), 0, null);
+		OBJModel plane3 = new OBJModel(m3.getVertices(), t3,
+				vecmath.vector(0, 0, -45), 0,null);
 		addNode(plane3);
 		//
 		// row_one.setName("Row One");

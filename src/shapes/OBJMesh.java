@@ -24,18 +24,15 @@ public class OBJMesh extends ShapeNode implements App {
 	private FloatBuffer positionData;
 	private FloatBuffer colorData;
 
-	public OBJMesh(Vertex[] vertices, Shader shader, Vector translation, float scale) {
-		super(vertices, shader, translation, scale);
-
+	public OBJMesh(Vertex[] vertices, Vector translation, float scale) {
+		super(vertices, translation, scale);
 	}
 
-	
 	@Override
 	public void init() {
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
 		finalizeBuffer(positionData, colorData, vertices);
-		
 	}
 
 	@Override
@@ -44,9 +41,7 @@ public class OBJMesh extends ShapeNode implements App {
 		if (input.isKeyToggled(Keyboard.KEY_B))
 			// Increase the angle with a speed of 90 degrees per second.
 			angle += 150 * elapsed;
-
 	}
-
 
 	public void finalizeBuffer(FloatBuffer position, FloatBuffer color,
 			Vertex[] vertices) {
@@ -58,36 +53,34 @@ public class OBJMesh extends ShapeNode implements App {
 		colorData.rewind();
 	}
 
-	
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
 		// The modeling transformation. Object space to world space.
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		
-		
+
 		Matrix modelMatrix = parentMatrix.mult(vecmath
 				.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
 		setTransformation(modelMatrix);
 
-		// Activate the shader program and set the transformation matricies to the
+		// Activate the shader program and set the transformation matricies to
+		// the
 		// uniform variables.
 		getShader().getModelMatrixUniform().set(getTransformation());
-		
+
 		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
-		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid()
+				.transpose());
 		getShader().getNormalMatrixUniform().set(normalMatrix);
-		
-		
+
 		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
 				positionData);
 		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
-		
-		
-		// color of cube
-		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0, colorData);
-		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
+		// color of cube
+		glVertexAttribPointer(Shader.getColorAttribIdx(), 3, false, 0,
+				colorData);
+		glEnableVertexAttribArray(Shader.getColorAttribIdx());
 
 		// Draw the triangles that form the cube from the vertex data arrays.
 		glDrawArrays(GL_QUADS, 0, vertices.length);

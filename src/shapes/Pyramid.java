@@ -23,21 +23,18 @@ public class Pyramid extends ShapeNode {
 	
 	
 	
-	public Pyramid(Vertex[] vertices, Shader shader, Vector translation, float scale) {
-		super(vertices, shader, translation, scale);
+	public Pyramid(Vertex[] vertices, Vector translation, float scale) {
+		super(vertices, translation, scale);
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		colorData = createFloatBuffer(vertices.length * 3);
 		normalData = createFloatBuffer(vertices.length * 3);
 		
 		finalizePyramidBuffers(positionData, colorData, normalData,vertices);
-		
-		
 	}
 	
 	FloatBuffer positionData;
 	FloatBuffer colorData;
-	
 	FloatBuffer normalData;
 
 	@Override

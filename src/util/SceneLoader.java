@@ -11,16 +11,14 @@ import java.util.ArrayList;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
 import ogl.vecmath.Vector;
-import shader.Shader;
 import general.Camera;
 import general.Node;
 import general.Scene;
 
 public class SceneLoader {
 
-	public static Scene createScene(String fileName, Shader shader) {
+	public static Scene createScene(String fileName) {
 		Scene scene = loadScene(fileName);
-		scene.setShader(shader);
 		scene.createNodes();
 
 		return scene;

@@ -25,8 +25,8 @@ public class OBJModel extends ShapeNode implements App {
 	private PointLight[] pls;
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation, float scale, PointLight[] pls) {
-		super(vertices, shader, translation, scale);
+	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale, PointLight[] pls) {
+		super(vertices, translation, scale);
 		
 		this.t = t;
 		this.pls = pls;
@@ -42,9 +42,7 @@ public class OBJModel extends ShapeNode implements App {
 	FloatBuffer positionData;
 	FloatBuffer textureData;
 	FloatBuffer normalData;
-	
 	FloatBuffer ambientData;
-
 	
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
@@ -71,11 +69,6 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getConstantAttenuationUniform().set((float) 0);
 		getShader().getLinearAttenuationUniform().set((float) 1);
 		getShader().getExponentAttenuationUniform().set((float) 1);
-		
-	
-		
-		
-		
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light
