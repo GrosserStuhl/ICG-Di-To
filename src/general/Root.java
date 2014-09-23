@@ -118,7 +118,7 @@ public class Root extends Node implements App {
 		addNode(cam);
 
 		
-		// Phong extra diffuse:
+		//Phong extra diffuse:
 		verticesT = Vertex.triangleVertices(t, colorT);
 		Vertex.calcNormals(verticesT, pyramidIndices());
 
