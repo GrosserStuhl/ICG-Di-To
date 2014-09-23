@@ -42,6 +42,8 @@ public class Scene {
 		Texture moonT = ResourceLoader.loadTexture("MoonMap2.jpg");
 		Texture jupiterT = ResourceLoader.loadTexture("jupiter.jpg");
 		Texture EarthT = ResourceLoader.loadTexture("earth.jpg");
+		
+		 
 
 		for (ShapePlan shape : shapes) {
 			System.out.println("for loop started");

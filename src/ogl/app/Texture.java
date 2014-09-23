@@ -21,12 +21,16 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import util.ResourceLoader;
+
 /**
  * A thin wrapper for OpenGL texture images.
  * 
  */
 public final class Texture {
 
+	public static final Texture erledigt = ResourceLoader.loadTexture("erledigt.png");
+	
 	private ByteBuffer data;
 	private int w;
 	private int h;
