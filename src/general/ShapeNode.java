@@ -80,6 +80,7 @@ public abstract class ShapeNode extends Node {
 		this.translation = translation;
 	}
 
+	@Override
 	public boolean isSelected() {
 		return selected;
 	}
@@ -105,6 +106,7 @@ public abstract class ShapeNode extends Node {
 		completed = false;
 	}
 
+	@Override
 	public boolean isCompleted() {
 		return completed;
 	}
