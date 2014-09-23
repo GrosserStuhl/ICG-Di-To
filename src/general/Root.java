@@ -25,7 +25,7 @@ import util.SceneLoader;
 public class Root extends Node implements App {
 
 	static public void main(String[] args) {
-		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Root()).start();
+		new OpenGLApp("ICG Projekt - DiTo", new Root()).start();
 	}
 
 	private Camera cam;
