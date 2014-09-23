@@ -104,13 +104,11 @@ public abstract class ShapeNode extends Node {
 
 	@Override
 	public void setCompleted() {
-//		shader = Shader.greyShader;
 		completed = true;
 	}
 
 	@Override
 	public void setUnCompleted() {
-//		shader = Shader.textureShader;
 		completed = false;
 	}
 

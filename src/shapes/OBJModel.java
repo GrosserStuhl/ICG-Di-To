@@ -23,6 +23,7 @@ import shader.Shader;
 public class OBJModel extends ShapeNode implements App {
 
 	private Texture t;
+	private Texture oldT;
 
 	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale) {
 		super(vertices, translation, scale);
@@ -135,6 +136,19 @@ public class OBJModel extends ShapeNode implements App {
 		p.rewind();
 		t.rewind();
 		n.rewind();
+	}
+	
+	@Override
+	public void setCompleted() {
+		super.setCompleted();
+		oldT = t;
+		t = Texture.erledigt;
+	}
+	
+	@Override
+	public void setUnCompleted() {
+		super.setUnCompleted();
+		t = oldT;
 	}
 
 

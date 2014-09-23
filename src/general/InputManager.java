@@ -41,8 +41,10 @@ public class InputManager {
 
 	public void update(float elapsed, Input input) {
 		if (firstRun) {
-			if (cam.isInFreeMode())
+			if (cam.isInFreeMode()) {
 				input.setKeyToggeled(Keyboard.KEY_M);
+				Mouse.setGrabbed(true);
+			}
 			firstRun = false;
 		}
 
@@ -150,33 +152,35 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
-			
-			//Als erledigt markieren
+
+			// Als erledigt markieren
 			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
 				if (keysUp.contains(Keyboard.KEY_RETURN) == true) {
 					keysUp.remove(Keyboard.KEY_RETURN);
-					if(!selectedNode.isCompleted()) {
+					if (!selectedNode.isCompleted()) {
 						selectedNode.setCompleted();
-						System.out.println("node " + selectedNode.getName() +"  set completed");
+						System.out.println("node " + selectedNode.getName()
+								+ "  set completed");
 					}
 				}
 			} else if (!keysUp.contains(Keyboard.KEY_RETURN)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keysUp.add(Keyboard.KEY_RETURN);
-			
-			//Als unerledigt markieren
+
+			// Als unerledigt markieren
 			if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
 				if (keysUp.contains(Keyboard.KEY_BACK) == true) {
 					keysUp.remove(Keyboard.KEY_BACK);
-					if(selectedNode.isCompleted()) {
+					if (selectedNode.isCompleted()) {
 						selectedNode.setUnCompleted();
-						System.out.println("node " + selectedNode.getName() +"  set uncompleted");
+						System.out.println("node " + selectedNode.getName()
+								+ "  set uncompleted");
 					}
 				}
 			} else if (!keysUp.contains(Keyboard.KEY_BACK)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_BACK))
 				keysUp.add(Keyboard.KEY_BACK);
-			
+
 			if (Mouse.isButtonDown(0)) {
 				executeRayCalculation();
 			}
@@ -236,7 +240,6 @@ public class InputManager {
 				if (inters == true && !selectedNode.equals(child)) {
 					selectionIndex = i;
 					setSelection();
-					System.out.println("SELECTED");
 					break;
 				}
 			}
