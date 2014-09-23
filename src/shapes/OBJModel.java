@@ -45,13 +45,11 @@ public class OBJModel extends ShapeNode implements App {
 	
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {
-		// ohne t.bind() funktioniert es nicht!!!
 		t.bind();
 
 		Matrix modelMatrix = parentMatrix.mult(vecmath
 				.translationMatrix(translation));
 		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
-//		modelMatrix = modelMatrix.mult(vecmath.scaleMatrix(0.5f, 0.5f, 0.5f));
 		
 		setTransformation(modelMatrix);
 
@@ -62,8 +60,7 @@ public class OBJModel extends ShapeNode implements App {
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
-		getShader().getpLPosLightUniform().set(viewMatrix);
-		getShader().getpLPosWorldUniform().set(viewMatrix.mult(modelMatrix));
+		getShader().getpLViewMatrixUniform().set(viewMatrix);
 		
 		getShader().getVpositionUniform().set(new Vector3f( -2, 0, 3f));
 		getShader().getVcolorUniform().set(new Color(1,0,0));
@@ -72,9 +69,6 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getConstantAttenuationUniform().set((float) 0);
 		getShader().getLinearAttenuationUniform().set((float) 1);
 		getShader().getExponentAttenuationUniform().set((float) 1);
-		
-		
-		
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light

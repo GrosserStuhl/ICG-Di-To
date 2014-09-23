@@ -1,7 +1,10 @@
 package general;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glViewport;
 import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.App;
@@ -22,12 +25,7 @@ public class Root extends Node implements App {
 		new OpenGLApp("Cube - OpenGL ES 2.0 (lwjgl)", new Root()).start();
 	}
 
-	private Shader shader;
-	private Shader textureShader;
-	private Shader planeShader;
-
 	private Camera cam;
-	private Vector3f eyePosition;
 	private InputManager manager;
 
 	// Width, depth and height of the cube divided by 2.
@@ -47,20 +45,6 @@ public class Root extends Node implements App {
 		return new mathe.Color(r,g,b);
 	}
 
-	private Vector2f v2f(float x, float y) {
-		return new Vector2f(x, y);
-	}
-
-	//
-	// 6 ------- 7
-	// / | / |
-	// 3 ------- 2 |
-	// | | | |
-	// | 5 ----- |- 4
-	// | / | /
-	// 0 ------- 1
-	//
-
 	// The positions of the cube vertices.
 	private Vector3f[] p = { vec(-w2, -h2, -d2), vec(w2, -h2, -d2),
 			vec(w2, h2, -d2), vec(-w2, h2, -d2), vec(w2, -h2, d2),
@@ -78,7 +62,6 @@ public class Root extends Node implements App {
 			col(0, 1, 0) };
 
 	// Pyramid
-
 	private Vector3f[] t = {
 			// hinten links-unten
 			vec(-w2, -h2, -d2),
@@ -115,15 +98,12 @@ public class Root extends Node implements App {
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
 		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
-		
-		shader = new Shader();
-		textureShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
-		// textureShader = new Shader("TAmbDiffSpecVertex.vs",
-		// "TAmbDiffSpecFragment.fs");
-		planeShader = new Shader("phongTAmbVertex.vs", "phongTAmbFragment.fs");
+//		
+//		shader = new Shader();
+//		textureShader = new Shader("PhongShaderPointLights.vs", "PhongShaderPointLights.fs");
 
 		Scene scene = SceneLoader.createScene("scene1.xml",
-				textureShader);
+				Shader.textureShader);
 
 		// RowNode row_one = new RowNode(0);
 		// RowNode row_two = new RowNode(1);
@@ -210,15 +190,15 @@ public class Root extends Node implements App {
 		//
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane1 = new OBJModel(m3.getVertices(), textureShader, t3,
+		OBJModel plane1 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
 				vecmath.vector(0, 0, -5), 0);
 		addNode(plane1);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), planeShader, t3,
+		OBJModel plane2 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
 				vecmath.vector(0, 0, -25), 0);
 		addNode(plane2);
 
-		OBJModel plane3 = new OBJModel(m3.getVertices(), planeShader, t3,
+		OBJModel plane3 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
 				vecmath.vector(0, 0, -45), 0);
 		addNode(plane3);
 		//
@@ -238,16 +218,13 @@ public class Root extends Node implements App {
 		for (Node child : getChildNodes()) {
 			child.init();
 		}
-
-		eyePosition = new Vector3f(cam.getEye().x(), cam.getEye().y(), cam.getEye().z());
 	}
 
 	@Override
 	public void simulate(float elapsed, Input input) {
 		manager.update(elapsed, input);
-		for (Node child : getChildNodes()) {
+		for (Node child : getChildNodes())
 			child.simulate(elapsed, input);
-		}
 	}
 
 	@Override
@@ -280,35 +257,19 @@ public class Root extends Node implements App {
 		// the
 		// uniform variables.
 
-		shader.getProjectionMatrixUniform().set(projectionMatrix);
-		shader.getViewMatrixUniform().set(viewMatrix);
-		shader.getEyePositionVectorUniform().set(eyePosition);
+		Shader.greyShader.getProjectionMatrixUniform().set(projectionMatrix);
+		Shader.greyShader.getViewMatrixUniform().set(viewMatrix);
 		
-		textureShader.getProjectionMatrixUniform().set(projectionMatrix);
-		textureShader.getViewMatrixUniform().set(viewMatrix);
-		textureShader.getEyePositionVectorUniform().set(eyePosition);
+		Shader.textureShader.getProjectionMatrixUniform().set(projectionMatrix);
+		Shader.textureShader.getViewMatrixUniform().set(viewMatrix);
 		
-		planeShader.getProjectionMatrixUniform().set(projectionMatrix);
-		planeShader.getViewMatrixUniform().set(viewMatrix);
-		planeShader.getEyePositionVectorUniform().set(eyePosition);
-
-		shader.activate();
-		for (Node child : getChildNodes()) {
+		Shader.greyShader.activate();
+		for (Node child : getChildNodes())
 			child.display(width, height, getTransformation());
-		}
-
-		planeShader.activate();
-		for (Node child : getChildNodes()) {
+		
+		Shader.textureShader.activate();
+		for (Node child : getChildNodes())
 			child.display(width, height, getTransformation());
-		}
-		
-		
-		textureShader.activate();
-		for (Node child : getChildNodes()) {
-			child.display(width, height, getTransformation());
-		}
-
-		
 	}
 
 	@Override

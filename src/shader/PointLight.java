@@ -34,8 +34,7 @@ public class PointLight extends ShapeNode implements App {
 		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
-		getShader().getpLPosLightUniform().set(viewMatrix);
-		getShader().getpLPosWorldUniform().set(viewMatrix.mult(modelMatrix));
+		getShader().getpLViewMatrixUniform().set(viewMatrix);
 		
 		getShader().getVpositionUniform().set(new Vector3f( -2, 0, 3f));
 		getShader().getVcolorUniform().set(new Color(1,0,0));
