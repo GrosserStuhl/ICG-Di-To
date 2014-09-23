@@ -17,16 +17,19 @@ import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import ogl.vecmath.Vector;
 import shader.PhongShader;
+import shader.PointLight;
 import shader.Shader;
 
 public class OBJModel extends ShapeNode implements App {
 
+	private PointLight[] pls;
 	private Texture t;
 
-	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation, float scale) {
+	public OBJModel(Vertex[] vertices, Shader shader, Texture t,  Vector translation, float scale, PointLight[] pls) {
 		super(vertices, shader, translation, scale);
 		
 		this.t = t;
+		this.pls = pls;
 		
 		positionData = createFloatBuffer(vertices.length * 3);
 		textureData = createFloatBuffer(vertices.length * 2);
@@ -61,7 +64,6 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getNormalMatrixUniform().set(normalMatrix);
 		
 		getShader().getpLViewMatrixUniform().set(viewMatrix);
-		
 		getShader().getVpositionUniform().set(new Vector3f( -2, 0, 3f));
 		getShader().getVcolorUniform().set(new Color(1,0,0));
 		getShader().getFambientUniform().set((float) 0.8);
@@ -69,6 +71,11 @@ public class OBJModel extends ShapeNode implements App {
 		getShader().getConstantAttenuationUniform().set((float) 0);
 		getShader().getLinearAttenuationUniform().set((float) 1);
 		getShader().getExponentAttenuationUniform().set((float) 1);
+		
+	
+		
+		
+		
 		
 		//////////LIGHTNING SECTION ////////////////////
 		// ambient light

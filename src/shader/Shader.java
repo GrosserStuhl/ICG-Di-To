@@ -56,7 +56,6 @@ public class Shader extends Node {
 	private FloatUniform exponentAttenuationUniform;
 	
 	// POINT LIGHT 2
-	private MatrixUniform pLViewMatrixUniform2;
 	private VectorUniform vpositionUniform2;
 	private ColorUniform vcolorUniform2;
 	private FloatUniform fambientUniform2;
@@ -65,7 +64,6 @@ public class Shader extends Node {
 	private FloatUniform exponentAttenuationUniform2;
 	
 	// POINT LIGHT 3
-	private MatrixUniform pLViewMatrixUniform3;
 	private VectorUniform vpositionUniform3;
 	private ColorUniform vcolorUniform3;
 	private FloatUniform fambientUniform3;
@@ -223,7 +221,6 @@ public class Shader extends Node {
 		
 		
 		// POINT LIGHT 2
-		pLViewMatrixUniform2 = new MatrixUniform(program, "pLViewMatrix2");
 		vpositionUniform2 = new VectorUniform(program, "pointLight.vposition");
 		vcolorUniform2 = new ColorUniform(program, "pointLight.vcolor");
 		fambientUniform2 = new FloatUniform(program, "pointLight.fambient");
@@ -235,7 +232,6 @@ public class Shader extends Node {
 				"pointLight.fexpAtt");
 		
 		// POINT LIGHT 3
-		pLViewMatrixUniform3 = new MatrixUniform(program, "pLViewMatrix3");
 		vpositionUniform3 = new VectorUniform(program, "pointLight.vposition");
 		vcolorUniform3 = new ColorUniform(program, "pointLight.vcolor");
 		fambientUniform3 = new FloatUniform(program, "pointLight.fambient");
@@ -300,14 +296,6 @@ public class Shader extends Node {
 		return pLViewMatrixUniform;
 	}
 	
-	public MatrixUniform getpLViewMatrixUniform2() {
-		return pLViewMatrixUniform2;
-	}
-	
-	public MatrixUniform getpLViewMatrixUniform3() {
-		return pLViewMatrixUniform3;
-	}
-
 	public MatrixUniform getNormalMatrixUniform() {
 		return normalMatrixUniform;
 	}

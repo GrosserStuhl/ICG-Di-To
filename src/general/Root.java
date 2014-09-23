@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glViewport;
+import mathe.Color;
 import mathe.Vector2f;
 import mathe.Vector3f;
 import ogl.app.App;
@@ -14,6 +15,7 @@ import ogl.app.Texture;
 import ogl.vecmath.Matrix;
 import shader.BaseLight;
 import shader.PhongShader;
+import shader.PointLight;
 import shader.Shader;
 import shapes.OBJModel;
 import util.ResourceLoader;
@@ -92,9 +94,11 @@ public class Root extends Node implements App {
 
 	@Override
 	public void init() {
-
+	
 		
-		PhongShader.setAmbientLight(new Vector3f(0.2f,0.2f,0.2f));
+		PointLight red = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
+//		PointLight green = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
+//		PointLight blue = new PointLight(new Vector3f(-2, 0, 3f),new Color(1,0,0), (float) 0.8, (float) 0, (float) 1, (float) 1 );
 		
 		//BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale Lichtrichtung 
 		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,0.5f,0.5f),0.8f),new Vector3f(1,1,1));
@@ -188,18 +192,21 @@ public class Root extends Node implements App {
 		// crate.addNode(jupiter);
 		// row_three.addNode(jupiter);
 		//
+		
+		PointLight[] discoPointer = new PointLight[1];
+		discoPointer[0] = red;
+//		discoPointer[1] = green;
+//		discoPointer[2] = blue;
+		
 		Mesh m3 = ResourceLoader.loadOBJModel("backFirst.obj");
 		Texture t3 = ResourceLoader.loadTexture("stars.jpg");
-		OBJModel plane1 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
-				vecmath.vector(0, 0, -5), 0);
+		OBJModel plane1 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -5), 0, null);
 		addNode(plane1);
 
-		OBJModel plane2 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
-				vecmath.vector(0, 0, -25), 0);
+		OBJModel plane2 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -25), 0, null);
 		addNode(plane2);
 
-		OBJModel plane3 = new OBJModel(m3.getVertices(), Shader.textureShader, t3,
-				vecmath.vector(0, 0, -45), 0);
+		OBJModel plane3 = new OBJModel(m3.getVertices(), Shader.textureShader, t3, vecmath.vector(0, 0, -45), 0, null);
 		addNode(plane3);
 		//
 		// row_one.setName("Row One");
