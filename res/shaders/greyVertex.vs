@@ -9,8 +9,6 @@ varying vec3 fcolor;
 attribute vec2 textureCoord;
 varying vec2 ftextureCoord;
 
-attribute float boolFloat;
-varying float fboolFloat;
 
 void main() {
 

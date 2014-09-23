@@ -262,15 +262,9 @@ public class Root extends Node implements App {
 		// the
 		// uniform variables.
 
-		Shader.greyShader.getProjectionMatrixUniform().set(projectionMatrix);
-		Shader.greyShader.getViewMatrixUniform().set(viewMatrix);
 		
 		Shader.textureShader.getProjectionMatrixUniform().set(projectionMatrix);
 		Shader.textureShader.getViewMatrixUniform().set(viewMatrix);
-		
-		Shader.greyShader.activate();
-		for (Node child : getChildNodes())
-			child.display(width, height, getTransformation());
 		
 		Shader.textureShader.activate();
 		for (Node child : getChildNodes())
