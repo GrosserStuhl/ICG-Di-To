@@ -150,6 +150,35 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_A)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_A))
 				keysUp.add(Keyboard.KEY_A);
+			
+			//Als erledigt markieren
+			if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+				if (keysUp.contains(Keyboard.KEY_RETURN) == true) {
+					keysUp.remove(Keyboard.KEY_RETURN);
+					if(!selectedNode.isCompleted()) {
+						selectedNode.setCompleted();
+						System.out.println("node " + selectedNode.getName() +"  set completed");
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_RETURN)
+					&& !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+				keysUp.add(Keyboard.KEY_RETURN);
+			//Als erledigt markieren
+			if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
+				if (keysUp.contains(Keyboard.KEY_BACK) == true) {
+					keysUp.remove(Keyboard.KEY_BACK);
+					if(selectedNode.isCompleted()) {
+						selectedNode.setUnCompleted();
+						System.out.println("node " + selectedNode.getName() +"  set uncompleted");
+					}
+				}
+			} else if (!keysUp.contains(Keyboard.KEY_BACK)
+					&& !Keyboard.isKeyDown(Keyboard.KEY_BACK))
+				keysUp.add(Keyboard.KEY_BACK);
+			
+			if (Mouse.isButtonDown(0)) {
+				executeRayCalculation();
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)
 				&& Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
@@ -170,9 +199,6 @@ public class InputManager {
 				keysUp.add(Keyboard.KEY_S);
 				keysUp.add(Keyboard.KEY_LCONTROL);
 			}
-		}
-		if (Mouse.isButtonDown(0)) {
-			executeRayCalculation();
 		}
 	}
 

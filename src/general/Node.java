@@ -53,6 +53,10 @@ public abstract class Node implements App {
 
 	public void deselect() {
 	}
+	
+	public boolean isSelected() {
+		return false;
+	}
 
 	public Vertex[] getVertices() {
 		return null;
@@ -88,5 +92,10 @@ public abstract class Node implements App {
 
 	public void setUnCompleted() {
 	}
+	
+	public boolean isCompleted() {
+		return false;
+	}
+	
 
 }
