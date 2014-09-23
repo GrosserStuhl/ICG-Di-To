@@ -163,7 +163,8 @@ public class InputManager {
 			} else if (!keysUp.contains(Keyboard.KEY_RETURN)
 					&& !Keyboard.isKeyDown(Keyboard.KEY_RETURN))
 				keysUp.add(Keyboard.KEY_RETURN);
-			//Als erledigt markieren
+			
+			//Als unerledigt markieren
 			if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
 				if (keysUp.contains(Keyboard.KEY_BACK) == true) {
 					keysUp.remove(Keyboard.KEY_BACK);

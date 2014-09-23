@@ -22,9 +22,6 @@ public class Ray2 {
 		view = view.invertRigid();
 
 		calcMouseInWorldPosition(mouseX, mouseY, view);
-
-		System.out.println("origin: " + origin);
-		System.out.println("direction: " + direction);
 	}
 
 	private void calcMouseInWorldPosition(float mouseX, float mouseY,
@@ -56,18 +53,7 @@ public class Ray2 {
 		float tempZ = -0.1f;
 
 		direction = vecmath.vector(tempX, tempY, tempZ);
-
-		// tempX = view.get(0, 0) * direction.x() + view.get(1, 0) *
-		// direction.y() + view.get(2, 0) * direction.z();
-		// tempY = view.get(0, 1) * direction.x() + view.get(1, 1) *
-		// direction.y() + view.get(2, 1) * direction.z();
-		// tempZ = view.get(0, 2) * direction.x() + view.get(1, 2) *
-		// direction.y() + view.get(2, 2) * direction.z();
-
 		direction = view.transformDirection(direction);
-		// direction = vecmath.vector(tempX, tempY, tempZ);
-		System.out.println("FINAL DIRECTION: " + direction);
-
 		origin = view.getPosition();
 	}
 
