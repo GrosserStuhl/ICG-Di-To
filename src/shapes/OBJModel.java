@@ -39,9 +39,7 @@ public class OBJModel extends ShapeNode implements App {
 	FloatBuffer positionData;
 	FloatBuffer textureData;
 	FloatBuffer normalData;
-	
 	FloatBuffer ambientData;
-
 	
 	@Override
 	public void display(int width, int height, Matrix parentMatrix) {

@@ -31,13 +31,10 @@ public class Pyramid extends ShapeNode {
 		normalData = createFloatBuffer(vertices.length * 3);
 		
 		finalizePyramidBuffers(positionData, colorData, normalData,vertices);
-		
-		
 	}
 	
 	FloatBuffer positionData;
 	FloatBuffer colorData;
-	
 	FloatBuffer normalData;
 
 	@Override
