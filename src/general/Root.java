@@ -89,7 +89,8 @@ public class Root extends Node implements App {
 
 		// BaseLight(Farbe, diffuse Intensität des Lichtes), direktionale
 		// Lichtrichtung
-		PhongShader.setDirectionalLight(new BaseLight(new mathe.Color(0.5f,
+		PhongShader.setAmbientLight(new Color(0.2f,0.2f,0.2f));
+		PhongShader.setDirectionalLight(new BaseLight(new Color(0.5f,
 				0.5f, 0.5f), 0.8f), new Vector3f(1, 1, 1));
 
 		// shader = new Shader();
