@@ -1,0 +1,28 @@
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
+attribute vec3 vertex;
+attribute vec3 color;
+varying vec3 fcolor;
+
+attribute vec3 ambientLight;
+varying vec3 fambientLight;
+
+attribute vec3 normal;
+varying vec3 fnormal;
+
+uniform mat4 transformMatrix;
+
+uniform vec3 lightPosition;
+
+void main() {
+
+	
+	fambientLight = ambientLight;
+	fcolor = color;
+	//fnormal = (projectionMatrix * transformMatrix *  vec4(normal,1.0)).xyz;
+	fnormal = (projectionMatrix * transformMatrix *  vec4(normal,1.0)).xyz;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertex, 1);
+			
+}

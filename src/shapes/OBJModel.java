@@ -1,0 +1,155 @@
+package shapes;
+
+import static ogl.vecmathimp.FactoryDefault.vecmath;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import general.ShapeNode;
+import general.Vertex;
+
+import java.nio.FloatBuffer;
+
+import mathe.Color;
+import mathe.Vector3f;
+import ogl.app.App;
+import ogl.app.Texture;
+import ogl.vecmath.Matrix;
+import ogl.vecmath.Vector;
+import shader.PhongShader;
+import shader.PointLight;
+import shader.Shader;
+
+public class OBJModel extends ShapeNode implements App {
+
+	private Texture t;
+	private Texture oldT;
+
+	public OBJModel(Vertex[] vertices, Texture t,  Vector translation, float scale) {
+		super(vertices, translation, scale);
+		
+		this.t = t;
+		
+		positionData = createFloatBuffer(vertices.length * 3);
+		textureData = createFloatBuffer(vertices.length * 2);
+		normalData = createFloatBuffer(vertices.length * 3);
+		ambientData = createFloatBuffer(vertices.length * 3);
+
+		finalizeBuffers(positionData, textureData, normalData, vertices);
+	}
+
+	FloatBuffer positionData;
+	FloatBuffer textureData;
+	FloatBuffer normalData;
+	FloatBuffer ambientData;
+	
+	@Override
+	public void display(int width, int height, Matrix parentMatrix) {
+		t.bind();
+
+		Matrix modelMatrix = parentMatrix.mult(vecmath
+				.translationMatrix(translation));
+		modelMatrix = modelMatrix.mult(vecmath.rotationMatrix(1, 0, 1, angle));
+		
+		setTransformation(modelMatrix);
+
+		getShader().getModelMatrixUniform().set(modelMatrix);
+		
+		
+		Matrix viewMatrix = getShader().getViewMatrixUniform().getMatrix();
+		Matrix normalMatrix = (viewMatrix.mult(modelMatrix).invertRigid().transpose());
+		getShader().getNormalMatrixUniform().set(normalMatrix);
+		
+		
+		// übergibt für alle PointLights die viewMatrix;
+		getShader().getpLViewMatrixUniform().set(viewMatrix);
+		
+
+			getShader().getVpositionUniform().set(PointLight.getRed().getPlPosition());
+			getShader().getVcolorUniform().set(PointLight.getRed().getPlColor());
+			getShader().getFambientUniform().set(PointLight.getRed().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform().set(PointLight.getRed().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform().set(PointLight.getRed().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform().set(PointLight.getRed().getExponentAttenuation());
+		
+
+
+			getShader().getpLViewMatrixUniform2().set(viewMatrix);
+			getShader().getVpositionUniform2().set(PointLight.getGreen().getPlPosition());
+			getShader().getVcolorUniform2().set(PointLight.getGreen().getPlColor());
+			getShader().getFambientUniform2().set(PointLight.getGreen().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform2().set(PointLight.getGreen().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform2().set(PointLight.getGreen().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform2().set(PointLight.getGreen().getExponentAttenuation());
+
+		
+
+			getShader().getpLViewMatrixUniform3().set(viewMatrix);
+			getShader().getVpositionUniform3().set(PointLight.getBlue().getPlPosition());
+			getShader().getVcolorUniform3().set(PointLight.getBlue().getPlColor());
+			getShader().getFambientUniform3().set(PointLight.getBlue().getfAmbientTerm());
+			
+			getShader().getConstantAttenuationUniform3().set(PointLight.getBlue().getConstantAttenuation());
+			getShader().getLinearAttenuationUniform3().set(PointLight.getBlue().getLinearAttenuation());
+			getShader().getExponentAttenuationUniform3().set(PointLight.getBlue().getExponentAttenuation());
+		
+		
+		//////////LIGHTNING SECTION ////////////////////
+		// ambient light
+		getShader().getAmbientLightColorUniform().set(PhongShader.getAmbientLight());
+				
+		// diffuse Lightning
+		getShader().getLightPositionVectorUniform().set(new Vector3f(0, 0, 16));
+		
+		// specular Lightning
+		getShader().getSpecularIntensityFloatUniform().set(2);
+		getShader().getSpecularExponentFloatUniform().set(32);
+		////////////////////////////////////////////////
+		
+		glVertexAttribPointer(Shader.getVertexAttribIdx(), 3, false, 0,
+				positionData);
+		glEnableVertexAttribArray(Shader.getVertexAttribIdx());
+		
+		glVertexAttribPointer(Shader.getNormalAttribIdx(), 3, false, 0,
+				normalData);
+		glEnableVertexAttribArray(Shader.getNormalAttribIdx());
+
+		// last number offset
+		glVertexAttribPointer(Shader.getTextureAttribIdx(), 2, false, 0,
+				textureData);
+		glEnableVertexAttribArray(Shader.getTextureAttribIdx());
+		
+		
+
+		glDrawArrays(GL_TRIANGLES, 0, vertices.length);
+	}
+	
+
+	private void finalizeBuffers(FloatBuffer p, FloatBuffer t,FloatBuffer n, Vertex[] vertices) {
+		for (Vertex v : vertices) {
+				p.put(v.getPosition().asArray());
+				t.put(v.getTextureCoord().asArray());
+				n.put(v.getNormal().asArray());
+		}
+		p.rewind();
+		t.rewind();
+		n.rewind();
+	}
+	
+	@Override
+	public void setCompleted() {
+		super.setCompleted();
+		oldT = t;
+		t = Texture.erledigt;
+	}
+	
+	@Override
+	public void setUnCompleted() {
+		super.setUnCompleted();
+		t = oldT;
+	}
+
+
+}

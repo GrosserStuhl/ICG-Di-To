@@ -5,6 +5,8 @@
 package ogl.app;
 
 import static ogl.vecmathimp.FactoryDefault.vecmath;
+
+
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 
 import java.nio.FloatBuffer;
@@ -22,8 +24,11 @@ import org.lwjgl.BufferUtils;
  */
 public class MatrixUniform extends Uniform {
 
-  private final FloatBuffer buffer;
+//  private final FloatBuffer buffer;
 
+	private FloatBuffer buffer;
+	private Matrix m;
+	
   /**
    * Create a new named uniform binding for the specified shader program.
    * 
@@ -46,10 +51,23 @@ public class MatrixUniform extends Uniform {
    *          The new matix value for the uniform variable.
    */
   public void set(Matrix m) {
+	  
+	this.m = m;  
     buffer.rewind();
     buffer.put(m.asArray());
     buffer.rewind();
 
     glUniformMatrix4(location, false, buffer);
   }
+  
+  public FloatBuffer getBuffer() {
+	return buffer;
+  }
+  
+  public Matrix getMatrix() {
+	return m;
+  }
+  
+  
+  
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scene>
+<camera #eye="10.176878,0.0,-4.0816836" #center="9.201165,0.0,-3.8626285" #mode="free"></camera>
+<shape #planet="Moon" #scale=3.0>
+	<shape #planet="Earth" #scale=3.0>
+		<shape #planet="Earth" #scale=3.0></shape>		<shape #planet="Earth" #scale=2.0></shape>
+	</shape>
+	<shape #planet="Earth" #scale=2.0></shape>
+</shape>
+<shape #planet="Earth" #scale=2.0>
+	<shape #planet="Moon" #scale=1.0></shape>
+	<shape #planet="Earth" #scale=2.0>
+		<shape #planet="Moon" #scale=1.0></shape>		<shape #planet="Earth" #scale=2.0></shape>		<shape #planet="Moon" #scale=3.0></shape>
+	</shape>
+	<shape #planet="Moon" #scale=3.0></shape>
+</shape>
+<shape #planet="Moon" #scale=1.0>
+	<shape #planet="Earth" #scale=2.0></shape>
+	<shape #planet="Moon" #scale=2.0></shape>
+</shape>
+<shape #planet="Moon" #scale=1.0>
+	<shape #planet="Earth" #scale=2.0></shape>
+	<shape #planet="Moon" #scale=2.0></shape>
+</shape>
+<shape #planet="Moon" #scale=2.0></shape>
+<shape #planet="Moon" #scale=1.0></shape>
+<shape #planet="Moon" #scale=3.0></shape>
+<shape #planet="null" #scale=1.0></shape>
+</scene>
